@@ -20,3 +20,8 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::resource('category','CategoryController');
+
+Route::resource('excel','excelController');
+Route::post('/excel', function(Request $request){
+    return view('excel');
+});

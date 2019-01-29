@@ -2,7 +2,7 @@
 
 @section('content')
     <h3>Karyawan Pages</h3>
-
+<!-- Table Start Here -->
     <table class="table table-responsive">
         <thead>
             <tr>
@@ -60,7 +60,7 @@
             @endforeach
         </tbody>
     </table>
-
+<!-- Table Ends Here -->
 <!-- Button trigger modal -->
 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
   Tambah Karyawan
