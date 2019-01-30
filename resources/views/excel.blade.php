@@ -20,6 +20,21 @@
         $highestRow = $excelObject->setActiveSheetIndex(0)->getHighestDataRow();
     // echo '<pre>';
     // echo var_dump($getSheet);
+
+    function filterMinute($dateDiff){
+        $value = 0;
+        if($dateDiff->d == 0 && $dateDiff->h == 0 && $dateDiff->i == 0 && $dateDiff->s == 0){
+            echo '<td></td>';
+        }
+        else{
+            $value += $dateDiff->i + ($dateDiff->h * 60) + ($dateDiff->d * 24 * 60);
+            if($dateDiff->s>30){
+                $value += 1;
+            }
+            echo '<td>'.$value.'</td>';                            
+        }    
+    }
+
 ?>
 <div style="text-align:center;">
     <h2><?php echo $_FILES['excelFile']['name'];?></h2>
@@ -61,26 +76,8 @@
                 $AR_Date = new DateTime($getSheet[$i][8]);
                 $WO_Date = DateTime::createFromFormat('d M Y H:i:s',$getSheet[$i][9]);
                 $SBU = date_diff($WO_Date, $AR_Date);
-            ?>
-            <!-- Filtering Durasi SBU Start Here -->
-            <?php
-            if($SBU->d == 0 && $SBU->h == 0 && $SBU->i == 0 && $SBU->s == 0){
-                echo '
-                <td>null</td>';
-            }
-            else if($SBU->i == 0 && $SBU->h == 0 && $SBU->d == 0){
-                echo '
-                <td>'.$SBU->format('%s s').'</td>';
-            } else if($SBU->h == 0 && $SBU->d == 0){
-                echo '
-                <td>'.$SBU->format('%i m, %s s').'</td>';
-            } else if($SBU->d == 0){
-                echo '
-                <td>'.$SBU->format('%h h, %i m, %s s').'</td>';
-            } else {
-                echo '
-                <td>'.$SBU->format('%d d, %h h, %i m, %s s').'</td>';                            
-            }
+                filterMinute($SBU);
+
             ?>
             <!-- Menghitung Durasi Preparation -->
             <!-- Selisih Antara WO Date dengan Start Driving -->
@@ -92,26 +89,8 @@
                 }else{
                     $preparation = date_diff($start_driving, $WO_Date);
                 }
-            ?>
-            <!-- Filtering Durasi Preparation Start Here -->
-            <?php
-            if($preparation->d == 0 && $preparation->h == 0 && $preparation->i == 0 && $preparation->s == 0){
-                echo '
-                <td></td>';
-            }
-            else if($preparation->i == 0 && $preparation->h == 0 && $preparation->d == 0){
-                echo '
-                <td>'.$preparation->format('%s s').'</td>';
-            } else if($preparation->h == 0 && $preparation->d == 0){
-                echo '
-                <td>'.$preparation->format('%i m, %s s').'</td>';
-            } else if($preparation->d == 0){
-                echo '
-                <td>'.$preparation->format('%h h, %i m, %s s').'</td>';
-            } else {
-                echo '
-                <td>'.$preparation->format('%d d, %h h, %i m, %s s').'</td>';                            
-            }
+
+            filterMinute($preparation);
             ?>
             <!-- Menghitung Durasi Travel Time -->
             <!-- Selisih Antara Start Travel dengan Start Work -->
@@ -123,26 +102,7 @@
                 }else{
                     $travel = date_diff($start_working, $start_driving);
                 }
-            ?>
-            <!-- Filtering Durasi Travel Time Start Here -->
-            <?php
-            if($travel->d == 0 && $travel->h == 0 && $travel->i == 0 && $travel->s == 0){
-                echo '
-                <td></td>';
-            }
-            else if($travel->i == 0 && $travel->h == 0 && $travel->d == 0){
-                echo '
-                <td>'.$travel->format('%s s').'</td>';
-            } else if($travel->h == 0 && $travel->d == 0){
-                echo '
-                <td>'.$travel->format('%i m, %s s').'</td>';
-            } else if($travel->d == 0){
-                echo '
-                <td>'.$travel->format('%h h, %i m, %s s').'</td>';
-            } else {
-                echo '
-                <td>'.$travel->format('%d d, %h h, %i m, %s s').'</td>';                            
-            }
+            filterMinute($travel);
             ?>
             <!-- Menghitung Durasi Work Time -->
             <!-- Selisih Antara Start Work dengan Request Complete -->
@@ -154,26 +114,7 @@
                 }else{
                     $working = date_diff($req_complete, $start_working);
                 }
-            ?>
-            <!-- Filtering Durasi Work Time Start Here -->
-            <?php
-            if($working->d == 0 && $working->h == 0 && $working->i == 0 && $working->s == 0){
-                echo '
-                <td></td>';
-            }
-            else if($working->i == 0 && $working->h == 0 && $working->d == 0){
-                echo '
-                <td>'.$working->format('%s s').'</td>';
-            } else if($working->h == 0 && $working->d == 0){
-                echo '
-                <td>'.$working->format('%i m, %s s').'</td>';
-            } else if($working->d == 0){
-                echo '
-                <td>'.$working->format('%h h, %i m, %s s').'</td>';
-            } else {
-                echo '
-                <td>'.$working->format('%d d, %h h, %i m, %s s').'</td>';                            
-            }
+            filterMinute($working);
             ?>
             <!-- Menghitung Durasi Reuest Complete Time -->
             <!-- Selisih Antara Request Complete dengan Complete -->
@@ -185,26 +126,7 @@
                 }else{
                     $complete_time = date_diff($complete, $req_complete);
                 }
-            ?>
-            <!-- Filtering Durasi Work Time Start Here -->
-            <?php
-            if($complete_time->d == 0 && $complete_time->h == 0 && $complete_time->i == 0 && $complete_time->s == 0){
-                echo '
-                <td></td>';
-            }
-            else if($complete_time->i == 0 && $complete_time->h == 0 && $complete_time->d == 0){
-                echo '
-                <td>'.$complete_time->format('%s s').'</td>';
-            } else if($complete_time->h == 0 && $complete_time->d == 0){
-                echo '
-                <td>'.$complete_time->format('%i m, %s s').'</td>';
-            } else if($complete_time->d == 0){
-                echo '
-                <td>'.$complete_time->format('%h h, %i m, %s s').'</td>';
-            } else {
-                echo '
-                <td>'.$complete_time->format('%d d, %h h, %i m, %s s').'</td>';                            
-            }
+            filterMinute($complete_time);
             ?>
             <!-- Menghitung Semua End Here -->
         </tr>
