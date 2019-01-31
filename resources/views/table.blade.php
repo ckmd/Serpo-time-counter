@@ -2,7 +2,8 @@
 
 @section('content')
     <h2>Success</h2>
-    <button class="btn btn-primary">download</button>
+    <a href="{{route('excel.create')}}" class="button">Download xlsx</a>
+    <!-- <button class="btn btn-primary" href="/">download</button> -->
     <table class="table table-responsive">
         <thead>
             <tr>

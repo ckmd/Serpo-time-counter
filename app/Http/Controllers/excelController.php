@@ -26,7 +26,8 @@ class excelController extends Controller
      */
     public function create()
     {
-        //
+        $datas = Excel::all();
+        return view('download', compact('datas'));
     }
 
     /**
@@ -125,7 +126,6 @@ class excelController extends Controller
                 $data->work_time = $working;
                 $data->complete_time = $complete_time;
              $data->save();
-            // $prob_ids["$i"] = $getSheet[$i][1];
             }
         }
         $datas = Excel::all();

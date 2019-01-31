@@ -23,6 +23,9 @@ Route::resource('category','CategoryController');
 
 Route::resource('excel','excelController');
 Route::resource('db','DBController');
+// Route::get('/download',function(){
+//     return view('download',compact(''));
+// });
 // Route::post('/excel', function(){
 //     return view('excel');
 // });
