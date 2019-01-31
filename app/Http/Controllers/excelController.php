@@ -41,7 +41,7 @@ class excelController extends Controller
     public function store(Request $request)
     {
         function filterMinute($dateDiff){
-            $value = 0;
+            $value = null;
             if($dateDiff->d == 0 && $dateDiff->h == 0 && $dateDiff->i == 0 && $dateDiff->s == 0){
             }
             else{
