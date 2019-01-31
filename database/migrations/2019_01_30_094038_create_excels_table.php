@@ -15,9 +15,9 @@ class CreateExcelsTable extends Migration
     {
         Schema::create('excels', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('ar_id');
-            $table->string('prob_id');
-            $table->string('kode_wo');
+            $table->bigInteger('ar_id');
+            $table->bigInteger('prob_id');
+            $table->bigInteger('kode_wo');
             $table->string('region');
             $table->string('basecamp');
             $table->string('serpo');

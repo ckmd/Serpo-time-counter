@@ -27,6 +27,7 @@ class excelController extends Controller
     public function create()
     {
         $datas = Excel::all();
+        Excel::truncate();
         return view('download', compact('datas'));
     }
 
