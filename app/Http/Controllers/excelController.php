@@ -128,7 +128,8 @@ class excelController extends Controller
             // $prob_ids["$i"] = $getSheet[$i][1];
             }
         }
-        return 'success';
+        $datas = Excel::all();
+        return view('table', compact('datas'));
         // return view('excel', compact('getSheet','highestRow'));
 //        return back();
     }
