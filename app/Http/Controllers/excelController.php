@@ -18,7 +18,7 @@ class excelController extends Controller
     {
         return view('excel');
     }
-
+    
     /**
      * Show the form for creating a new resource.
      *
@@ -30,7 +30,7 @@ class excelController extends Controller
         Excel::truncate();
         return view('download', compact('datas'));
     }
-
+    
     /**
      * Store a newly created resource in storage.
      *
@@ -40,6 +40,11 @@ class excelController extends Controller
     
     public function store(Request $request)
     {
+        // in case maks upload to server 2MB, dirubah ke 4MB
+        // ini_set('upload_max_filesize', '4M');
+        
+        // maksimum time limit 900 seconds, bisa disesuaikan
+        ini_set('max_execution_time', 900);
         function filterMinute($dateDiff){
             $value = null;
             if($dateDiff->d == 0 && $dateDiff->h == 0 && $dateDiff->i == 0 && $dateDiff->s == 0){
