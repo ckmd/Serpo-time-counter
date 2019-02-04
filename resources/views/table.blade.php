@@ -19,6 +19,7 @@
                 <th>travel time</th>
                 <th>working time</th>
                 <th>complete time</th>
+                <th>rsps</th>
             </tr>
         </thead>
         <tbody>
@@ -36,6 +37,7 @@
                 <td>{{$cat->travel_time}}</td>
                 <td>{{$cat->work_time}}</td>
                 <td>{{$cat->complete_time}}</td>
+                <td>{{ round((float)$cat->rsps * 100 ) }}%</td>
             </tr>
     @endforeach
         </tbody>

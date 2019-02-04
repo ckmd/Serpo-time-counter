@@ -69,6 +69,7 @@ class excelController extends Controller
 
         for ($i = 1; $i < 100; $i++) { 
             if ($getSheet[$i][0] != '') {
+                $rsps = 0;
             // <!-- Menghitung Durasi SBU -->
             // <!-- Selisih Antara AR_Date dengan WO Date -->
                 $SBU = null;
@@ -76,6 +77,7 @@ class excelController extends Controller
                 $WO_Date = DateTime::createFromFormat('d M Y H:i:s',$getSheet[$i][9]);
                 $SBU = date_diff($WO_Date, $AR_Date);
                 $SBU = filterMinute($SBU);
+                $rsps ++;
                 
             // <!-- Menghitung Durasi Preparation -->
             // <!-- Selisih Antara WO Date dengan Start Driving -->
@@ -85,6 +87,7 @@ class excelController extends Controller
                     $preparation = date_diff($WO_Date, $WO_Date);
                 }else{
                     $preparation = date_diff($start_driving, $WO_Date);
+                    $rsps++;
                 }
                 
                 $preparation = filterMinute($preparation);
@@ -96,6 +99,7 @@ class excelController extends Controller
                     $travel = date_diff($start_driving, $start_driving);
                 }else{
                     $travel = date_diff($start_working, $start_driving);
+                    $rsps++;
                 }
                 $travel = filterMinute($travel);
             // <!-- Menghitung Durasi Work Time -->
@@ -106,6 +110,7 @@ class excelController extends Controller
                     $working = date_diff($start_working, $start_working);
                 }else{
                     $working = date_diff($req_complete, $start_working);
+                    $rsps++;
                 }
                 $working = filterMinute($working);
             // <!-- Menghitung Durasi Reuest Complete Time -->
@@ -119,6 +124,10 @@ class excelController extends Controller
                 }
                 $complete_time = filterMinute($complete_time);
             // <!-- Menghitung Semua End Here -->
+            // Menghitung RSPS Starts Here
+            $rsps *= 0.25;
+            // Menghitung RSPS Ends Here
+
              $data = new Excel();
                 $data->ar_id = $getSheet[$i][0];
                 $data->prob_id = $getSheet[$i][1];
@@ -131,6 +140,7 @@ class excelController extends Controller
                 $data->travel_time = $travel;
                 $data->work_time = $working;
                 $data->complete_time = $complete_time;
+                $data->rsps = $rsps;
              $data->save();
             }
         }

@@ -23,6 +23,7 @@ $header = array(
     'travel_time'=>'number',
     'work_time'=>'number',
     'complete_time'=>'number',
+    'rsps'=>'0%',
 );
 
 $rows = array();
@@ -38,7 +39,8 @@ $rows = array();
             "$d->prep_time",
             "$d->travel_time",
             "$d->work_time",
-            "$d->complete_time"
+            "$d->complete_time",
+            "$d->rsps"
         );
 		}
             $writer = new XLSXWriter();
