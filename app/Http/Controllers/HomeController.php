@@ -24,10 +24,14 @@ class HomeController extends Controller
      */
     public function index()
     {
+        // Persyaratan Passing Value
         $filteredRegion = NULL;
+        $dataArray = NULL;
+
         $datas = Excel::pluck('region');
         $unique = $datas->unique();
-        return view('home', compact('filteredRegion','unique'));
+        
+        return view('home', compact('filteredRegion','unique','dataArray'));
     }
 
     public function reload(Request $request){
@@ -42,6 +46,7 @@ class HomeController extends Controller
         // Menghitung rataan nilai per basecamp yang difilter berdasarkan region
         $basecamp = Excel::where('region', $regionName)->pluck('basecamp');
         $uniqueBasecamp = $basecamp->unique();
+        $dataArray = array();
         foreach ($uniqueBasecamp as $key) {
             // Variable Initiation
             $avgDurasiSBU = null;
@@ -54,7 +59,6 @@ class HomeController extends Controller
             $uniqueBasecampCount = Excel::where('basecamp',$key)->count();
             $uniqueBasecampRow = Excel::where('basecamp',$key)->get();
 
-            echo " ".$key."<br />\n";
             foreach ($uniqueBasecampRow as $ubc) {
                 $avgDurasiSBU += $ubc->durasi_sbu;
                 $avgPrepTime += $ubc->prep_time;
@@ -70,11 +74,20 @@ class HomeController extends Controller
             $avgCompleteTime /= $uniqueBasecampCount;
             $avgRSPS /= $uniqueBasecampCount;
 
+            // echo $avgRSPS."<br />\n";
             // convert to the array
-            echo $avgRSPS."<br />\n";
+            $dataArray[] = array(
+                'basecamp' => $key,
+                'avgDurasiSBU' => $avgDurasiSBU,
+                'avgPrepTime' => $avgPrepTime,
+                'avgTravelTime' => $avgTravelTime,
+                'avgWorkTime' => $avgWorkTime,
+                'avgCompleteTime' => $avgCompleteTime,
+                'avgRSPS' => $avgRSPS                
+            );
         }
-//        $filteredRegion = null;
+        $filteredRegion = null;
 
-        return view('home', compact ('filteredRegion', 'unique','regionName'));
+        return view('home', compact ('filteredRegion', 'unique','regionName','dataArray'));
     }
 }
