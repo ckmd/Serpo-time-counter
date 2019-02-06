@@ -27,7 +27,7 @@ class excelController extends Controller
     public function create()
     {
         $datas = Excel::all();
-        Excel::truncate();
+//        Excel::truncate();
         return view('download', compact('datas'));
     }
     
@@ -44,6 +44,10 @@ class excelController extends Controller
         // ini_set('upload_max_filesize', '4M');
         
         // maksimum time limit 900 seconds, bisa disesuaikan
+
+        // Delete Database Sebelum Upload Baru
+        Excel::truncate();
+
         ini_set('max_execution_time', 900);
         function filterMinute($dateDiff){
             $value = null;
@@ -67,7 +71,7 @@ class excelController extends Controller
             $highestRow = $excelObject->setActiveSheetIndex(0)->getHighestDataRow();
         }
 
-        for ($i = 1; $i < 100; $i++) { 
+        for ($i = 1; $i <= 100; $i++) { 
             if ($getSheet[$i][0] != '') {
                 $rsps = 0;
             // <!-- Menghitung Durasi SBU -->
@@ -124,9 +128,6 @@ class excelController extends Controller
                 }
                 $complete_time = filterMinute($complete_time);
             // <!-- Menghitung Semua End Here -->
-            // Menghitung RSPS Starts Here
-            $rsps *= 0.25;
-            // Menghitung RSPS Ends Here
 
              $data = new Excel();
                 $data->ar_id = $getSheet[$i][0];
@@ -140,14 +141,13 @@ class excelController extends Controller
                 $data->travel_time = $travel;
                 $data->work_time = $working;
                 $data->complete_time = $complete_time;
-                $data->rsps = $rsps;
+                $data->rsps = $rsps * 0.25;
              $data->save();
             }
         }
-        $datas = Excel::all();
-        return view('table', compact('datas'));
-        // return view('excel', compact('getSheet','highestRow'));
-//        return back();
+        $datas = Excel::pluck('region');
+        $unique = $datas->unique();
+        return redirect()->route('home');
     }
 
     /**
