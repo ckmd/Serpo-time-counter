@@ -17,13 +17,32 @@
                         @endforeach
                     </select>
                 </div>
-                <input type="submit" class="btn btn-primary" value="Filter">
-            </form>
+                <div class="row">
+                    <div class="col">
+                        <label for="awal">Periode Awal</label>
+                        <input type="date" class="form-control" id="awal" name="pawal">
+                    </div>
+                    <div class="col">
+                        <label for="akhir">Periode Akhir</label>
+                        <input type="date" class="form-control" id="akhir" name="pakhir">
+                    </div>
+                </div>
             <br>
+            <input type="submit" class="btn btn-primary" value="Filter">
+            </form>
             @if($dataArray!=null)
             <div class="text-center">
                 <h3>Filter by Region {{$regionName}}</h3>
-                <h6>avg (rata rata) waktu dalam satuan menit</h6>
+                @if(($pAwal==null) && ($pAkhir==null))
+                    <h6>Data All Time</h6>
+                @elseif($pAwal==null)
+                    <h6>Data sampai dengan {{$pAkhir}}</h6>
+                @elseif($pAkhir==null)
+                    <h6>Data Mulai dari {{$pAwal}}</h6>
+                @else
+                    <h6>periode {{$pAwal}} s.d. {{$pAkhir}}</h6>
+                @endif
+                <p>avg (rata rata) waktu dalam satuan menit</p>
             </div>
             <table class="table table-responsive">
                 <thead>

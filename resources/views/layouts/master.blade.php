@@ -79,8 +79,8 @@ if(isset($_POST['SubmitButton'])){ //check if form was submitted
         <li class="header">HEADER</li>
         <!-- Optionally, you can add icons to the links -->
         <!-- <li class="active"><a href="{{url('category')}}"><i class="fa fa-link"></i> <span>Karyawan</span></a></li> -->
-        <li class="active"><a href="{{url('home')}}"><i class="fa fa-link"></i> <span>Filter</span></a></li>
         <li><a href="{{url('excel')}}"><i class="fa fa-link"></i> <span>Upload Excel</span></a></li>
+        <li><a href="{{url('home')}}"><i class="fa fa-link"></i> <span>Filter By Region</span></a></li>
         <li class="treeview">
           <a href="#"><i class="fa fa-link"></i> <span>Multilevel</span>
             <span class="pull-right-container">
@@ -139,7 +139,7 @@ print "message : ".$message;
       Anything you want
     </div>
     <!-- Default to the left -->
-    <strong>Copyright &copy; 2016 <a href="#">Company</a>.</strong> All rights reserved.
+    <strong>Copyright &copy; 2019 <a href="#">Indonesia Comnet Plus</a>.</strong> All rights reserved.
   </footer>
 </div>
 <!-- <script src="{{asset('js/app.js')}}"></script> -->

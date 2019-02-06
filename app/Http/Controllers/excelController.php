@@ -136,6 +136,7 @@ class excelController extends Controller
                 $data->region = $getSheet[$i][5];
                 $data->basecamp = $getSheet[$i][6];
                 $data->serpo = $getSheet[$i][7];
+                $data->wo_date = $WO_Date;
                 $data->durasi_sbu = $SBU;
                 $data->prep_time = $preparation;
                 $data->travel_time = $travel;

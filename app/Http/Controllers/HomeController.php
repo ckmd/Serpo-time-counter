@@ -33,11 +33,16 @@ class HomeController extends Controller
         
         return view('home', compact('filteredRegion','unique','dataArray'));
     }
+    // Wait a minute
+    // ->where('wo_date','>=',$request->pawal)
+    // ->where('wo_date','<=',$request->pakhir)
 
     public function reload(Request $request){
         // Filter berdasarkan region
         $regionName = $request->region;
         $filteredRegion = Excel::where('region' , $regionName)->get();
+        $pAwal = $request->pawal;
+        $pAkhir = $request->pakhir;
 
         // Menampilkan Region yang ada di DB
         $region = Excel::pluck('region');
@@ -93,6 +98,6 @@ class HomeController extends Controller
         }
         $filteredRegion = null;
 
-        return view('home', compact ('filteredRegion', 'unique','regionName','dataArray'));
+        return view('home', compact ('filteredRegion', 'unique','regionName','dataArray','pAwal','pAkhir'));
     }
 }
