@@ -21,11 +21,11 @@ class CreateExcelsTable extends Migration
             $table->string('region');
             $table->string('basecamp');
             $table->string('serpo');
-            $table->integer('durasi_sbu')->nullable()->default(NULL);
-            $table->integer('prep_time')->nullable()->default(NULL);
-            $table->integer('travel_time')->nullable()->default(NULL);
-            $table->integer('work_time')->nullable()->default(NULL);
-            $table->integer('complete_time')->nullable()->default(NULL);
+            $table->decimal('durasi_sbu',10,2)->nullable()->default(NULL);
+            $table->decimal('prep_time',10,2)->nullable()->default(NULL);
+            $table->decimal('travel_time',10,2)->nullable()->default(NULL);
+            $table->decimal('work_time',10,2)->nullable()->default(NULL);
+            $table->decimal('complete_time',10,2)->nullable()->default(NULL);
             $table->decimal('rsps', 3, 2);
             $table->timestamps();
         });

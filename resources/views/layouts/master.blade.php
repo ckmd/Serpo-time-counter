@@ -29,7 +29,7 @@ if(isset($_POST['SubmitButton'])){ //check if form was submitted
   <header class="main-header">
 
     <!-- Logo -->
-    <a href="index2.html" class="logo">
+    <a href="/home" class="logo">
       <!-- mini logo for sidebar mini 50x50 pixels -->
       <span class="logo-mini"><b>A</b>LT</span>
       <!-- logo for regular state and mobile devices -->
@@ -78,8 +78,9 @@ if(isset($_POST['SubmitButton'])){ //check if form was submitted
       <ul class="sidebar-menu" data-widget="tree">
         <li class="header">HEADER</li>
         <!-- Optionally, you can add icons to the links -->
-        <li class="active"><a href="{{url('category')}}"><i class="fa fa-link"></i> <span>Karyawan</span></a></li>
-        <li><a href="{{url('excel')}}"><i class="fa fa-link"></i> <span>Excel</span></a></li>
+        <!-- <li class="active"><a href="{{url('category')}}"><i class="fa fa-link"></i> <span>Karyawan</span></a></li> -->
+        <li class="active"><a href="{{url('home')}}"><i class="fa fa-link"></i> <span>Filter</span></a></li>
+        <li><a href="{{url('excel')}}"><i class="fa fa-link"></i> <span>Upload Excel</span></a></li>
         <li class="treeview">
           <a href="#"><i class="fa fa-link"></i> <span>Multilevel</span>
             <span class="pull-right-container">

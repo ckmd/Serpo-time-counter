@@ -55,8 +55,8 @@ class excelController extends Controller
             }
             else{
                 $value += $dateDiff->i + ($dateDiff->h * 60) + ($dateDiff->d * 24 * 60);
-                if($dateDiff->s>30){
-                    $value += 1;
+                if($dateDiff->s>0){
+                    $value += ($dateDiff->s/60);
                 }
             }    
             return $value;
