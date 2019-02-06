@@ -43,11 +43,11 @@ class HomeController extends Controller
         $region = Excel::pluck('region');
         $unique = $region->unique();
 
-        // Menghitung rataan nilai per basecamp yang difilter berdasarkan region
-        $basecamp = Excel::where('region', $regionName)->pluck('basecamp');
-        $uniqueBasecamp = $basecamp->unique();
+        // Menghitung rataan nilai per serpo yang difilter berdasarkan region
+        $serpo = Excel::where('region', $regionName)->pluck('serpo');
+        $uniqueSerpo = $serpo->unique();
         $dataArray = array();
-        foreach ($uniqueBasecamp as $key) {
+        foreach ($uniqueSerpo as $key) {
             // Variable Initiation
             $avgDurasiSBU = null;
             $avgPrepTime = null;
@@ -55,29 +55,34 @@ class HomeController extends Controller
             $avgWorkTime = null;
             $avgCompleteTime = null;
             $avgRSPS = null;
+            $basecamp = null;
 
-            $uniqueBasecampCount = Excel::where('basecamp',$key)->count();
-            $uniqueBasecampRow = Excel::where('basecamp',$key)->get();
+            $uniqueSerpoCount = Excel::where('serpo',$key)->count();
+            $uniqueSerpoRow = Excel::where('serpo',$key)->get();
 
-            foreach ($uniqueBasecampRow as $ubc) {
+            foreach ($uniqueSerpoRow as $ubc) {
                 $avgDurasiSBU += $ubc->durasi_sbu;
                 $avgPrepTime += $ubc->prep_time;
                 $avgTravelTime += $ubc->travel_time;
                 $avgWorkTime += $ubc->work_time;
                 $avgCompleteTime += $ubc->complete_time;
                 $avgRSPS += $ubc->rsps;
+                if($basecamp==null){
+                    $basecamp = $ubc->basecamp;
+                }
             }
-            $avgDurasiSBU /= $uniqueBasecampCount;
-            $avgPrepTime /= $uniqueBasecampCount;
-            $avgTravelTime /= $uniqueBasecampCount;
-            $avgWorkTime /= $uniqueBasecampCount;
-            $avgCompleteTime /= $uniqueBasecampCount;
-            $avgRSPS /= $uniqueBasecampCount;
+            $avgDurasiSBU /= $uniqueSerpoCount;
+            $avgPrepTime /= $uniqueSerpoCount;
+            $avgTravelTime /= $uniqueSerpoCount;
+            $avgWorkTime /= $uniqueSerpoCount;
+            $avgCompleteTime /= $uniqueSerpoCount;
+            $avgRSPS /= $uniqueSerpoCount;
 
-            // echo $avgRSPS."<br />\n";
+            //  echo $basecamp."<br />\n";
             // convert to the array
             $dataArray[] = array(
-                'basecamp' => $key,
+                'basecamp' => $basecamp,
+                'serpo' => $key,
                 'avgDurasiSBU' => $avgDurasiSBU,
                 'avgPrepTime' => $avgPrepTime,
                 'avgTravelTime' => $avgTravelTime,

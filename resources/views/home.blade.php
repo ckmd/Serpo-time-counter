@@ -3,7 +3,7 @@
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
-        <div class="col-md-8">
+        <div class="col-md-12">
             <form method="post" action="{{route('home')}}">
             {{csrf_field()}}
                 <div class="form-group">
@@ -57,6 +57,7 @@
                 <thead>
                     <tr>
                         <th>basecamp</th>
+                        <th>serpo</th>
                         <th>avg durasi SBU</th>
                         <th>avg preparation time</th>
                         <th>avg travel time</th>
@@ -66,9 +67,15 @@
                     </tr>
                 </thead>
                 <tbody>
+                <?php
+                usort($dataArray, function($a, $b) {
+                    return $a['basecamp'] <=> $b['basecamp'];
+                });
+                ?>
             @foreach($dataArray as $data)
                     <tr>
                         <td>{{$data['basecamp']}}</td>
+                        <td>{{$data['serpo']}}</td>
                         <td>{{round($data['avgDurasiSBU'],2)}}</td>
                         <td>{{round($data['avgPrepTime'])}}</td>
                         <td>{{round($data['avgTravelTime'])}}</td>
