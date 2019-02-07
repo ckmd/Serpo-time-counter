@@ -1,6 +1,7 @@
 @extends('layouts.master')
 
 @section('content')
+<!-- Table Untuk menampilkan data sebelum didownload -->
     <h2>Success</h2>
     <a href="{{route('excel.create')}}" class="button">Download xlsx</a>
     <!-- <button class="btn btn-primary" href="/">download</button> -->

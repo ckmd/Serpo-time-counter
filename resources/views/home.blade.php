@@ -46,19 +46,22 @@
                 @else
                     <p class="mb-0">periode {{$pAwal}} s.d. {{$pAkhir}}</p>
                 @endif
-                <footer class="blockquote-footer">avg (rata rata) waktu dalam satuan menit</footer>
+                <!-- <footer class="blockquote-footer">avg (rata rata) waktu dalam satuan menit</footer> -->
             </blockquote>
-            <table class="table table-hover">
-                <thead class="thead-light">
+            <table class="table table-hover table-bordered">
+                <thead class="thead-light" style="text-align: center;">
+                    <tr valign="top" >
+                        <th rowspan="2" >basecamp</th>
+                        <th rowspan="2">serpo</th>
+                        <th colspan="6">Average (Dalam Satuan Menit)</th>
+                    </tr>
                     <tr>
-                        <th>basecamp</th>
-                        <th>serpo</th>
-                        <th>avg durasi SBU</th>
-                        <th>avg preparation time</th>
-                        <th>avg travel time</th>
-                        <th>avg working time</th>
-                        <th>avg complete time</th>
-                        <th>avg rsps</th>
+                        <th>durasi SBU</th>
+                        <th>preparation time</th>
+                        <th>travel time</th>
+                        <th>working time</th>
+                        <th>complete time</th>
+                        <th>rsps</th>
                     </tr>
                 </thead>
                 <tbody>
