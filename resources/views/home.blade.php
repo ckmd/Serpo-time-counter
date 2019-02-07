@@ -5,19 +5,20 @@
     <div class="row justify-content-center">
         <div class="col-md-12">
             <div class="text-center">
-                <h3>Performa Rata- Rata Serpo Filter By Region</h3>
+                <h1 class="display-6">Performa Rata- Rata Serpo Filtered By Region</h1>
             </div>
             <form method="post" action="{{route('home')}}">
             {{csrf_field()}}
-                <div class="form-group">
-                    <select name="region" class="form-control">
+                <div class="row">
+                    <div class="col">
+                    <label for="reg">Region / Wilayah</label>
+                    <select name="region" class="form-control" id="reg">
                         <option value="">-- Pilih Region --</option>
                         @foreach($unique as $u)
                             <option value="{{$u}}">{{$u}}</option>
                         @endforeach
                     </select>
-                </div>
-                <div class="row">
+                    </div>
                     <div class="col">
                         <label for="awal">Periode Awal</label>
                         <input type="date" class="form-control" id="awal" name="pawal">
@@ -31,21 +32,24 @@
             <input type="submit" class="btn btn-primary" value="Filter">
             </form>
             @if($dataArray!=null)
-            <div class="text-center">
-                <h3>Filter by Region {{$regionName}}</h3>
+            <blockquote class="blockquote text-center">
+                <h3>
+                    <small class="text-muted">Filtered by </small>
+                Region {{$regionName}}
+                </h3>
                 @if(($pAwal==null) && ($pAkhir==null))
-                    <h6>Data All Time</h6>
+                    <p class="mb-0">Data All Time</p>
                 @elseif($pAwal==null)
-                    <h6>Data sampai dengan {{$pAkhir}}</h6>
+                    <p class="mb-0">Data sampai dengan {{$pAkhir}}</p>
                 @elseif($pAkhir==null)
-                    <h6>Data Mulai dari {{$pAwal}}</h6>
+                    <p class="mb-0">Data Mulai dari {{$pAwal}}</p>
                 @else
-                    <h6>periode {{$pAwal}} s.d. {{$pAkhir}}</h6>
+                    <p class="mb-0">periode {{$pAwal}} s.d. {{$pAkhir}}</p>
                 @endif
-                <p>avg (rata rata) waktu dalam satuan menit</p>
-            </div>
-            <table class="table table-responsive">
-                <thead>
+                <footer class="blockquote-footer">avg (rata rata) waktu dalam satuan menit</footer>
+            </blockquote>
+            <table class="table table-hover">
+                <thead class="thead-light">
                     <tr>
                         <th>basecamp</th>
                         <th>serpo</th>
