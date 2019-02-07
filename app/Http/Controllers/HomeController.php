@@ -28,13 +28,12 @@ class HomeController extends Controller
     public function index()
     {
         // Persyaratan Passing Value
-        $filteredRegion = NULL;
         $dbAvgExcel = null;
 
         $datas = Excel::pluck('region');
         $unique = $datas->unique();
         
-        return view('home', compact('filteredRegion','unique','dbAvgExcel'));
+        return view('home', compact('unique','dbAvgExcel'));
     }
 
     public function download(Request $request){
@@ -96,6 +95,7 @@ class HomeController extends Controller
             $avgExcel = new avgExcel();
                 $avgExcel->basecamp = $basecamp;
                 $avgExcel->serpo = $key;
+                $avgExcel->jumlah_wo = $uniqueSerpoCount;
                 $avgExcel->durasi_sbu = $avgDurasiSBU;
                 $avgExcel->prep_time = $avgPrepTime;
                 $avgExcel->travel_time = $avgTravelTime;
@@ -104,23 +104,14 @@ class HomeController extends Controller
                 $avgExcel->rsps = $avgRSPS;
             $avgExcel->save();
             // convert to the array
-
-            // Refactoring Starts Here
-            $dataArray[] = array(
-                'basecamp' => $basecamp,
-                'serpo' => $key,
-                'avgDurasiSBU' => $avgDurasiSBU,
-                'avgPrepTime' => $avgPrepTime,
-                'avgTravelTime' => $avgTravelTime,
-                'avgWorkTime' => $avgWorkTime,
-                'avgCompleteTime' => $avgCompleteTime,
-                'avgRSPS' => $avgRSPS                
-            );
-            // refactoring ends here
+            // echo $key." : ".$uniqueSerpoCount."<br />\n";
         }
-        $filteredRegion = null;
 
-        $dbAvgExcel = avgExcel::orderBy('basecamp','asc')->get();
-        return view('home', compact ('filteredRegion', 'unique','regionName','dataArray','dbAvgExcel','pAwal','pAkhir'));
+        if($regionName!=null){
+            $dbAvgExcel = avgExcel::orderBy('basecamp','asc')->get();
+        }else{
+            $dbAvgExcel = null;
+        }
+        return view('home', compact ('unique','regionName','dbAvgExcel','pAwal','pAkhir'));
     }
 }

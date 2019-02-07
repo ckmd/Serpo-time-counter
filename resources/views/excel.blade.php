@@ -11,8 +11,8 @@
                 <h3>Upload Excel File</h3>
                 <form action="{{route('excel.store')}}" method="POST" enctype="multipart/form-data">
                     {{csrf_field()}}
-                    <input type="file" name="excelFile">
-                    <input type="submit" value="submit">
+                    <input type="file" class="btn btn-primary btn-md" name="excelFile">
+                    <input type="submit" class="btn btn-primary" value="submit">
                 </form>
             </div>
         </div>

@@ -12,14 +12,15 @@ header('Cache-Control: must-revalidate');
 header('Pragma: public');
 
 $header = array(
-    'basecamp'=>'string',
-    'serpo'=>'string',
-    'durasi_sbu'=>'0.00',
-    'prep_time'=>'0.00',
-    'travel_time'=>'0.00',
-    'work_time'=>'0.00',
-    'complete_time'=>'0.00',
-    'rsps'=>'0%',
+    'Basecamp'=>'string',
+    'Serpo'=>'string',
+    'Jumlah WO'=>'number',
+    'Durasi SBU'=>'0.00',
+    'Preparation Time'=>'0.00',
+    'Travel Time'=>'0.00',
+    'Work Time'=>'0.00',
+    'Complete Time'=>'0.00',
+    'RSPS'=>'0%',
 );
 
 $rows = array();
@@ -27,6 +28,7 @@ $rows = array();
             $rows[] = array(
             "$d->basecamp",
             "$d->serpo",
+            "$d->jumlah_wo",
             "$d->durasi_sbu",
             "$d->prep_time",
             "$d->travel_time",

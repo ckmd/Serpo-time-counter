@@ -77,21 +77,8 @@ if(isset($_POST['SubmitButton'])){ //check if form was submitted
       <!-- Sidebar Menu -->
       <ul class="sidebar-menu" data-widget="tree">
         <li class="header">HEADER</li>
-        <!-- Optionally, you can add icons to the links -->
-        <!-- <li class="active"><a href="{{url('category')}}"><i class="fa fa-link"></i> <span>Karyawan</span></a></li> -->
         <li><a href="{{url('excel')}}"><i class="fa fa-link"></i> <span>Upload Excel</span></a></li>
         <li><a href="{{url('home')}}"><i class="fa fa-link"></i> <span>Filter By Region</span></a></li>
-        <li class="treeview">
-          <a href="#"><i class="fa fa-link"></i> <span>Multilevel</span>
-            <span class="pull-right-container">
-                <i class="fa fa-angle-left pull-right"></i>
-              </span>
-          </a>
-          <ul class="treeview-menu">
-            <li><a href="#">Link in level 2</a></li>
-            <li><a href="#">Link in level 2</a></li>
-          </ul>
-        </li>
       </ul>
       <!-- /.sidebar-menu -->
     </section>
@@ -100,17 +87,6 @@ if(isset($_POST['SubmitButton'])){ //check if form was submitted
 
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
-    <!-- Content Header (Page header) -->
-    <!-- <section class="content-header">
-      <h1>
-        Page Header
-        <small>Optional description</small>
-      </h1>
-      <ol class="breadcrumb">
-        <li><a href="#"><i class="fa fa-dashboard"></i> Level</a></li>
-        <li class="active">Here</li>
-      </ol>
-    </section> -->
 
     <!-- Main content -->
     <section class="content container-fluid">
@@ -119,10 +95,6 @@ if(isset($_POST['SubmitButton'])){ //check if form was submitted
         | Your Page Content Here |
         -------------------------->
         @yield('content')
-<!-- <form action="" method="post">
-  <input type="text" name="inputText"/>
-  <input type="submit" name="SubmitButton"/>
-</form> -->
 <!-- <?php
 print "message : ".$message;
 ?> -->
