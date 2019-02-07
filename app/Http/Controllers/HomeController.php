@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Excel;
+use DateTime;
+use DateInterval;
 
 class HomeController extends Controller
 {
@@ -33,9 +35,6 @@ class HomeController extends Controller
         
         return view('home', compact('filteredRegion','unique','dataArray'));
     }
-    // Wait a minute
-    // ->where('wo_date','>=',$request->pawal)
-    // ->where('wo_date','<=',$request->pakhir)
 
     public function reload(Request $request){
         // Filter berdasarkan region
@@ -43,13 +42,15 @@ class HomeController extends Controller
         $filteredRegion = Excel::where('region' , $regionName)->get();
         $pAwal = $request->pawal;
         $pAkhir = $request->pakhir;
+        $addOneDay = (new DateTime($pAkhir))->add(new DateInterval('P1D'))->format('Y-m-d');
 
         // Menampilkan Region yang ada di DB
         $region = Excel::pluck('region');
         $unique = $region->unique();
-
+        
         // Menghitung rataan nilai per serpo yang difilter berdasarkan region
-        $serpo = Excel::where('region', $regionName)->pluck('serpo');
+        $serpo = $filteredRegion->where('wo_date','>=',$pAwal)->where('wo_date','<=',$addOneDay)->pluck('serpo');
+        
         $uniqueSerpo = $serpo->unique();
         $dataArray = array();
         foreach ($uniqueSerpo as $key) {
