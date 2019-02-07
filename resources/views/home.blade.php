@@ -31,7 +31,15 @@
             <br>
             <input type="submit" class="btn btn-primary" value="Filter">
             </form>
-            @if($dataArray!=null)
+            <br>
+            @if($dbAvgExcel!=null)
+            <form method="post" action="{{route('db.store')}}">
+            {{csrf_field()}}
+                <input type="hidden" name="awal" value="{{$pAwal}}">
+                <input type="hidden" name="akhir" value="{{$pAkhir}}">
+                <input type="hidden" name="region" value="{{$regionName}}">
+                <input type="submit" class="btn btn-success" value="download">
+            </form>
             <blockquote class="blockquote text-center">
                 <h3>
                     <small class="text-muted">Filtered by </small>
@@ -70,16 +78,16 @@
                     return $a['basecamp'] <=> $b['basecamp'];
                 });
                 ?>
-            @foreach($dataArray as $data)
+            @foreach($dbAvgExcel as $data)
                     <tr>
-                        <td>{{$data['basecamp']}}</td>
-                        <td>{{$data['serpo']}}</td>
-                        <td>{{round($data['avgDurasiSBU'],2)}}</td>
-                        <td>{{round($data['avgPrepTime'],2)}}</td>
-                        <td>{{round($data['avgTravelTime'],2)}}</td>
-                        <td>{{round($data['avgWorkTime'],2)}}</td>
-                        <td>{{round($data['avgCompleteTime'],2)}}</td>
-                        <td>{{ round((float)$data['avgRSPS'] * 100 ) }}%</td>
+                        <td>{{$data->basecamp}}</td>
+                        <td>{{$data->serpo}}</td>
+                        <td>{{round($data->durasi_sbu,2)}}</td>
+                        <td>{{round($data->prep_time,2)}}</td>
+                        <td>{{round($data->travel_time,2)}}</td>
+                        <td>{{round($data->work_time,2)}}</td>
+                        <td>{{round($data->complete_time,2)}}</td>
+                        <td>{{ round((float)$data->rsps * 100 ) }}%</td>
                     </tr>
             @endforeach
                 </tbody>

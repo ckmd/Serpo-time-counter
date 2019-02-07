@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Excel;
+use App\avgExcel;
 
 class DBController extends Controller
 {
@@ -35,9 +36,24 @@ class DBController extends Controller
      */
     public function store(Request $request)
     {
-//        return $request->all();
-        return $request->all();
-//        return back();
+        $pAwal = $request->awal;
+        $pAkhir = $request->akhir;
+        $region = "Rataan ".$request->region;
+
+        if(($pAwal==null) && ($pAkhir==null)){
+            $nameFile = $region." All Data";
+        }
+        elseif($pAwal==null){
+            $nameFile = $region." awal s.d. ".$pAkhir;
+        }
+        elseif($pAkhir==null){
+            $nameFile = $region." ".$pAwal." s.d. akhir";
+        }
+        else{
+            $nameFile = $region." ".$pAwal." s.d ".$pAkhir;
+        }
+        $dbAvgExcel = avgExcel::orderBy('basecamp','asc')->get();
+        return view('avgDownload', compact('nameFile','dbAvgExcel'));
     }
 
     /**

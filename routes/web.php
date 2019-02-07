@@ -19,8 +19,6 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 Route::post('/home','HomeController@reload');
-
-
 Route::resource('category','CategoryController');
 Route::resource('excel','excelController');
 Route::resource('db','DBController');

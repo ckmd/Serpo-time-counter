@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Excel;
+use App\avgExcel;
 use DateTime;
 use DateInterval;
 
@@ -28,15 +29,21 @@ class HomeController extends Controller
     {
         // Persyaratan Passing Value
         $filteredRegion = NULL;
-        $dataArray = NULL;
+        $dbAvgExcel = null;
 
         $datas = Excel::pluck('region');
         $unique = $datas->unique();
         
-        return view('home', compact('filteredRegion','unique','dataArray'));
+        return view('home', compact('filteredRegion','unique','dbAvgExcel'));
+    }
+
+    public function download(Request $request){
+        return $request->all();
     }
 
     public function reload(Request $request){
+        // Delete Database inside avgExcel
+        avgExcel::truncate();
         // Filter berdasarkan region
         $regionName = $request->region;
         $filteredRegion = Excel::where('region' , $regionName)->get();
@@ -85,7 +92,20 @@ class HomeController extends Controller
             $avgRSPS /= $uniqueSerpoCount;
 
             //  echo $basecamp."<br />\n";
+            // save into database
+            $avgExcel = new avgExcel();
+                $avgExcel->basecamp = $basecamp;
+                $avgExcel->serpo = $key;
+                $avgExcel->durasi_sbu = $avgDurasiSBU;
+                $avgExcel->prep_time = $avgPrepTime;
+                $avgExcel->travel_time = $avgTravelTime;
+                $avgExcel->work_time = $avgWorkTime;
+                $avgExcel->complete_time = $avgCompleteTime;
+                $avgExcel->rsps = $avgRSPS;
+            $avgExcel->save();
             // convert to the array
+
+            // Refactoring Starts Here
             $dataArray[] = array(
                 'basecamp' => $basecamp,
                 'serpo' => $key,
@@ -96,9 +116,11 @@ class HomeController extends Controller
                 'avgCompleteTime' => $avgCompleteTime,
                 'avgRSPS' => $avgRSPS                
             );
+            // refactoring ends here
         }
         $filteredRegion = null;
 
-        return view('home', compact ('filteredRegion', 'unique','regionName','dataArray','pAwal','pAkhir'));
+        $dbAvgExcel = avgExcel::orderBy('basecamp','asc')->get();
+        return view('home', compact ('filteredRegion', 'unique','regionName','dataArray','dbAvgExcel','pAwal','pAkhir'));
     }
 }
