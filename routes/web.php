@@ -19,9 +19,9 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 Route::post('/home','HomeController@reload');
-Route::resource('category','CategoryController');
-Route::resource('excel','excelController');
-Route::resource('db','DBController');
+Route::resource('category','CategoryController')->middleware('auth');
+Route::resource('excel','excelController')->middleware('auth');
+Route::resource('db','DBController')->middleware('auth');
 // Route::get('/download',function(){
 //     return view('download',compact(''));
 // });
