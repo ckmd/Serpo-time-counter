@@ -9,7 +9,7 @@
                 <h1 class="display-6">All Data from Database</h1>
                 <footer class="blockquote-footer">*Durasi dalam satuan menit</footer>
             </div>
-            <button class="btn btn-success" href="{{route('excel.create')}}">Download to .xlsx</button>
+            <a href="{{route('excel.create')}}" class="btn btn-success">Download to .xlsx</a>
             <table class="table-responsive table-hover table-bordered table-striped" style="text-align: center;">
                 <thead>
                     <tr>
