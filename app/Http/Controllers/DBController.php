@@ -15,7 +15,8 @@ class DBController extends Controller
      */
     public function index()
     {
-        return view('allData');
+        $datas = Excel::all();
+        return view('allData',compact('datas'));
     }
 
     /**

@@ -1,5 +1,5 @@
 <?php
-
+use App\Excel;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -21,10 +21,4 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::post('/home','HomeController@reload');
 Route::resource('category','CategoryController')->middleware('auth');
 Route::resource('excel','excelController')->middleware('auth');
-Route::resource('db','DBController')->middleware('auth');
-// Route::get('/download',function(){
-//     return view('download',compact(''));
-// });
-// Route::post('/excel', function(){
-//     return view('excel');
-// });
+Route::resource('allData','DBController')->middleware('auth');

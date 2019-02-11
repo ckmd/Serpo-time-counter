@@ -36,7 +36,7 @@
                         </form>
                         <br>
                         @if($dbAvgExcel!=null)
-                        <form method="post" action="{{route('db.store')}}">
+                        <form method="post" action="{{route('allData.store')}}">
                         {{csrf_field()}}
                             <input type="hidden" name="awal" value="{{$pAwal}}">
                             <input type="hidden" name="akhir" value="{{$pAkhir}}">

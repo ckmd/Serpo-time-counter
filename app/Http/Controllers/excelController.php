@@ -27,7 +27,6 @@ class excelController extends Controller
     public function create()
     {
         $datas = Excel::all();
-//        Excel::truncate();
         return view('download', compact('datas'));
     }
     
@@ -198,7 +197,7 @@ class excelController extends Controller
         }
         // $datas = Excel::pluck('region');
         // $unique = $datas->unique();
-        return redirect()->route('home');
+        return redirect()->route('allData.index');
     }
 
     /**

@@ -4,7 +4,7 @@ ini_set('display_errors', 0);
 ini_set('log_errors', 1);
 error_reporting(E_ALL & ~E_NOTICE);
 
-$filename = "document.xlsx";
+$filename = "All Data.xlsx";
 header('Content-disposition: attachment; filename="'.XLSXWriter::sanitize_filename($filename).'"');
 header("Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
 header('Content-Transfer-Encoding: binary');
@@ -12,18 +12,19 @@ header('Cache-Control: must-revalidate');
 header('Pragma: public');
 
 $header = array(
-    'ar_id'=>'string',
-    'prob_id'=>'string',
-    'kode_wo'=>'number',
-    'region'=>'string',
-    'basecamp'=>'string',
-    'serpo'=>'string',
-    'durasi_sbu'=>'number',
-    'prep_time'=>'number',
-    'travel_time'=>'number',
-    'work_time'=>'number',
-    'complete_time'=>'number',
-    'rsps'=>'0%',
+    'AR_id'=>'0',
+    'Prob_id'=>'0',
+    'Kode_wo'=>'0',
+    'Region'=>'string',
+    'Basecamp'=>'string',
+    'Serpo'=>'string',
+    'Durasi_SBU'=>'0.00',
+    'Preparation'=>'0.00',
+    'Travelling'=>'0.00',
+    'Working'=>'0.00',
+    'Stopclock Time'=>'0.00',
+    'Complete_time'=>'0.00',
+    'RSPS'=>'0%',
 );
 
 $rows = array();
@@ -39,6 +40,7 @@ $rows = array();
             "$d->prep_time",
             "$d->travel_time",
             "$d->work_time",
+            "$d->sc_time",
             "$d->complete_time",
             "$d->rsps"
         );
