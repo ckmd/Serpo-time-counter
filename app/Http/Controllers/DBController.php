@@ -15,7 +15,7 @@ class DBController extends Controller
      */
     public function index()
     {
-        //
+        return view('allData');
     }
 
     /**

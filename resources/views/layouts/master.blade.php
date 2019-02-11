@@ -78,6 +78,7 @@ if(isset($_POST['SubmitButton'])){ //check if form was submitted
       <ul class="sidebar-menu" data-widget="tree">
         <li class="header">HEADER</li>
         <li><a href="{{url('excel')}}"><i class="fa fa-link"></i> <span>Upload Excel</span></a></li>
+        <li><a href="{{url('db')}}"><i class="fa fa-link"></i> <span>All Data</span></a></li>
         <li><a href="{{url('home')}}"><i class="fa fa-link"></i> <span>Filter By Region</span></a></li>
         <li class="nav-item dropdown">
             <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
