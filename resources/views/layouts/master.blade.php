@@ -31,9 +31,9 @@ if(isset($_POST['SubmitButton'])){ //check if form was submitted
     <!-- Logo -->
     <a href="/home" class="logo">
       <!-- mini logo for sidebar mini 50x50 pixels -->
-      <span class="logo-mini"><b>A</b>LT</span>
+      <span class="logo-mini"><b></b></span>
       <!-- logo for regular state and mobile devices -->
-      <span class="logo-lg"><b>Admin</b>LTE</span>
+      <span class="logo-lg"><b>Serpo </b>Performance</span>
     </a>
 
     <!-- Header Navbar -->
@@ -62,40 +62,22 @@ if(isset($_POST['SubmitButton'])){ //check if form was submitted
         </div>
       </div>
 
-      <!-- search form (Optional) -->
-      <form action="#" method="get" class="sidebar-form">
-        <div class="input-group">
-          <input type="text" name="q" class="form-control" placeholder="Search...">
-          <span class="input-group-btn">
-              <button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i>
-              </button>
-            </span>
-        </div>
-      </form>
-      <!-- /.search form -->
-
       <!-- Sidebar Menu -->
       <ul class="sidebar-menu" data-widget="tree">
-        <li class="header">HEADER</li>
-        <li><a href="{{url('excel')}}"><i class="fa fa-link"></i> <span>Upload Excel</span></a></li>
-        <li><a href="{{url('allData')}}"><i class="fa fa-link"></i> <span>All Data</span></a></li>
-        <li><a href="{{url('home')}}"><i class="fa fa-link"></i> <span>Filter By Region</span></a></li>
-        <li class="nav-item dropdown">
-            <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                {{ Auth::user()->name }} <span class="caret"></span>
+        <li class="header">MENU</li>
+        <li><a href="{{url('excel')}}"><i class="fa fa-upload"></i> <span>Upload Excel</span></a></li>
+        <li><a href="{{url('allData')}}"><i class="fa fa-table"></i> <span>All Data</span></a></li>
+        <li><a href="{{url('home')}}"><i class="fa fa-globe"></i> <span>Filter By Region</span></a></li>
+        <li>
+            <a href="{{ route('logout') }}"
+                onclick="event.preventDefault();
+                              document.getElementById('logout-form').submit();">
+                              <i class="fa fa-sign-out"></i>
+                <span>{{ __('Logout') }}</span>
             </a>
-
-            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                <a class="dropdown-item" href="{{ route('logout') }}"
-                    onclick="event.preventDefault();
-                                  document.getElementById('logout-form').submit();">
-                    {{ __('Logout') }}
-                </a>
-
-                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                    @csrf
-                </form>
-            </div>
+            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                @csrf
+            </form>
         </li>
 
       </ul>

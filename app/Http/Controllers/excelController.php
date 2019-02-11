@@ -59,15 +59,6 @@ class excelController extends Controller
             }    
             return $value;
         }
-        function minimum($array){
-            $min = 1000000;//max value you expect
-          for($i=0; $i<sizeof($array); $i++){
-   
-               if($array[$i] < $min && $array[$i] != 0)
-                      $min = $array[$i];
-          }
-          return $min;
-        }
         $getSheet = null;
         $highestRow = null;
         require_once '../classes/PHPExcel/IOFactory.php';

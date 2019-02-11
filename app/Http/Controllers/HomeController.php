@@ -41,6 +41,12 @@ class HomeController extends Controller
     }
 
     public function reload(Request $request){
+        function zeroIsNull($toNull){
+            if($toNull==0){
+                $toNull = null;
+            }
+            return $toNull;
+        }
         // Delete Database inside avgExcel
         avgExcel::truncate();
         // Filter berdasarkan region
@@ -89,7 +95,11 @@ class HomeController extends Controller
             $avgWorkTime /= $uniqueSerpoCount;
             $avgCompleteTime /= $uniqueSerpoCount;
             $avgRSPS /= $uniqueSerpoCount;
-
+            // Zero is Null
+            $avgPrepTime = zeroIsNull($avgPrepTime);
+            $avgTravelTime = zeroIsNull($avgTravelTime);
+            $avgWorkTime = zeroIsNull($avgWorkTime);
+            $avgCompleteTime = zeroIsNull($avgCompleteTime);
             //  echo $basecamp."<br />\n";
             // save into database
             $avgExcel = new avgExcel();

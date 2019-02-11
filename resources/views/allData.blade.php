@@ -8,8 +8,8 @@
             <div class="text-center">
                 <h1 class="display-6">All Data from Database</h1>
             </div>
-            <button class="btn btn-success" href="{{route('excel.create')}}">Download xlsx</button>
-            <table class="table-responsive table-hover table-bordered">
+            <button class="btn btn-success" href="{{route('excel.create')}}">Download to .xlsx</button>
+            <table class="table-responsive table-hover table-bordered" style="text-align: center;">
                 <thead>
                     <tr>
                         <th>id</th>
@@ -39,11 +39,31 @@
                         <td>{{$cat->basecamp}}</td>
                         <td>{{$cat->serpo}}</td>
                         <td>{{$cat->durasi_sbu}}</td>
+                        @if($cat->prep_time!=null)
                         <td>{{$cat->prep_time}}</td>
+                        @else
+                        <td>n.a</td>
+                        @endif
+                        @if($cat->travel_time!=null)
                         <td>{{$cat->travel_time}}</td>
+                        @else
+                        <td>n.a</td>
+                        @endif
+                        @if($cat->work_time!=null)
                         <td>{{$cat->work_time}}</td>
+                        @else
+                        <td>n.a</td>
+                        @endif
+                        @if($cat->sc_time!=null)
                         <td>{{$cat->sc_time}}</td>
+                        @else
+                        <td>n.a</td>
+                        @endif
+                        @if($cat->complete_time)
                         <td>{{$cat->complete_time}}</td>
+                        @else
+                        <td>n.a</td>
+                        @endif
                         <td>{{ round((float)$cat->rsps * 100 ) }}%</td>
                     </tr>
                     @endforeach

@@ -42,7 +42,7 @@
                             <input type="hidden" name="akhir" value="{{$pAkhir}}">
                             <input type="hidden" name="region" value="{{$regionName}}">
                     <div class="col">
-                        <input type="submit" class="btn btn-success" value="download">
+                        <input type="submit" class="btn btn-success" value="Download to .xlsx">
                     </div>
                 </div>
             </form>
@@ -79,17 +79,33 @@
                         <th>RSPS</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody style="text-align: center;">
             @foreach($dbAvgExcel as $data)
                     <tr>
                         <td>{{$data->basecamp}}</td>
                         <td>{{$data->serpo}}</td>
                         <td>{{$data->jumlah_wo}}</td>
                         <td>{{round($data->durasi_sbu,2)}}</td>
+                        @if($data->prep_time!=null)
                         <td>{{round($data->prep_time,2)}}</td>
+                        @else
+                        <td>n.a</td>
+                        @endif
+                        @if($data->travel_time!=null)
                         <td>{{round($data->travel_time,2)}}</td>
+                        @else
+                        <td>n.a</td>
+                        @endif
+                        @if($data->work_time!=null)
                         <td>{{round($data->work_time,2)}}</td>
+                        @else
+                        <td>n.a</td>
+                        @endif
+                        @if($data->complete_time!=null)
                         <td>{{round($data->complete_time,2)}}</td>
+                        @else
+                        <td>n.a</td>
+                        @endif
                         <td>{{ round((float)$data->rsps * 100 ) }}%</td>
                     </tr>
             @endforeach
