@@ -81,7 +81,7 @@
 
             <div class="content">
                 <div class="title m-b-md">
-                    Serpo Performance Counter
+                    Serpo Performance
                 </div>
 
                 <div class="links">

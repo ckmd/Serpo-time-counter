@@ -7,6 +7,7 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="text-center">
+                <img src="{{asset('images/excel.png')}}"  alt="Upload Excel File">
 
                 <h3>Upload Excel File</h3>
                 <form action="{{route('excel.store')}}" method="POST" enctype="multipart/form-data">

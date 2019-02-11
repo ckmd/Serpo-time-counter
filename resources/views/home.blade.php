@@ -62,7 +62,7 @@
                 @endif
                 <!-- <footer class="blockquote-footer">avg (rata rata) waktu dalam satuan menit</footer> -->
             </blockquote>
-            <table class="table table-hover table-bordered">
+            <table class="table table-hover table-bordered" >
                 <thead class="thead-light" style="text-align: center;">
                     <tr valign="top" >
                         <th rowspan="2">Basecamp</th>

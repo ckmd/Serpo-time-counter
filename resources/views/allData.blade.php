@@ -7,9 +7,10 @@
         <div class="col-md-12">
             <div class="text-center">
                 <h1 class="display-6">All Data from Database</h1>
+                <footer class="blockquote-footer">*Durasi dalam satuan menit</footer>
             </div>
             <button class="btn btn-success" href="{{route('excel.create')}}">Download to .xlsx</button>
-            <table class="table-responsive table-hover table-bordered" style="text-align: center;">
+            <table class="table-responsive table-hover table-bordered table-striped" style="text-align: center;">
                 <thead>
                     <tr>
                         <th>id</th>
@@ -31,7 +32,7 @@
                 <tbody>
                     @foreach($datas as $cat)
                     <tr>
-                        <td>{{$cat->id}}</td>
+                        <th>{{$cat->id}}</th>
                         <!-- <td>{{$cat->ar_id}}</td>
                         <td>{{$cat->prob_id}}</td> -->
                         <td>{{$cat->kode_wo}}</td>
