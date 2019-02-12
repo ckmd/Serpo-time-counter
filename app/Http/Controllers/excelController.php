@@ -47,6 +47,16 @@ class excelController extends Controller
         
         // maksimum time limit 900 seconds, bisa disesuaikan
         ini_set('max_execution_time', 900);
+        
+        function getDateTime($code, $paramsArray){
+            $tempArray = array();
+            for ($j=0; $j < strlen($paramsArray)/20 ; $j++) {
+                $start = $j*20;
+                $tempArray[$code.$j] = substr($paramsArray,$start,20);
+            }
+            return $tempArray;
+        }
+
         function filterMinute($dateDiff){
             $value = null;
             if($dateDiff->d == 0 && $dateDiff->h == 0 && $dateDiff->i == 0 && $dateDiff->s == 0){
@@ -59,6 +69,7 @@ class excelController extends Controller
             }    
             return $value;
         }
+
         $getSheet = null;
         $highestRow = null;
         require_once '../classes/PHPExcel/IOFactory.php';
@@ -69,7 +80,7 @@ class excelController extends Controller
             $highestRow = $excelObject->setActiveSheetIndex(0)->getHighestDataRow();
         }
 
-        for ($i = 1; $i <= 100; $i++) { 
+        for ($i = 1; $i <= 2; $i++) { 
             if ($getSheet[$i][0] != '') {
                 $rsps = 0;
             // <!-- Menghitung Durasi SBU -->
@@ -81,6 +92,59 @@ class excelController extends Controller
                 $SBU = filterMinute($SBU);
                 $rsps ++;
                 
+                // Adds on Start Here
+                $stringStartTravel = str_replace(array( '(', ')' ), '', $getSheet[$i][11]);
+                $arrayStartTravel = getDateTime('st', $stringStartTravel);
+                
+                $stringStartWork = str_replace(array( '(', ')' ), '', $getSheet[$i][12]);
+                $arrayStartWork = getDateTime('sw', $stringStartWork);
+
+                $stringStopClock = str_replace(array( '(', ')' ), '', $getSheet[$i][14]);
+                $arrayStopClock = getDateTime('sc',$stringStopClock);
+
+                $stringComplete = str_replace(array( '(', ')' ), '', $getSheet[$i][16]);
+                $arrayComplete = getDateTime('cp',$stringComplete);
+                
+                // print_r($arrayStartTravel);
+                // print_r($arrayStartWork);
+                // print_r($arrayStopClock);
+                // print_r($arrayComplete);
+                $arrayMerge = array_merge($arrayStartTravel, $arrayStartWork, $arrayComplete);
+                
+                $startTravel = new DateTime($arrayStartTravel['st0']);
+                $startWork = new DateTime($arrayStartWork['sw0']);
+                $complete = new DateTime(substr(str_replace(array( '(', ')' ), '', $getSheet[$i][16]),0,19));
+                
+                $prepTime = round(filterMinute(date_diff($WO_Date, $startTravel)),2);
+                $travelTime = round(filterMinute(date_diff($startTravel, $startWork)),2);
+                // baru, start working to complete
+                $workTime = round(filterMinute(date_diff($startWork, $complete)),2);
+                
+                echo 'Data Ke '.$i.'<br>';
+                foreach ($arrayStopClock as $key => $value) {
+                    $tempAm = array();
+                    foreach ($arrayMerge as $am => $arr) {
+                        if($arr > $value){
+                            $tempSCValue = filterMinute(date_diff(new DateTime($arr),new DateTime($value)));
+                            $tempAm[$am] = $tempSCValue;
+                        }
+                    }
+//                    print_r($tempAm);
+                    $minValue = round(min($tempAm),2);
+                    $indeks = array_search(min($tempAm),$tempAm);
+                    if(substr($indeks,0,2)=='st'){
+                        $travelTime -= $minValue;
+                    }
+                    if(substr($indeks,0,2)=='sw'){
+                        $workTime -= $minValue;
+                    }
+                    // echo "{$key} => {$value} ";
+                    // if($arr){                    }
+                }
+                echo 'Prep Time : '.$prepTime.'<br>';
+                echo 'Travel Time : '.$travelTime.'<br>';
+                echo 'Work Time : '.$workTime.'<br>';
+                // Adds on end here
             // <!-- Menghitung Durasi Preparation -->
             // <!-- Selisih Antara WO Date dengan Start Driving -->
                 $preparation = null;
@@ -188,7 +252,7 @@ class excelController extends Controller
         }
         // $datas = Excel::pluck('region');
         // $unique = $datas->unique();
-        return redirect()->route('allData.index');
+        // return redirect()->route('allData.index');
     }
 
     /**
