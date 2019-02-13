@@ -19,7 +19,6 @@ $header = array(
     'Preparation Time'=>'0.00',
     'Travel Time'=>'0.00',
     'Work Time'=>'0.00',
-    'Complete Time'=>'0.00',
     'RSPS'=>'0%',
 );
 
@@ -33,7 +32,6 @@ $rows = array();
             "$d->prep_time",
             "$d->travel_time",
             "$d->work_time",
-            "$d->complete_time",
             "$d->rsps"
         );
 		}

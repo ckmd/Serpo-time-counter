@@ -62,9 +62,10 @@
                 @endif
                 <!-- <footer class="blockquote-footer">avg (rata rata) waktu dalam satuan menit</footer> -->
             </blockquote>
-            <table class="table table-hover table-bordered" >
+            <table class="table table-striped table-hover table-bordered" >
                 <thead class="thead-light" style="text-align: center;">
                     <tr valign="top" >
+                        <th rowspan="2">No</th>
                         <th rowspan="2">Basecamp</th>
                         <th rowspan="2">Serpo</th>
                         <th rowspan="2">Jumlah WO</th>
@@ -75,13 +76,14 @@
                         <th>Preparation Time</th>
                         <th>Travel Time</th>
                         <th>Working Time</th>
-                        <th>Complete Time</th>
                         <th>RSPS</th>
                     </tr>
                 </thead>
                 <tbody style="text-align: center;">
+                <?php $i = 1; ?>
             @foreach($dbAvgExcel as $data)
                     <tr>
+                        <th>{{$i}}</th>
                         <td>{{$data->basecamp}}</td>
                         <td>{{$data->serpo}}</td>
                         <td>{{$data->jumlah_wo}}</td>
@@ -101,13 +103,9 @@
                         @else
                         <td>n.a</td>
                         @endif
-                        @if($data->complete_time!=null)
-                        <td>{{round($data->complete_time,2)}}</td>
-                        @else
-                        <td>n.a</td>
-                        @endif
                         <td>{{ round((float)$data->rsps * 100 ) }}%</td>
                     </tr>
+                    <?php $i++; ?>
             @endforeach
                 </tbody>
             </table>

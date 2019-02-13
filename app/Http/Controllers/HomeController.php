@@ -71,7 +71,6 @@ class HomeController extends Controller
             $avgPrepTime = null;
             $avgTravelTime = null;
             $avgWorkTime = null;
-            $avgCompleteTime = null;
             $avgRSPS = null;
             $basecamp = null;
 
@@ -83,7 +82,6 @@ class HomeController extends Controller
                 $avgPrepTime += $ubc->prep_time;
                 $avgTravelTime += $ubc->travel_time;
                 $avgWorkTime += $ubc->work_time;
-                $avgCompleteTime += $ubc->complete_time;
                 $avgRSPS += $ubc->rsps;
                 if($basecamp==null){
                     $basecamp = $ubc->basecamp;
@@ -93,13 +91,11 @@ class HomeController extends Controller
             $avgPrepTime /= $uniqueSerpoCount;
             $avgTravelTime /= $uniqueSerpoCount;
             $avgWorkTime /= $uniqueSerpoCount;
-            $avgCompleteTime /= $uniqueSerpoCount;
             $avgRSPS /= $uniqueSerpoCount;
             // Zero is Null
             $avgPrepTime = zeroIsNull($avgPrepTime);
             $avgTravelTime = zeroIsNull($avgTravelTime);
             $avgWorkTime = zeroIsNull($avgWorkTime);
-            $avgCompleteTime = zeroIsNull($avgCompleteTime);
             //  echo $basecamp."<br />\n";
             // save into database
             $avgExcel = new avgExcel();
@@ -110,7 +106,6 @@ class HomeController extends Controller
                 $avgExcel->prep_time = $avgPrepTime;
                 $avgExcel->travel_time = $avgTravelTime;
                 $avgExcel->work_time = $avgWorkTime;
-                $avgExcel->complete_time = $avgCompleteTime;
                 $avgExcel->rsps = $avgRSPS;
             $avgExcel->save();
             // convert to the array

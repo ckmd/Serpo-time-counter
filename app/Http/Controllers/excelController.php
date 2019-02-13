@@ -85,7 +85,6 @@ class excelController extends Controller
                 $arrayStartTravel = null;
                 $arrayStartWork = null;
                 $arrayComplete = null;
-                echo 'Data Ke '.$i.'<br>';
                 $rsps = 0;
             // <!-- Menghitung Durasi SBU -->
             // <!-- Selisih Antara AR_Date dengan WO Date -->
@@ -96,7 +95,6 @@ class excelController extends Controller
                 $SBU = filterMinute($SBU);
                 $rsps ++;
                 
-                // Adds on Start Here
                 if($getSheet[$i][11]==''){
                     $prepTime = null;
                 }else{
@@ -155,99 +153,7 @@ class excelController extends Controller
                             $workTime -= $minValue;
                         }
                     }
-                    // print_r($arrayMerge);
                 }
-                // echo 'Prep Time : '.$prepTime.'<br>';
-                // echo 'Travel Time : '.$travelTime.'<br>';
-                // echo 'Work Time : '.$workTime.'<br>';
-                // echo 'RSPS : '.$rsps*0.25.'<br>';
-                // Adds on end here
-            // <!-- Menghitung Durasi Preparation -->
-            // <!-- Selisih Antara WO Date dengan Start Driving -->
-                $preparation = null;
-                $start_driving = null;
-                $start_driving = new DateTime(substr(str_replace(array( '(', ')' ), '', $getSheet[$i][11]),0,19));
-                if($getSheet[$i][11]=='' || $getSheet[$i][9]==''){
-                    $preparation = date_diff($WO_Date, $WO_Date);
-                }else{
-                    $preparation = date_diff($start_driving, $WO_Date);
-                    $rsps++;
-                }
-                
-                $preparation = filterMinute($preparation);
-            // <!-- Menghitung Durasi Travel Time -->
-            // <!-- Selisih Antara Start Travel dengan Start Work -->
-                $travel = null;
-                $start_working = null;
-                $start_working = new DateTime(substr(str_replace(array( '(', ')' ), '', $getSheet[$i][12]),0,19));
-                if($getSheet[$i][12]=='' || $getSheet[$i][11]==''){
-                    $travel = date_diff($start_driving, $start_driving);
-                }else{
-                    $travel = date_diff($start_working, $start_driving);
-                    $rsps++;
-                }
-                $travel = filterMinute($travel);
-            // <!-- Menghitung Durasi Work Time -->
-            // <!-- Selisih Antara Start Work dengan Request Complete -->
-                $working = null;
-                $req_complete = null;
-                $req_complete = new DateTime(substr(str_replace(array( '(', ')' ), '', $getSheet[$i][15]),0,19));
-                if($getSheet[$i][15]=='' || $getSheet[$i][12]==''){
-                    $working = date_diff($start_working, $start_working);
-                }else{
-                    $working = date_diff($req_complete, $start_working);
-                    $rsps++;
-                }
-                $working = filterMinute($working);
-            // <!-- Menghitung Durasi Reuest Complete Time -->
-            // <!-- Selisih Antara Request Complete dengan Complete -->
-                $complete_time = null;
-                $complete = null;
-                $complete = new DateTime(substr(str_replace(array( '(', ')' ), '', $getSheet[$i][16]),0,19));
-                if($getSheet[$i][16]=='' || $getSheet[$i][15]==''){
-                    $complete_time = date_diff($req_complete, $req_complete);
-                }else{
-                    $complete_time = date_diff($complete, $req_complete);
-                }
-                $complete_time = filterMinute($complete_time);
-                // Menghitung Stop CLock Time
-                $sc_time = null;
-                $stop_clock = new DateTime(substr(str_replace(array( '(', ')' ), '', $getSheet[$i][14]),0,19));
-                if($getSheet[$i][14]==''){
-                    $sc_time = null;
-                }else{
-                    $diffPrepTime = 0;
-                    $diffStartDriving = 0;
-                    $diffStartWorking = 0;
-                    $diffReqComplete = 0;
-                    if($WO_Date > $stop_clock && $getSheet[$i][9]!=''){
-                        $diffPrepTime = date_diff($WO_Date, $stop_clock);
-                        $diffPrepTime = filterMinute($diffPrepTime);
-                        if($sc_time < $diffPrepTime)
-                            $sc_time = $diffPrepTime;
-                    }
-                    if($start_driving > $stop_clock && $getSheet[$i][11]!=''){
-                        $diffStartDriving = date_diff($start_driving, $stop_clock);
-                        $diffStartDriving = filterMinute($diffStartDriving);
-                    }
-                    if($start_working > $stop_clock && $getSheet[$i][12]!=''){
-                        $diffStartWorking = date_diff($start_working, $stop_clock);
-                        $diffStartWorking = filterMinute($diffStartWorking);
-                    }
-                    if($req_complete > $stop_clock && $getSheet[$i][15]!=''){
-                        $diffReqComplete = date_diff($req_complete, $stop_clock);
-                        $diffReqComplete = filterMinute($diffReqComplete);
-                    }
-                    $unsortedSCTime = array($diffPrepTime, $diffStartDriving, $diffStartWorking, $diffReqComplete);
-                    $output = null;
-                    foreach ($unsortedSCTime as $key => $value) {
-                        if($value > 0) {
-                            $output[$key] = $value;
-                            $sc_time = min($output);
-                        }
-                    }
-                }
-            // <!-- Menghitung Semua End Here -->
 
              $data = new Excel();
                 $data->ar_id = $getSheet[$i][0];
@@ -261,15 +167,11 @@ class excelController extends Controller
                 $data->prep_time = $prepTime;
                 $data->travel_time = $travelTime;
                 $data->work_time = $workTime;
-                $data->sc_time = $sc_time;
-                $data->complete_time = $complete_time;
-                $data->rsps = $rsps;
+                $data->rsps = $rsps * 0.25;
              $data->save();
             }
         }
-        // $datas = Excel::pluck('region');
-        // $unique = $datas->unique();
-        // return redirect()->route('allData.index');
+        return redirect()->route('allData.index');
     }
 
     /**

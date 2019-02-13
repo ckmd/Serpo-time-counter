@@ -24,8 +24,6 @@
                         <th>preparation time</th>
                         <th>travel time</th>
                         <th>working time</th>
-                        <th>stopclock time</th>
-                        <th>complete time</th>
                         <th>rsps</th>
                     </tr>
                 </thead>
@@ -52,16 +50,6 @@
                         @endif
                         @if($cat->work_time!=null)
                         <td>{{$cat->work_time}}</td>
-                        @else
-                        <td>n.a</td>
-                        @endif
-                        @if($cat->sc_time!=null)
-                        <td>{{$cat->sc_time}}</td>
-                        @else
-                        <td>n.a</td>
-                        @endif
-                        @if($cat->complete_time)
-                        <td>{{$cat->complete_time}}</td>
                         @else
                         <td>n.a</td>
                         @endif
