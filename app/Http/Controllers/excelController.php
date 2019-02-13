@@ -132,7 +132,6 @@ class excelController extends Controller
 
                 $stringStopClock = str_replace(array( '(', ')' ), '', $getSheet[$i][14]);
                 $arrayStopClock = getDateTime('sc',$stringStopClock);
-                echo 'Prep Time awal : '.$prepTime.'<br>';
                 
                 if($arrayStartTravel != null && $arrayStartWork != null && $arrayComplete != null){
                     $arrayMerge = array_merge($arrayStartTravel, $arrayStartWork, $arrayComplete);
@@ -140,16 +139,13 @@ class excelController extends Controller
                         $tempAm = array();
                         foreach ($arrayMerge as $am => $arr) {
                             if($arr > $value){
-                                $tempSCValue = filterMinute(date_diff(new DateTime($arr),new DateTime($value)));
+                                $tempSCValue = round(filterMinute(date_diff(new DateTime($arr),new DateTime($value))),2);
                                 $tempAm[$am] = $tempSCValue;
-                            }else{
-                                $tempAm[0] = 0;
                             }
                         }
                         $minValue = round(min($tempAm),2);
-                        echo $minValue.'<br>';
                         $indeks = array_search(min($tempAm),$tempAm);
-                        if(substr($indeks,0,3) == 'st0' && $prepTime > $minValue){
+                        if($indeks == 'st0' && $prepTime > $minValue){
                             $prepTime -= $minValue;
                         }
                         if(substr($indeks,0,2)=='st' && $travelTime > $minValue){
@@ -159,12 +155,12 @@ class excelController extends Controller
                             $workTime -= $minValue;
                         }
                     }
-                    print_r($arrayMerge);
+                    // print_r($arrayMerge);
                 }
-                echo 'Prep Time : '.$prepTime.'<br>';
-                echo 'Travel Time : '.$travelTime.'<br>';
-                echo 'Work Time : '.$workTime.'<br>';
-                echo 'RSPS : '.$rsps*0.25.'<br>';
+                // echo 'Prep Time : '.$prepTime.'<br>';
+                // echo 'Travel Time : '.$travelTime.'<br>';
+                // echo 'Work Time : '.$workTime.'<br>';
+                // echo 'RSPS : '.$rsps*0.25.'<br>';
                 // Adds on end here
             // <!-- Menghitung Durasi Preparation -->
             // <!-- Selisih Antara WO Date dengan Start Driving -->
