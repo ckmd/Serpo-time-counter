@@ -22,3 +22,4 @@ Route::post('/home','HomeController@reload');
 Route::resource('category','CategoryController')->middleware('auth');
 Route::resource('excel','excelController')->middleware('auth');
 Route::resource('allData','DBController')->middleware('auth');
+Route::resource('national','NationalController')->middleware('auth');
