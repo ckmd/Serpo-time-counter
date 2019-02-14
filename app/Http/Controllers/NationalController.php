@@ -17,7 +17,10 @@ class NationalController extends Controller
     {
         NationalData::truncate();
         $datas = Excel::all();
+        $totalWO = $datas->count();
         $region = $datas->pluck('region')->unique();
+        $woArray = array();
+        $rspsArray = array();
         foreach ($region as $key => $value) {
             $regionRow = $datas->where('region',$value);
             
@@ -39,9 +42,13 @@ class NationalController extends Controller
                 $nationalData->work_time = $avgWorkTime;
                 $nationalData->rsps = $avgRSPS;
             $nationalData->save();
+
+            
+            $rspsArray[] = array('y' => $avgRSPS*100, 'label'=>$value);
+            $woArray[] = array('label'=>$value, 'y'=>$regionSum/$totalWO*100);
         }
         $nationalDataForView = NationalData::all();
-        return view('NationalView', compact('nationalDataForView'));
+        return view('NationalView', compact('nationalDataForView', 'rspsArray','woArray'));
     }
 
     /**

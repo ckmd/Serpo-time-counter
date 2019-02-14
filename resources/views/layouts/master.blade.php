@@ -20,6 +20,7 @@ if(isset($_POST['SubmitButton'])){ //check if form was submitted
   <link rel ="stylesheet" href="{{URL::asset('css/app.css')}}">
   <!-- CSRF Token -->
   <meta name="csrf-token" content="{{ csrf_token() }}">
+  @yield('header')
 
 </head>
 <body class="hold-transition skin-blue sidebar-mini">

@@ -1,5 +1,39 @@
 @extends('layouts.master')
 
+@section('header')
+<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+<script>
+window.onload = function() {
+// Chart for Wo per Region
+    var woChart = new CanvasJS.Chart("woChart", {
+        animationEnabled: true,
+        title: {
+            text: "WO Regional"
+        },
+        data: [{
+            type: "pie",
+            yValueFormatString: "#,##0.00\"%\"",
+            indexLabel: "{label} ({y})",
+            dataPoints: <?php echo json_encode($woArray, JSON_NUMERIC_CHECK); ?>
+        }]
+    });
+    woChart.render();
+// Chart for Average RSPS
+    var rspsChart = new CanvasJS.Chart("rspsChart", {
+        title: {
+            text: "Average RSPS"
+        },
+        data: [{
+            type: "line",
+            yValueFormatString: "#,##0\"%\"",
+            dataPoints: <?php echo json_encode($rspsArray, JSON_NUMERIC_CHECK); ?>
+        }]
+    });
+    rspsChart.render();
+}
+</script>
+@endsection
+
 @section('content')
 <!-- <h2>National Data</h2> -->
 <blockquote class="blockquote text-center">
@@ -34,5 +68,19 @@
         </tr>
         @endforeach
     </tbody>
+</table>
+<table style="align: center; width: 100%;">
+    <tr>
+        <tbody>
+            <tr>
+                <td>
+            <div id="rspsChart" style="height: 300px; width: 100%;"></div>
+                </td>
+                <td>
+            <div id="woChart" style="height: 300px; width: 100%;"></div>
+                </td>
+            </tr>
+        </tbody>
+    </tr>
 </table>
 @endsection
