@@ -128,6 +128,7 @@ class excelController extends Controller
                     $rsps++;
                 }
 
+                // stop clock starts here
                 $stringStopClock = str_replace(array( '(', ')' ), '', $getSheet[$i][14]);
                 $arrayStopClock = getDateTime('sc',$stringStopClock);
                 
@@ -145,11 +146,9 @@ class excelController extends Controller
                         $indeks = array_search(min($tempAm),$tempAm);
                         if($indeks == 'st0' && $prepTime > $minValue){
                             $prepTime -= $minValue;
-                        }
-                        if(substr($indeks,0,2)=='st' && $travelTime > $minValue){
+                        }else if(substr($indeks,0,2)=='st' && $travelTime > $minValue){
                             $travelTime -= $minValue;
-                        }
-                        if(substr($indeks,0,2)=='sw' && $workTime > $minValue){
+                        }else if(substr($indeks,0,2)=='sw' && $workTime > $minValue){
                             $workTime -= $minValue;
                         }
                     }

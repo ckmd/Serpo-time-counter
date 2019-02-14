@@ -28,13 +28,16 @@ class NationalController extends Controller
             $avgPrepTime = round($regionRow->pluck('prep_time')->sum()/$regionSum,2);
             $avgtravelTime = round($regionRow->pluck('travel_time')->sum()/$regionSum,2);
             $avgWorkTime = round($regionRow->pluck('work_time')->sum()/$regionSum,2);
+            $avgRSPS = round($regionRow->pluck('rsps')->sum()/$regionSum,2);
 
             $nationalData = new NationalData();
                 $nationalData->region = $value;
+                $nationalData->jumlah_wo = $regionSum;
                 $nationalData->durasi_sbu = $avgDurasiSBU;
                 $nationalData->prep_time = $avgPrepTime;
                 $nationalData->travel_time = $avgtravelTime;
                 $nationalData->work_time = $avgWorkTime;
+                $nationalData->rsps = $avgRSPS;
             $nationalData->save();
         }
         $nationalDataForView = NationalData::all();

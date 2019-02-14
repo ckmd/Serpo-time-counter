@@ -13,20 +13,24 @@
     <thead class="thead-dark">
         <tr>
             <th>Region</th>
+            <th>Jumlah WO</th>
             <th>Durasi SBU</th>
             <th>Preparation Time</th>
             <th>Travel Time</th>
             <th>Working Time</th>
+            <th>RSPS</th>
         </tr>
     </thead>
     <tbody>
         @foreach($nationalDataForView as $data)
         <tr>
             <td>{{$data->region}}</td>
+            <td>{{$data->jumlah_wo}}</td>
             <td>{{$data->durasi_sbu}}</td>
             <td>{{$data->prep_time}}</td>
             <td>{{$data->travel_time}}</td>
             <td>{{$data->work_time}}</td>
+            <td>{{ round((float)$data->rsps * 100 ) }}%</td>
         </tr>
         @endforeach
     </tbody>
