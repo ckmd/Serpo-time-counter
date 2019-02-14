@@ -35,7 +35,6 @@ window.onload = function() {
 @endsection
 
 @section('content')
-<!-- <h2>National Data</h2> -->
 <blockquote class="blockquote text-center">
     <h3>
         <small class="text-muted">Filtered </small>
@@ -43,6 +42,24 @@ window.onload = function() {
     </h3>
     <footer class="blockquote-footer">avg (rata rata) waktu dalam satuan menit</footer>
 </blockquote>
+<form method="post" action="{{route('home')}}">
+    {{csrf_field()}}
+    <div class="row">
+        <div class="col-3">
+            <label for="awal">Periode Awal</label>
+            <input type="date" class="form-control" id="awal" name="pawal">
+        </div>
+        <div class="col-3">
+            <label for="akhir">Periode Akhir</label>
+            <input type="date" class="form-control" id="akhir" name="pakhir">
+        </div>
+        <div class="col">
+            <br>
+            <input type="submit" class="btn btn-primary btn-lg" value="Filter">
+        </div>
+    </div>
+</form>
+<br>
 <table class="table table-bordered table-striped table-hover" style="text-align: center;">
     <thead class="thead-dark">
         <tr>
@@ -74,10 +91,10 @@ window.onload = function() {
         <tbody>
             <tr>
                 <td>
-            <div id="rspsChart" style="height: 300px; width: 100%;"></div>
+                <div id="woChart" style="height: 300px; width: 100%;"></div>
                 </td>
                 <td>
-            <div id="woChart" style="height: 300px; width: 100%;"></div>
+                <div id="rspsChart" style="height: 300px; width: 100%;"></div>
                 </td>
             </tr>
         </tbody>
