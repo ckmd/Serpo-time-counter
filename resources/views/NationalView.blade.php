@@ -8,7 +8,7 @@ window.onload = function() {
     var woChart = new CanvasJS.Chart("woChart", {
         animationEnabled: true,
         title: {
-            text: "WO Regional"
+            text: "Total WO"
         },
         subtitles: [{
 	    	text: {{$totalWO}}
@@ -28,7 +28,7 @@ window.onload = function() {
         },
         data: [{
             type: "line",
-            yValueFormatString: "#,##0\"%\"",
+            yValueFormatString: "#,##0.00\"%\"",
             dataPoints: <?php echo json_encode($rspsArray, JSON_NUMERIC_CHECK); ?>
         }]
     });
@@ -96,7 +96,7 @@ window.onload = function() {
             <td>{{$data->prep_time}}</td>
             <td>{{$data->travel_time}}</td>
             <td>{{$data->work_time}}</td>
-            <td>{{ round((float)$data->rsps * 100 ) }}%</td>
+            <td>{{$data->rsps}}%</td>
         </tr>
         @endforeach
     </tbody>

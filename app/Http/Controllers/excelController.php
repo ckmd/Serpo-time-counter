@@ -93,7 +93,7 @@ class excelController extends Controller
                 $WO_Date = DateTime::createFromFormat('d M Y H:i:s',$getSheet[$i][9]);
                 $SBU = date_diff($WO_Date, $AR_Date);
                 $SBU = filterMinute($SBU);
-                $rsps ++;
+                $rsps += 25;
                 
                 if($getSheet[$i][11]==''){
                     $prepTime = null;
@@ -102,7 +102,7 @@ class excelController extends Controller
                     $arrayStartTravel = getDateTime('st', $stringStartTravel);
                     $startTravel = new DateTime($arrayStartTravel['st0']);
                     $prepTime = round(filterMinute(date_diff($WO_Date, $startTravel)),2);
-                    $rsps++;
+                    $rsps += 25;
                 }
                 
                 $startWork = null;
@@ -114,7 +114,7 @@ class excelController extends Controller
                     $startWork = new DateTime($arrayStartWork['sw0']);
                     $travelTime = date_diff($startTravel, $startWork);
                     $travelTime = round(filterMinute($travelTime),2);
-                    $rsps++;
+                    $rsps += 25;
                 }
 
                 if($getSheet[$i][16]=='' || $getSheet[$i][12]==''){
@@ -125,7 +125,7 @@ class excelController extends Controller
                     $complete = new DateTime($arrayComplete['cp0']);
                     $workTime = date_diff($startWork, $complete);
                     $workTime = round(filterMinute($workTime),2);
-                    $rsps++;
+                    $rsps += 25;
                 }
 
                 // stop clock starts here
@@ -166,7 +166,7 @@ class excelController extends Controller
                 $data->prep_time = $prepTime;
                 $data->travel_time = $travelTime;
                 $data->work_time = $workTime;
-                $data->rsps = $rsps * 0.25;
+                $data->rsps = $rsps;
              $data->save();
             }
         }

@@ -26,7 +26,7 @@ class CreateExcelsTable extends Migration
             $table->decimal('prep_time',10,2)->nullable()->default(NULL);
             $table->decimal('travel_time',10,2)->nullable()->default(NULL);
             $table->decimal('work_time',10,2)->nullable()->default(NULL);
-            $table->decimal('rsps', 3, 2);
+            $table->integer('rsps');
             $table->timestamps();
         });
     }

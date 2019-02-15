@@ -74,7 +74,7 @@ class NationalController extends Controller
             $nationalData->save();
 
             
-            $rspsArray[] = array('y' => $avgRSPS*100, 'label'=>$value);
+            $rspsArray[] = array('y' => $avgRSPS, 'label'=>$value);
             $woArray[] = array('label'=>$value, 'y'=>$regionSum/$totalWO*100);
         }
         $nationalDataForView = NationalData::all();

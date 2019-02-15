@@ -53,7 +53,7 @@
                         @else
                         <td>n.a</td>
                         @endif
-                        <td>{{ round((float)$cat->rsps * 100 ) }}%</td>
+                        <td>{{$cat->rsps}}%</td>
                     </tr>
                     @endforeach
                 </tbody>
