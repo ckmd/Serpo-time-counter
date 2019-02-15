@@ -10,6 +10,9 @@ window.onload = function() {
         title: {
             text: "WO Regional"
         },
+        subtitles: [{
+	    	text: {{$totalWO}}
+            }],
         data: [{
             type: "pie",
             yValueFormatString: "#,##0.00\"%\"",
@@ -40,9 +43,8 @@ window.onload = function() {
         <small class="text-muted">Filtered </small>
     Nasional
     </h3>
-    <footer class="blockquote-footer">avg (rata rata) waktu dalam satuan menit</footer>
 </blockquote>
-<form method="post" action="{{route('home')}}">
+<form method="post" action="{{route('national.store')}}">
     {{csrf_field()}}
     <div class="row">
         <div class="col-3">
@@ -60,6 +62,18 @@ window.onload = function() {
     </div>
 </form>
 <br>
+<blockquote class="blockquote text-center">
+    @if(($pAwal==null) && ($pAkhir==null))
+        <p class="mb-0">Data All Time</p>
+    @elseif($pAwal==null)
+        <p class="mb-0">Data Sampai Dengan {{$pAkhir}}</p>
+    @elseif($pAkhir==null)
+        <p class="mb-0">Data Mulai Dari {{$pAwal}}</p>
+    @else
+        <p class="mb-0">Periode {{$pAwal}} s.d. {{$pAkhir}}</p>
+    @endif
+    <footer class="blockquote-footer">Data dalam satuan menit</footer>
+</blockquote>
 <table class="table table-bordered table-striped table-hover" style="text-align: center;">
     <thead class="thead-dark">
         <tr>
