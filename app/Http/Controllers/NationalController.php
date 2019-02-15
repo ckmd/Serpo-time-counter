@@ -17,40 +17,11 @@ class NationalController extends Controller
      */
     public function index()
     {
-        NationalData::truncate();
-        $datas = Excel::all();
-        $totalWO = $datas->count();
-        $region = $datas->pluck('region')->unique();
-        $woArray = array();
-        $rspsArray = array();
-        foreach ($region as $key => $value) {
-            $regionRow = $datas->where('region',$value);
-            
-//            $regionName = $regionRow->pluck('region')->unique();
-            $regionSum = $regionRow->pluck('region')->count();
-
-            $avgDurasiSBU = round($regionRow->pluck('durasi_sbu')->sum()/$regionSum,2);
-            $avgPrepTime = round($regionRow->pluck('prep_time')->sum()/$regionSum,2);
-            $avgtravelTime = round($regionRow->pluck('travel_time')->sum()/$regionSum,2);
-            $avgWorkTime = round($regionRow->pluck('work_time')->sum()/$regionSum,2);
-            $avgRSPS = round($regionRow->pluck('rsps')->sum()/$regionSum,2);
-
-            $nationalData = new NationalData();
-                $nationalData->region = $value;
-                $nationalData->jumlah_wo = $regionSum;
-                $nationalData->durasi_sbu = $avgDurasiSBU;
-                $nationalData->prep_time = $avgPrepTime;
-                $nationalData->travel_time = $avgtravelTime;
-                $nationalData->work_time = $avgWorkTime;
-                $nationalData->rsps = $avgRSPS;
-            $nationalData->save();
-
-            
-            $rspsArray[] = array('y' => $avgRSPS*100, 'label'=>$value);
-            $woArray[] = array('label'=>$value, 'y'=>$regionSum/$totalWO*100);
-        }
-        $nationalDataForView = NationalData::all();
-        return view('NationalView', compact('nationalDataForView', 'rspsArray','woArray'));
+        $nationalDataForView = null;
+        $rspsArray = null;
+        $woArray = null;
+        $totalWO = null;
+        return view('NationalView', compact('nationalDataForView', 'rspsArray','woArray','totalWO'));
     }
 
     /**

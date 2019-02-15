@@ -62,6 +62,7 @@ window.onload = function() {
     </div>
 </form>
 <br>
+@if($nationalDataForView!=null)
 <blockquote class="blockquote text-center">
     @if(($pAwal==null) && ($pAkhir==null))
         <p class="mb-0">Data All Time</p>
@@ -114,4 +115,5 @@ window.onload = function() {
         </tbody>
     </tr>
 </table>
+@endif
 @endsection
