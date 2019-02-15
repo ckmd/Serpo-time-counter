@@ -103,7 +103,7 @@
                         @else
                         <td>n.a</td>
                         @endif
-                        <td>{{ round((float)$data->rsps * 100 ) }}%</td>
+                        <td>{{$data->rsps}}%</td>
                     </tr>
                     <?php $i++; ?>
             @endforeach

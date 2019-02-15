@@ -57,6 +57,7 @@ class excelController extends Controller
             return $tempArray;
         }
 
+        // Method untuk menrubah Selisih menjadi menit
         function filterMinute($dateDiff){
             $value = null;
             if($dateDiff->d == 0 && $dateDiff->h == 0 && $dateDiff->i == 0 && $dateDiff->s == 0){
@@ -95,6 +96,7 @@ class excelController extends Controller
                 $SBU = filterMinute($SBU);
                 $rsps += 25;
                 
+                // Code untuk menghitung preparation time
                 if($getSheet[$i][11]==''){
                     $prepTime = null;
                 }else{
@@ -105,6 +107,7 @@ class excelController extends Controller
                     $rsps += 25;
                 }
                 
+                // Code untuk Menghitung Travel Time
                 $startWork = null;
                 if($getSheet[$i][12]=='' || $getSheet[$i][11]==''){
                     $travelTime = null;
@@ -117,6 +120,7 @@ class excelController extends Controller
                     $rsps += 25;
                 }
 
+                // Code untuk menghitung Working time
                 if($getSheet[$i][16]=='' || $getSheet[$i][12]==''){
                     $workTime = null;
                 }else{
@@ -154,6 +158,7 @@ class excelController extends Controller
                     }
                 }
 
+            // code untuk menyimpan ke db (tabel excel)
              $data = new Excel();
                 $data->ar_id = $getSheet[$i][0];
                 $data->prob_id = $getSheet[$i][1];
