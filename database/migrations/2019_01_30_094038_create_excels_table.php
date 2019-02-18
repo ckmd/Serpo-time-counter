@@ -27,6 +27,8 @@ class CreateExcelsTable extends Migration
             $table->decimal('travel_time',10,2)->nullable()->default(NULL);
             $table->decimal('work_time',10,2)->nullable()->default(NULL);
             $table->integer('rsps');
+            $table->string('root_cause')->nullable()->default(NULL);
+            $table->string('kendala')->nullable()->default(NULL);
             $table->timestamps();
         });
     }
