@@ -6,6 +6,7 @@
 window.onload = function() {
 // Chart for Wo per Region
     var woChart = new CanvasJS.Chart("woChart", {
+        theme: "light2",
         animationEnabled: true,
         title: {
             text: "Total WO"
@@ -23,11 +24,13 @@ window.onload = function() {
     woChart.render();
 // Chart for Average RSPS
     var rspsChart = new CanvasJS.Chart("rspsChart", {
+        theme: "light2",
+    	animationEnabled: true,
         title: {
             text: "Average RSPS"
         },
         data: [{
-            type: "line",
+            type: "column",
             yValueFormatString: "#,##0.00\"%\"",
             dataPoints: <?php echo json_encode($rspsArray, JSON_NUMERIC_CHECK); ?>
         }]
