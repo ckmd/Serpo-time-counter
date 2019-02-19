@@ -63,7 +63,6 @@ class HomeController extends Controller
         // Menghitung rataan nilai per serpo yang difilter berdasarkan region
         $getFilteredDate = $filteredRegion->where('wo_date','>=',$pAwal)->where('wo_date','<=',$addOneDay);
         $serpo = $getFilteredDate->pluck('serpo');
-        
         $uniqueSerpo = $serpo->unique();
         $cardArray = array();
         
@@ -76,8 +75,8 @@ class HomeController extends Controller
             $avgRSPS = null;
             $basecamp = null;
             
-            $uniqueSerpoCount = Excel::where('serpo',$key)->count();
-            $uniqueSerpoRow = Excel::where('serpo',$key)->get();
+            $uniqueSerpoCount = $getFilteredDate->where('serpo',$key)->count();
+            $uniqueSerpoRow = $getFilteredDate->where('serpo',$key);
             
             foreach ($uniqueSerpoRow as $ubc) {
                 $avgDurasiSBU += $ubc->durasi_sbu;
@@ -133,6 +132,7 @@ class HomeController extends Controller
             'avgWorkTime' => $avgWorkTime,
             'avgRSPS' => $avgRSPS
         );
+        // return $dbAvgExcel;
 
         return view('home', compact ('unique','regionName','dbAvgExcel','pAwal','pAkhir', 'cardArray'));
     }
