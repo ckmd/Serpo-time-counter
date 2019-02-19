@@ -1,5 +1,25 @@
 @extends('layouts.master')
 
+@section('header')
+<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+<script>
+window.onload = function() {
+    var chart = new CanvasJS.Chart("chartContainer", {
+        theme: "light2", // "light1", "dark1", "dark2"
+        animationEnabled: true, 		
+        title:{
+            text: "Performa Keaktifan"
+        },
+        data: [{
+            type: "line",
+            dataPoints: <?php echo json_encode($chartArray, JSON_NUMERIC_CHECK); ?>
+        }]
+    });
+    chart.render();
+}
+</script>
+@endsection
+
 @if($dbAvgExcel!=null)
     @section('card')
     <div class="card-deck">
@@ -42,6 +62,9 @@
     </div>
     <br>
     @endsection
+    @section('chart')
+    <div id="chartContainer" style="height: 300px; width: 100%;"></div>
+    @endsection
 @endif
 
 @section('content')
@@ -51,7 +74,6 @@
             <div class="text-center">
                 <h1 class="display-6">Performa Rata - Rata Serpo Filtered By Region</h1>
             </div>
-            @yield('card')
             <form method="post" action="{{route('home')}}">
             {{csrf_field()}}
                 <div class="row">
@@ -91,6 +113,10 @@
                     </div>
                 </div>
             </form>
+            <br>
+            @yield('card')
+            @yield('chart')
+            <br>
             <blockquote class="blockquote text-center">
                 <h3>
                     <small class="text-muted">Filtered by </small>

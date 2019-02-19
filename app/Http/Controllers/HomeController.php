@@ -51,7 +51,7 @@ class HomeController extends Controller
         avgExcel::truncate();
         // Filter berdasarkan region
         $regionName = $request->region;
-        $filteredRegion = Excel::where('region' , $regionName)->get();
+        $filteredRegion = Excel::orderBy('wo_date','asc')->where('region' , $regionName)->get();
         $pAwal = $request->pawal;
         $pAkhir = $request->pakhir;
         $addOneDay = (new DateTime($pAkhir))->add(new DateInterval('P1D'))->format('Y-m-d');
@@ -113,27 +113,47 @@ class HomeController extends Controller
         // Filter untuk dropdown kosong
         if($regionName!=null){
             $dbAvgExcel = avgExcel::orderBy('basecamp','asc')->get();
+            // Get the total WO and Average data
+            // Assign the calculated value into array
+            $regionSum = $getFilteredDate->count();
+            $cardArray = array(
+                'regionSum' => $regionSum,
+                'avgDurasiSBU' => round($getFilteredDate->pluck('durasi_sbu')->sum()/$regionSum,2),
+                'avgPrepTime' => round($getFilteredDate->pluck('prep_time')->sum()/$regionSum,2),
+                'avgTravelTime' => round($getFilteredDate->pluck('travel_time')->sum()/$regionSum,2),
+                'avgWorkTime' => round($getFilteredDate->pluck('work_time')->sum()/$regionSum,2),
+                'avgRSPS' => round($getFilteredDate->pluck('rsps')->sum()/$regionSum,2)
+            );
+            // Menghitung grafik performa rsps / hari
+            $rspsArray = array();
+            $chartArray = array();
+            $dateTemp = null;
+            // Merubah Menjadi array untuk menghemat database
+            foreach ($getFilteredDate as $key => $value) {
+                $date = date_format(new DateTime($value->wo_date),"Y-m-d");
+                $rsps = $value->rsps;
+                $rspsArray[] = array('date' => $date, 'rsps'=>$rsps);
+            }
+            $uniqueDate = array_unique(array_column($rspsArray, 'date'));
+            foreach ($uniqueDate as $ud) {
+                $counter = 0;
+                $result = 0;
+                foreach ($rspsArray as $ra) {
+                    if($ra['date']==$ud){
+                        $result += $ra['rsps'];
+                        $counter++;
+                    }
+                }
+                $result = round($result/$counter,2);
+                $chartArray[] = array('label'=>$ud,'y'=>$result);
+            }
+
+            // print_r($tempArr);
         }else{
             $dbAvgExcel = null;
         }
-        // Get the total WO and Average data
-        $regionSum = $getFilteredDate->count();
-        $avgDurasiSBU = round($getFilteredDate->pluck('durasi_sbu')->sum()/$regionSum,2);
-        $avgPrepTime = round($getFilteredDate->pluck('prep_time')->sum()/$regionSum,2);
-        $avgtravelTime = round($getFilteredDate->pluck('travel_time')->sum()/$regionSum,2);
-        $avgWorkTime = round($getFilteredDate->pluck('work_time')->sum()/$regionSum,2);
-        $avgRSPS = round($getFilteredDate->pluck('rsps')->sum()/$regionSum,2);
-        // Assign the calculated value into array
-        $cardArray = array(
-            'regionSum' => $regionSum,
-            'avgDurasiSBU' => $avgDurasiSBU,
-            'avgPrepTime' => $avgPrepTime,
-            'avgTravelTime' => $avgtravelTime,
-            'avgWorkTime' => $avgWorkTime,
-            'avgRSPS' => $avgRSPS
-        );
         // return $dbAvgExcel;
 
-        return view('home', compact ('unique','regionName','dbAvgExcel','pAwal','pAkhir', 'cardArray'));
+        return view('home', compact ('unique','regionName','dbAvgExcel','pAwal','pAkhir', 'cardArray','chartArray'));
     }
 }
