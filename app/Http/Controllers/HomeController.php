@@ -61,10 +61,12 @@ class HomeController extends Controller
         $unique = $region->unique();
         
         // Menghitung rataan nilai per serpo yang difilter berdasarkan region
-        $serpo = $filteredRegion->where('wo_date','>=',$pAwal)->where('wo_date','<=',$addOneDay)->pluck('serpo');
+        $getFilteredDate = $filteredRegion->where('wo_date','>=',$pAwal)->where('wo_date','<=',$addOneDay);
+        $serpo = $getFilteredDate->pluck('serpo');
         
         $uniqueSerpo = $serpo->unique();
-        $dataArray = array();
+        $cardArray = array();
+        
         foreach ($uniqueSerpo as $key) {
             // Variable Initiation
             $avgDurasiSBU = null;
@@ -73,10 +75,10 @@ class HomeController extends Controller
             $avgWorkTime = null;
             $avgRSPS = null;
             $basecamp = null;
-
+            
             $uniqueSerpoCount = Excel::where('serpo',$key)->count();
             $uniqueSerpoRow = Excel::where('serpo',$key)->get();
-
+            
             foreach ($uniqueSerpoRow as $ubc) {
                 $avgDurasiSBU += $ubc->durasi_sbu;
                 $avgPrepTime += $ubc->prep_time;
@@ -96,7 +98,6 @@ class HomeController extends Controller
             $avgPrepTime = zeroIsNull($avgPrepTime);
             $avgTravelTime = zeroIsNull($avgTravelTime);
             $avgWorkTime = zeroIsNull($avgWorkTime);
-            //  echo $basecamp."<br />\n";
             // save into database
             $avgExcel = new avgExcel();
                 $avgExcel->basecamp = $basecamp;
@@ -108,15 +109,31 @@ class HomeController extends Controller
                 $avgExcel->work_time = $avgWorkTime;
                 $avgExcel->rsps = $avgRSPS;
             $avgExcel->save();
-            // convert to the array
-            // echo $key." : ".$uniqueSerpoCount."<br />\n";
         }
 
+        // Filter untuk dropdown kosong
         if($regionName!=null){
             $dbAvgExcel = avgExcel::orderBy('basecamp','asc')->get();
         }else{
             $dbAvgExcel = null;
         }
-        return view('home', compact ('unique','regionName','dbAvgExcel','pAwal','pAkhir'));
+        // Get the total WO and Average data
+        $regionSum = $getFilteredDate->count();
+        $avgDurasiSBU = round($getFilteredDate->pluck('durasi_sbu')->sum()/$regionSum,2);
+        $avgPrepTime = round($getFilteredDate->pluck('prep_time')->sum()/$regionSum,2);
+        $avgtravelTime = round($getFilteredDate->pluck('travel_time')->sum()/$regionSum,2);
+        $avgWorkTime = round($getFilteredDate->pluck('work_time')->sum()/$regionSum,2);
+        $avgRSPS = round($getFilteredDate->pluck('rsps')->sum()/$regionSum,2);
+        // Assign the calculated value into array
+        $cardArray = array(
+            'regionSum' => $regionSum,
+            'avgDurasiSBU' => $avgDurasiSBU,
+            'avgPrepTime' => $avgPrepTime,
+            'avgTravelTime' => $avgtravelTime,
+            'avgWorkTime' => $avgWorkTime,
+            'avgRSPS' => $avgRSPS
+        );
+
+        return view('home', compact ('unique','regionName','dbAvgExcel','pAwal','pAkhir', 'cardArray'));
     }
 }

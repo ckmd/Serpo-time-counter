@@ -1,5 +1,49 @@
 @extends('layouts.master')
 
+@if($dbAvgExcel!=null)
+    @section('card')
+    <div class="card-deck">
+        <div class="card text-white bg-primary p-0">
+            <div class="card-body">
+                <h5 class="card-title">{{$cardArray['regionSum']}}</h5>
+                <p class="card-text">Work Order</p>
+            </div>
+        </div>
+        <div class="card text-white bg-secondary">
+            <div class="card-body">
+                <h5 class="card-title">{{$cardArray['avgDurasiSBU']}} Menit</h5>
+                <p class="card-text">Durasi SBU</p>
+            </div>
+        </div>
+        <div class="card text-white bg-success">
+            <div class="card-body">
+                <h5 class="card-title">{{$cardArray['avgPrepTime']}} Menit</h5>
+                <p class="card-text">Preparation Time</p>
+            </div>
+        </div>
+        <div class="card text-white bg-danger">
+            <div class="card-body">
+                <h5 class="card-title">{{$cardArray['avgTravelTime']}} Menit</h5>
+                <p class="card-text">Travel Time</p>
+            </div>
+        </div>
+        <div class="card text-white bg-yellow">
+            <div class="card-body">
+                <h5 class="card-title">{{$cardArray['avgWorkTime']}} Menit</h5>
+                <p class="card-text">Work Time</p>
+            </div>
+        </div>
+        <div class="card text-white bg-info">
+            <div class="card-body">
+                <h5 class="card-title">{{$cardArray['avgRSPS']}} %</h5>
+                <p class="card-text">RSPS</p>
+            </div>
+        </div>
+    </div>
+    <br>
+    @endsection
+@endif
+
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
@@ -7,6 +51,7 @@
             <div class="text-center">
                 <h1 class="display-6">Performa Rata - Rata Serpo Filtered By Region</h1>
             </div>
+            @yield('card')
             <form method="post" action="{{route('home')}}">
             {{csrf_field()}}
                 <div class="row">
