@@ -43,7 +43,7 @@ class excelController extends Controller
         // ini_set('upload_max_filesize', '20M');
         
         // Delete Database Sebelum Upload Baru
-        Excel::truncate();
+        // Excel::truncate();
         
         // maksimum time limit 900 seconds, bisa disesuaikan
         ini_set('max_execution_time', 900);
@@ -70,7 +70,7 @@ class excelController extends Controller
             }    
             return $value;
         }
-
+        
         $getSheet = null;
         $highestRow = null;
         require_once '../classes/PHPExcel/IOFactory.php';
@@ -80,99 +80,104 @@ class excelController extends Controller
             $getSheet = $excelObject->getActiveSheet()->toArray(null);
             $highestRow = $excelObject->setActiveSheetIndex(0)->getHighestDataRow();
         }
-
+        
         for ($i = 1; $i < $highestRow; $i++) { 
             if ($getSheet[$i][0] != '') {
                 $arrayStartTravel = null;
                 $arrayStartWork = null;
                 $arrayComplete = null;
                 $rsps = 0;
-            // <!-- Menghitung Durasi SBU -->
-            // <!-- Selisih Antara AR_Date dengan WO Date -->
+                // <!-- Menghitung Durasi SBU -->
+                // <!-- Selisih Antara AR_Date dengan WO Date -->
                 $SBU = null;
                 $AR_Date = new DateTime($getSheet[$i][8]);
                 $WO_Date = DateTime::createFromFormat('d M Y H:i:s',$getSheet[$i][9]);
-                $SBU = date_diff($WO_Date, $AR_Date);
-                $SBU = filterMinute($SBU);
-                $rsps += 25;
                 
-                // Code untuk menghitung preparation time
-                if($getSheet[$i][11]==''){
-                    $prepTime = null;
-                }else{
-                    $stringStartTravel = str_replace(array( '(', ')' ), '', $getSheet[$i][11]);
-                    $arrayStartTravel = getDateTime('st', $stringStartTravel);
-                    $startTravel = new DateTime($arrayStartTravel['st0']);
-                    $prepTime = round(filterMinute(date_diff($WO_Date, $startTravel)),2);
+                // Filter By kode_wo Starts Here
+                $filteredDate = Excel::where('kode_wo',$getSheet[$i][2])->value('kode_wo');
+                if($filteredDate!=$getSheet[$i][2]){
+                    $SBU = date_diff($WO_Date, $AR_Date);
+                    $SBU = filterMinute($SBU);
                     $rsps += 25;
-                }
-                
-                // Code untuk Menghitung Travel Time
-                $startWork = null;
-                if($getSheet[$i][12]=='' || $getSheet[$i][11]==''){
-                    $travelTime = null;
-                }else{
-                    $stringStartWork = str_replace(array( '(', ')' ), '', $getSheet[$i][12]);
-                    $arrayStartWork = getDateTime('sw', $stringStartWork);
-                    $startWork = new DateTime($arrayStartWork['sw0']);
-                    $travelTime = date_diff($startTravel, $startWork);
-                    $travelTime = round(filterMinute($travelTime),2);
-                    $rsps += 25;
-                }
+                    
+                    // Code untuk menghitung preparation time
+                    if($getSheet[$i][11]==''){
+                        $prepTime = null;
+                    }else{
+                        $stringStartTravel = str_replace(array( '(', ')' ), '', $getSheet[$i][11]);
+                        $arrayStartTravel = getDateTime('st', $stringStartTravel);
+                        $startTravel = new DateTime($arrayStartTravel['st0']);
+                        $prepTime = round(filterMinute(date_diff($WO_Date, $startTravel)),2);
+                        $rsps += 25;
+                    }
+                    
+                    // Code untuk Menghitung Travel Time
+                    $startWork = null;
+                    if($getSheet[$i][12]=='' || $getSheet[$i][11]==''){
+                        $travelTime = null;
+                    }else{
+                        $stringStartWork = str_replace(array( '(', ')' ), '', $getSheet[$i][12]);
+                        $arrayStartWork = getDateTime('sw', $stringStartWork);
+                        $startWork = new DateTime($arrayStartWork['sw0']);
+                        $travelTime = date_diff($startTravel, $startWork);
+                        $travelTime = round(filterMinute($travelTime),2);
+                        $rsps += 25;
+                    }
 
-                // Code untuk menghitung Working time
-                if($getSheet[$i][16]=='' || $getSheet[$i][12]==''){
-                    $workTime = null;
-                }else{
-                    $stringComplete = str_replace(array( '(', ')' ), '', $getSheet[$i][16]);
-                    $arrayComplete = getDateTime('cp',$stringComplete);
-                    $complete = new DateTime($arrayComplete['cp0']);
-                    $workTime = date_diff($startWork, $complete);
-                    $workTime = round(filterMinute($workTime),2);
-                    $rsps += 25;
-                }
+                    // Code untuk menghitung Working time
+                    if($getSheet[$i][16]=='' || $getSheet[$i][12]==''){
+                        $workTime = null;
+                    }else{
+                        $stringComplete = str_replace(array( '(', ')' ), '', $getSheet[$i][16]);
+                        $arrayComplete = getDateTime('cp',$stringComplete);
+                        $complete = new DateTime($arrayComplete['cp0']);
+                        $workTime = date_diff($startWork, $complete);
+                        $workTime = round(filterMinute($workTime),2);
+                        $rsps += 25;
+                    }
 
-                // stop clock starts here
-                $stringStopClock = str_replace(array( '(', ')' ), '', $getSheet[$i][14]);
-                $arrayStopClock = getDateTime('sc',$stringStopClock);
-                
-                if($arrayStartTravel != null && $arrayStartWork != null && $arrayComplete != null){
-                    $arrayMerge = array_merge($arrayStartTravel, $arrayStartWork, $arrayComplete);
-                    foreach ($arrayStopClock as $key => $value) {
-                        $tempAm = array();
-                        foreach ($arrayMerge as $am => $arr) {
-                            if($arr > $value){
-                                $tempSCValue = round(filterMinute(date_diff(new DateTime($arr),new DateTime($value))),2);
-                                $tempAm[$am] = $tempSCValue;
+                    // stop clock starts here
+                    $stringStopClock = str_replace(array( '(', ')' ), '', $getSheet[$i][14]);
+                    $arrayStopClock = getDateTime('sc',$stringStopClock);
+                    
+                    if($arrayStartTravel != null && $arrayStartWork != null && $arrayComplete != null){
+                        $arrayMerge = array_merge($arrayStartTravel, $arrayStartWork, $arrayComplete);
+                        foreach ($arrayStopClock as $key => $value) {
+                            $tempAm = array();
+                            foreach ($arrayMerge as $am => $arr) {
+                                if($arr > $value){
+                                    $tempSCValue = round(filterMinute(date_diff(new DateTime($arr),new DateTime($value))),2);
+                                    $tempAm[$am] = $tempSCValue;
+                                }
+                            }
+                            $minValue = round(min($tempAm),2);
+                            $indeks = array_search(min($tempAm),$tempAm);
+                            if($indeks == 'st0' && $prepTime > $minValue){
+                                $prepTime -= $minValue;
+                            }else if(substr($indeks,0,2)=='st' && $travelTime > $minValue){
+                                $travelTime -= $minValue;
+                            }else if(substr($indeks,0,2)=='sw' && $workTime > $minValue){
+                                $workTime -= $minValue;
                             }
                         }
-                        $minValue = round(min($tempAm),2);
-                        $indeks = array_search(min($tempAm),$tempAm);
-                        if($indeks == 'st0' && $prepTime > $minValue){
-                            $prepTime -= $minValue;
-                        }else if(substr($indeks,0,2)=='st' && $travelTime > $minValue){
-                            $travelTime -= $minValue;
-                        }else if(substr($indeks,0,2)=='sw' && $workTime > $minValue){
-                            $workTime -= $minValue;
-                        }
                     }
-                }
 
-            // code untuk menyimpan ke db (tabel excel)
-             $data = new Excel();
-                $data->ar_id = $getSheet[$i][0];
-                $data->prob_id = $getSheet[$i][1];
-                $data->kode_wo = $getSheet[$i][2];
-                $data->region = $getSheet[$i][5];
-                $data->basecamp = $getSheet[$i][6];
-                $data->serpo = $getSheet[$i][7];
-                $data->wo_date = $WO_Date;
-                $data->durasi_sbu = $SBU;
-                $data->prep_time = $prepTime;
-                $data->travel_time = $travelTime;
-                $data->work_time = $workTime;
-                $data->rsps = $rsps;
-             $data->save();
+                // code untuk menyimpan ke db (tabel excel)
+                $data = new Excel();
+                    $data->ar_id = $getSheet[$i][0];
+                    $data->prob_id = $getSheet[$i][1];
+                    $data->kode_wo = $getSheet[$i][2];
+                    $data->region = $getSheet[$i][5];
+                    $data->basecamp = $getSheet[$i][6];
+                    $data->serpo = $getSheet[$i][7];
+                    $data->wo_date = $WO_Date;
+                    $data->durasi_sbu = $SBU;
+                    $data->prep_time = $prepTime;
+                    $data->travel_time = $travelTime;
+                    $data->work_time = $workTime;
+                    $data->rsps = $rsps;
+                    $data->save();
+                }
             }
         }
         return redirect()->route('allData.index');
