@@ -8,10 +8,11 @@ window.onload = function() {
         theme: "light2", // "light1", "dark1", "dark2"
         animationEnabled: true, 		
         title:{
-            text: "Performa Keaktifan"
+            text: "Trend Keaktifan Serpo Menggunakan Aplikasi FSM"
         },
         data: [{
             type: "line",
+            yValueFormatString: "#,##0.00\"%\"",
             dataPoints: <?php echo json_encode($chartArray, JSON_NUMERIC_CHECK); ?>
         }]
     });
@@ -113,10 +114,6 @@ window.onload = function() {
                     </div>
                 </div>
             </form>
-            <br>
-            @yield('card')
-            @yield('chart')
-            <br>
             <blockquote class="blockquote text-center">
                 <h3>
                     <small class="text-muted">Filtered by </small>
@@ -133,6 +130,10 @@ window.onload = function() {
                 @endif
                 <!-- <footer class="blockquote-footer">avg (rata rata) waktu dalam satuan menit</footer> -->
             </blockquote>
+            <br>
+            @yield('card')
+            @yield('chart')
+            <br>
             <table class="table table-striped table-hover table-bordered" >
                 <thead class="thead-light" style="text-align: center;">
                     <tr valign="top" >

@@ -46,7 +46,7 @@ class NationalController extends Controller
         $pAwal = $request->pawal;
         $pAkhir = $request->pakhir;
         $addOneDay = (new DateTime($pAkhir))->add(new DateInterval('P1D'))->format('Y-m-d');
-        $datas = Excel::all()->where('wo_date','>=',$pAwal)->where('wo_date','<=',$addOneDay);
+        $datas = Excel::orderBy('wo_date','asc')->get()->where('wo_date','>=',$pAwal)->where('wo_date','<=',$addOneDay);
         $totalWO = $datas->count();
         $region = $datas->pluck('region')->unique();
         $woArray = array();
@@ -77,8 +77,33 @@ class NationalController extends Controller
             $rspsArray[] = array('y' => $avgRSPS, 'label'=>$value);
             $woArray[] = array('label'=>$value, 'y'=>$regionSum/$totalWO*100);
         }
+        // Menghitung Trend Performa / Bulan starts here
+        $chartArray = array();
+        $trendArray = array();
+        $dateTemp = null;
+        // Merubah Menjadi array untuk menghemat database
+        foreach ($datas as $key => $data) {
+            $month = date_format(new DateTime($data->wo_date),"Y-m");
+            $rsps = $data->rsps;
+            // echo $data->wo_date.' : '.$rsps.'<br>';
+            $trendArray[] = array('month' => $month, 'rsps'=>$rsps);
+        }
+        $uniqueMonth = array_unique(array_column($trendArray, 'month'));
+        foreach ($uniqueMonth as $um) {
+            $counter = 0;
+            $result = 0;
+            foreach ($trendArray as $ta) {
+                if($ta['month']==$um){
+                    $result += $ta['rsps'];
+                    $counter++;
+                }
+            }
+            $result = round($result/$counter,2);
+            $chartArray[] = array('label'=>$um,'y'=>$result);
+        }
+        // Menghitung performa / bulan ends here        
         $nationalDataForView = NationalData::all();
-        return view('NationalView', compact('nationalDataForView', 'rspsArray','woArray','pAwal','pAkhir','totalWO'));
+        return view('NationalView', compact('nationalDataForView', 'rspsArray','woArray','pAwal','pAkhir','totalWO','chartArray'));
     }
 
     /**

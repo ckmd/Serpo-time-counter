@@ -27,7 +27,7 @@ window.onload = function() {
         theme: "light2",
     	animationEnabled: true,
         title: {
-            text: "Average RSPS"
+            text: "Keaktifan Serpo Menggunakan Aplikasi FSM"
         },
         data: [{
             type: "column",
@@ -36,8 +36,42 @@ window.onload = function() {
         }]
     });
     rspsChart.render();
+
+    var trendChart = new CanvasJS.Chart("chartContainer", {
+        theme: "light2", // "light1", "dark1", "dark2"
+        animationEnabled: true, 		
+        title:{
+            text: "Trend Keaktifan Serpo Menggunakan Aplikasi FSM"
+        },
+        data: [{
+            type: "line",
+            yValueFormatString: "#,##0.00\"%\"",
+            dataPoints: <?php echo json_encode($chartArray, JSON_NUMERIC_CHECK); ?>
+        }]
+    });
+    trendChart.render();
+
 }
 </script>
+@endsection
+
+@section('chart')
+<table style="align: center; width: 100%;">
+    <tr>
+        <tbody>
+            <tr>
+                <td>
+                <div id="woChart" style="height: 300px; width: 100%;"></div>
+                </td>
+                <td>
+                <div id="rspsChart" style="height: 300px; width: 100%;"></div>
+                </td>
+            </tr>
+        </tbody>
+    </tr>
+</table>
+<br>
+<div id="chartContainer" style="height: 300px; width: 100%;"></div>
 @endsection
 
 @section('content')
@@ -76,6 +110,9 @@ window.onload = function() {
     @else
         <p class="mb-0">Periode {{$pAwal}} s.d. {{$pAkhir}}</p>
     @endif
+</blockquote>
+@yield('chart')
+<blockquote>
     <footer class="blockquote-footer">Data dalam satuan menit</footer>
 </blockquote>
 <table class="table table-bordered table-striped table-hover" style="text-align: center;">
@@ -103,20 +140,6 @@ window.onload = function() {
         </tr>
         @endforeach
     </tbody>
-</table>
-<table style="align: center; width: 100%;">
-    <tr>
-        <tbody>
-            <tr>
-                <td>
-                <div id="woChart" style="height: 300px; width: 100%;"></div>
-                </td>
-                <td>
-                <div id="rspsChart" style="height: 300px; width: 100%;"></div>
-                </td>
-            </tr>
-        </tbody>
-    </tr>
 </table>
 @endif
 @endsection

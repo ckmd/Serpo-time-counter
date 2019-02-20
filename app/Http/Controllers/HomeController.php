@@ -32,8 +32,8 @@ class HomeController extends Controller
 
         $datas = Excel::pluck('region');
         $unique = $datas->unique();
-        
-        return view('home', compact('unique','dbAvgExcel'));
+        $chartArray = null;
+        return view('home', compact('unique','dbAvgExcel','chartArray'));
     }
 
     public function download(Request $request){
@@ -109,8 +109,9 @@ class HomeController extends Controller
                 $avgExcel->rsps = $avgRSPS;
             $avgExcel->save();
         }
-
+        
         // Filter untuk dropdown kosong
+        $chartArray = array();
         if($regionName!=null){
             $dbAvgExcel = avgExcel::orderBy('basecamp','asc')->get();
             // Get the total WO and Average data
@@ -124,13 +125,12 @@ class HomeController extends Controller
                 'avgWorkTime' => round($getFilteredDate->pluck('work_time')->sum()/$regionSum,2),
                 'avgRSPS' => round($getFilteredDate->pluck('rsps')->sum()/$regionSum,2)
             );
-            // Menghitung grafik performa rsps / hari
+            // Menghitung grafik performa rsps / bulan
             $rspsArray = array();
-            $chartArray = array();
             $dateTemp = null;
             // Merubah Menjadi array untuk menghemat database
             foreach ($getFilteredDate as $key => $value) {
-                $date = date_format(new DateTime($value->wo_date),"Y-m-d");
+                $date = date_format(new DateTime($value->wo_date),"Y-m");
                 $rsps = $value->rsps;
                 $rspsArray[] = array('date' => $date, 'rsps'=>$rsps);
             }
@@ -147,13 +147,9 @@ class HomeController extends Controller
                 $result = round($result/$counter,2);
                 $chartArray[] = array('label'=>$ud,'y'=>$result);
             }
-
-            // print_r($tempArr);
         }else{
             $dbAvgExcel = null;
         }
-        // return $dbAvgExcel;
-
         return view('home', compact ('unique','regionName','dbAvgExcel','pAwal','pAkhir', 'cardArray','chartArray'));
     }
 }
