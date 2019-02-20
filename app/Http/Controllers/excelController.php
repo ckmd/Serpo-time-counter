@@ -43,7 +43,7 @@ class excelController extends Controller
         // ini_set('upload_max_filesize', '20M');
         
         // Delete Database Sebelum Upload Baru
-        // Excel::truncate();
+        Excel::truncate();
         
         // maksimum time limit 900 seconds, bisa disesuaikan
         ini_set('max_execution_time', 900);
@@ -69,6 +69,28 @@ class excelController extends Controller
                 }
             }    
             return $value;
+        }
+
+        // AI Method, untuk menemukan konklusi dari beberapa kata
+        function findRootCause($string){
+            $rootCauseConclusion = null;
+            $string = explode(" ", $string);
+            $cause = array(
+                'foc' => array('putus','core','kabel'),
+                'cuaca' => array('hujan'),
+                'team' => array('idle'),
+            );
+            $resultArray = array();
+            foreach ($cause as $causeKey => $causeValue) {
+                $causeResult = count(array_intersect($string, $causeValue));
+                $resultArray[$causeKey] = $causeResult;
+            }
+            $maxResult = max($resultArray);
+            $indeksResult = array_search(max($resultArray),$resultArray);
+            if($maxResult>0){
+                $rootCauseConclusion = $indeksResult;
+            }
+            return $rootCauseConclusion;
         }
         
         $getSheet = null;
@@ -176,6 +198,7 @@ class excelController extends Controller
                     $data->travel_time = $travelTime;
                     $data->work_time = $workTime;
                     $data->rsps = $rsps;
+                    $data->root_cause = findRootCause($getSheet[$i][20]);
                     $data->save();
                 }
             }
