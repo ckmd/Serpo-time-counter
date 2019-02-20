@@ -65,6 +65,40 @@ window.onload = function() {
     @endsection
     @section('chart')
     <div id="chartContainer" style="height: 300px; width: 100%;"></div>
+    <div class="table table-responsive" >
+        <table style="float: left" width="25%">
+            <tr>
+            <th>Root Cause</th>
+            <th>Total</th>
+            </tr>
+            @for($i=0; $i < 2; $i++)
+            <tr>
+                <td>dummy {{$i}}</td>
+                <td>{{$i + 5}}</td>
+            </tr>
+            @endfor
+        </table>
+        <table style="float: left" width="50%">
+        <tr>
+            </tr>
+            <tr>
+                <td>Root Cause Chart</td>
+                <td>Kendala Chart</td>
+            </tr>
+        </table>
+        <table style="float: left" width="25%">
+            <tr>
+            <th>Kendala</th>
+            <th>Total</th>
+            </tr>
+            @for($i=0; $i < 3; $i++)
+            <tr>
+                <td>dummy {{$i}}</td>
+                <td>{{$i+4}}</td>
+            </tr>
+            @endfor
+        </table>
+    </div>
     @endsection
 @endif
 
