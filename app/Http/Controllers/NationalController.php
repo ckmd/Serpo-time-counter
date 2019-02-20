@@ -20,8 +20,8 @@ class NationalController extends Controller
         $nationalDataForView = null;
         $rspsArray = null;
         $woArray = null;
-        $totalWO = null;
-        return view('NationalView', compact('nationalDataForView', 'rspsArray','woArray','totalWO'));
+        $chartArray = null;
+        return view('NationalView', compact('nationalDataForView', 'rspsArray','woArray','chartArray'));
     }
 
     /**
@@ -77,6 +77,16 @@ class NationalController extends Controller
             $rspsArray[] = array('y' => $avgRSPS, 'label'=>$value);
             $woArray[] = array('label'=>$value, 'y'=>$regionSum/$totalWO*100);
         }
+        // Kalkulasi data pada card starts here
+        // $cardArray = array(
+        //     'regionSum' => $totalWO
+        //     'avgDurasiSBU' => round($getFilteredDate->pluck('durasi_sbu')->sum()/$regionSum,2),
+        //     'avgPrepTime' => round($getFilteredDate->pluck('prep_time')->sum()/$regionSum,2),
+        //     'avgTravelTime' => round($getFilteredDate->pluck('travel_time')->sum()/$regionSum,2),
+        //     'avgWorkTime' => round($getFilteredDate->pluck('work_time')->sum()/$regionSum,2),
+        //     'avgRSPS' => round($getFilteredDate->pluck('rsps')->sum()/$regionSum,2)
+        // );
+        // Kalkulasi data pada cart ends here
         // Menghitung Trend Performa / Bulan starts here
         $chartArray = array();
         $trendArray = array();
@@ -103,7 +113,7 @@ class NationalController extends Controller
         }
         // Menghitung performa / bulan ends here        
         $nationalDataForView = NationalData::all();
-        return view('NationalView', compact('nationalDataForView', 'rspsArray','woArray','pAwal','pAkhir','totalWO','chartArray'));
+        return view('NationalView', compact('nationalDataForView', 'rspsArray','woArray','pAwal','pAkhir','chartArray'));
     }
 
     /**

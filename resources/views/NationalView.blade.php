@@ -11,9 +11,6 @@ window.onload = function() {
         title: {
             text: "Total WO"
         },
-        subtitles: [{
-	    	text: {{$totalWO}}
-            }],
         data: [{
             type: "pie",
             yValueFormatString: "#,##0.00\"%\"",
@@ -53,6 +50,48 @@ window.onload = function() {
 
 }
 </script>
+@endsection
+
+@section('card')
+    <div class="card-deck">
+        <div class="card text-white bg-primary p-0">
+            <div class="card-body">
+                <h5 class="card-title">dump</h5>
+                <p class="card-text">Work Order</p>
+            </div>
+        </div>
+        <div class="card text-white bg-secondary">
+            <div class="card-body">
+                <h5 class="card-title">dump Menit</h5>
+                <p class="card-text">Durasi SBU</p>
+            </div>
+        </div>
+        <div class="card text-white bg-success">
+            <div class="card-body">
+                <h5 class="card-title">dump Menit</h5>
+                <p class="card-text">Preparation Time</p>
+            </div>
+        </div>
+        <div class="card text-white bg-danger">
+            <div class="card-body">
+                <h5 class="card-title">dump Menit</h5>
+                <p class="card-text">Travel Time</p>
+            </div>
+        </div>
+        <div class="card text-white bg-yellow">
+            <div class="card-body">
+                <h5 class="card-title">dump Menit</h5>
+                <p class="card-text">Work Time</p>
+            </div>
+        </div>
+        <div class="card text-white bg-info">
+            <div class="card-body">
+                <h5 class="card-title">dump %</h5>
+                <p class="card-text">RSPS</p>
+            </div>
+        </div>
+    </div>
+    <br>
 @endsection
 
 @section('chart')
@@ -111,6 +150,7 @@ window.onload = function() {
         <p class="mb-0">Periode {{$pAwal}} s.d. {{$pAkhir}}</p>
     @endif
 </blockquote>
+@yield('card')
 @yield('chart')
 <blockquote>
     <footer class="blockquote-footer">Data dalam satuan menit</footer>
