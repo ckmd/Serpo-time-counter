@@ -17,6 +17,20 @@ window.onload = function() {
         }]
     });
     chart.render();
+
+    var rootCauseChart = new CanvasJS.Chart("rootCauseChart", {
+        theme: "light2", // "light1", "dark1", "dark2"
+        animationEnabled: true, 		
+        title:{
+            text: "Root Cause"
+        },
+        data: [{
+            type: "pie",
+            yValueFormatString: "#,##0\"\"",
+            dataPoints: <?php echo json_encode($urcArray, JSON_NUMERIC_CHECK); ?>
+        }]
+    });
+    rootCauseChart.render();
 }
 </script>
 @endsection
@@ -65,28 +79,23 @@ window.onload = function() {
     @endsection
     @section('chart')
     <div id="chartContainer" style="height: 300px; width: 100%;"></div>
-    <div class="table table-responsive" >
-        <table style="float: left" width="25%">
+    <br>
+    <div class="table table-responsive table-hover" >
+        <table style="float: left" width="45%">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Tipe Root Cause</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+            @foreach($urcArray as $urca)
             <tr>
-            <th>Root Cause</th>
-            <th>Total</th>
+                <td>{{$urca['label']}}</td>
+                <td>{{$urca['y']}}</td>
             </tr>
-            @for($i=0; $i < 2; $i++)
-            <tr>
-                <td>dummy {{$i}}</td>
-                <td>{{$i + 5}}</td>
-            </tr>
-            @endfor
+            @endforeach
         </table>
-        <table style="float: left" width="50%">
-        <tr>
-            </tr>
-            <tr>
-                <td>Root Cause Chart</td>
-                <td>Kendala Chart</td>
-            </tr>
-        </table>
-        <table style="float: left" width="25%">
+        <table style="float: right" width="45%">
             <tr>
             <th>Kendala</th>
             <th>Total</th>
@@ -99,6 +108,21 @@ window.onload = function() {
             @endfor
         </table>
     </div>
+    <table style="align: center; width: 90%;">
+        <tr>
+            <tbody>
+                <tr>
+                    <td>
+                    <div id="rootCauseChart" style="height: 300px;width: 100%;"></div>
+                    </td>
+                    <td>
+                    <!-- <div id="rspsChart" style="height: 300px; width: 100%;"></div> -->
+                    </td>
+                </tr>
+            </tbody>
+        </tr>
+    </table>
+
     @endsection
 @endif
 

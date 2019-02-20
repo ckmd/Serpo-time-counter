@@ -33,7 +33,8 @@ class HomeController extends Controller
         $datas = Excel::pluck('region');
         $unique = $datas->unique();
         $chartArray = null;
-        return view('home', compact('unique','dbAvgExcel','chartArray'));
+        $urcArray = null;
+        return view('home', compact('unique','dbAvgExcel','chartArray','urcArray'));
     }
 
     public function download(Request $request){
@@ -112,6 +113,7 @@ class HomeController extends Controller
         
         // Filter untuk dropdown kosong
         $chartArray = array();
+        $urcArray = array();
         if($regionName!=null){
             $dbAvgExcel = avgExcel::orderBy('basecamp','asc')->get();
             // Get the total WO and Average data
@@ -128,7 +130,6 @@ class HomeController extends Controller
             // Menghitung grafik performa rsps / bulan
             $rspsArray = array();
             $dateTemp = null;
-            // Merubah Menjadi array untuk menghemat database
             foreach ($getFilteredDate as $key => $value) {
                 $date = date_format(new DateTime($value->wo_date),"Y-m");
                 $rsps = $value->rsps;
@@ -147,9 +148,24 @@ class HomeController extends Controller
                 $result = round($result/$counter,2);
                 $chartArray[] = array('label'=>$ud,'y'=>$result);
             }
+            // Menghitung Root Cause
+            $uniqueRootCase = $getFilteredDate->pluck('root_cause')->unique();
+            foreach ($uniqueRootCase as $urc => $urcName) {
+                $urcValue = $getFilteredDate->where('root_cause',$urcName)->count();
+                if($urcName!=""){
+                    $urcArray[] = array( 
+                        'label' =>$urcName,
+                        'y'=>$urcValue
+                    );
+                }
+            }
+            unset($urcArray[""]);
+            // return $urcArray;
+            // add order by array
+
         }else{
             $dbAvgExcel = null;
         }
-        return view('home', compact ('unique','regionName','dbAvgExcel','pAwal','pAkhir', 'cardArray','chartArray'));
+        return view('home', compact ('unique','regionName','dbAvgExcel','pAwal','pAkhir', 'cardArray','chartArray','urcArray'));
     }
 }

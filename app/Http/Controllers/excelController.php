@@ -39,11 +39,11 @@ class excelController extends Controller
     
     public function store(Request $request)
     {
-        // in case maks upload to server 2MB, dirubah ke 4MB
+        // in case maks upload to server 2MB, dirubah ke 20MB
         // ini_set('upload_max_filesize', '20M');
-        
+        ini_set('memory_limit', '-1');
         // Delete Database Sebelum Upload Baru
-        Excel::truncate();
+        // Excel::truncate();
         
         // maksimum time limit 900 seconds, bisa disesuaikan
         ini_set('max_execution_time', 900);
@@ -89,6 +89,8 @@ class excelController extends Controller
             $indeksResult = array_search(max($resultArray),$resultArray);
             if($maxResult>0){
                 $rootCauseConclusion = $indeksResult;
+            }else if($string!=null){
+                $rootCauseConclusion = "other";
             }
             return $rootCauseConclusion;
         }
