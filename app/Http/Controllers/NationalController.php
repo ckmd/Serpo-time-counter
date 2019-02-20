@@ -21,7 +21,8 @@ class NationalController extends Controller
         $rspsArray = null;
         $woArray = null;
         $chartArray = null;
-        return view('NationalView', compact('nationalDataForView', 'rspsArray','woArray','chartArray'));
+        $cardArray = null;
+        return view('NationalView', compact('nationalDataForView', 'rspsArray','woArray','chartArray','cardArray'));
     }
 
     /**
@@ -78,14 +79,14 @@ class NationalController extends Controller
             $woArray[] = array('label'=>$value, 'y'=>$regionSum/$totalWO*100);
         }
         // Kalkulasi data pada card starts here
-        // $cardArray = array(
-        //     'regionSum' => $totalWO
-        //     'avgDurasiSBU' => round($getFilteredDate->pluck('durasi_sbu')->sum()/$regionSum,2),
-        //     'avgPrepTime' => round($getFilteredDate->pluck('prep_time')->sum()/$regionSum,2),
-        //     'avgTravelTime' => round($getFilteredDate->pluck('travel_time')->sum()/$regionSum,2),
-        //     'avgWorkTime' => round($getFilteredDate->pluck('work_time')->sum()/$regionSum,2),
-        //     'avgRSPS' => round($getFilteredDate->pluck('rsps')->sum()/$regionSum,2)
-        // );
+        $cardArray = array(
+            'regionSum' => $totalWO,
+            'avgDurasiSBU' => round($datas->pluck('durasi_sbu')->sum()/$totalWO,2),
+            'avgPrepTime' => round($datas->pluck('prep_time')->sum()/$totalWO,2),
+            'avgTravelTime' => round($datas->pluck('travel_time')->sum()/$totalWO,2),
+            'avgWorkTime' => round($datas->pluck('work_time')->sum()/$totalWO,2),
+            'avgRSPS' => round($datas->pluck('rsps')->sum()/$totalWO,2)
+        );
         // Kalkulasi data pada cart ends here
         // Menghitung Trend Performa / Bulan starts here
         $chartArray = array();
@@ -113,7 +114,7 @@ class NationalController extends Controller
         }
         // Menghitung performa / bulan ends here        
         $nationalDataForView = NationalData::all();
-        return view('NationalView', compact('nationalDataForView', 'rspsArray','woArray','pAwal','pAkhir','chartArray'));
+        return view('NationalView', compact('nationalDataForView', 'rspsArray','woArray','pAwal','pAkhir','chartArray','cardArray'));
     }
 
     /**
