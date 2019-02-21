@@ -33,8 +33,9 @@ class HomeController extends Controller
         $datas = Excel::pluck('region');
         $unique = $datas->unique();
         $chartArray = null;
-        $urcArray = null;
-        return view('home', compact('unique','dbAvgExcel','chartArray','urcArray'));
+        $urcdArray = null;
+        $ukArray = null;
+        return view('home', compact('unique','dbAvgExcel','chartArray','urcdArray','ukArray'));
     }
 
     public function download(Request $request){
@@ -115,6 +116,7 @@ class HomeController extends Controller
         $chartArray = array();
         $urcdArray = array();
         $urcArray = array();
+        $ukArray = array();
         if($regionName!=null){
             $dbAvgExcel = avgExcel::orderBy('basecamp','asc')->get();
             // Get the total WO and Average data
@@ -149,6 +151,17 @@ class HomeController extends Controller
                 $result = round($result/$counter,2);
                 $chartArray[] = array('label'=>$ud,'y'=>$result);
             }
+            // Menghitung Kendala
+            $uniqueKendala = $getFilteredDate->pluck('kendala')->unique();
+            foreach ($uniqueKendala as $ukKey => $ukName) {
+                $ukValue = $getFilteredDate->where('kendala',$ukName)->count();
+                if($ukName!=""){
+                    $ukArray[] = array( 
+                        'label' =>$ukName,
+                        'y'=>$ukValue,
+                    );
+                }
+            }
             // Menghitung Root Cause dengan durasi
             $uniqueRootCaseDuration = $getFilteredDate->where('total_durasi','<>','')->pluck('root_cause')->unique();
             foreach ($uniqueRootCaseDuration as $urcd => $urcdName) {
@@ -182,6 +195,6 @@ class HomeController extends Controller
         }else{
             $dbAvgExcel = null;
         }
-        return view('home', compact ('unique','regionName','dbAvgExcel','pAwal','pAkhir', 'cardArray','chartArray','urcdArray','urcArray'));
+        return view('home', compact ('unique','regionName','dbAvgExcel','pAwal','pAkhir', 'cardArray','chartArray','urcdArray','urcArray','ukArray'));
     }
 }

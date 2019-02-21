@@ -22,7 +22,7 @@ window.onload = function() {
         theme: "light2", // "light1", "dark1", "dark2"
         animationEnabled: true, 		
         title:{
-            text: "Root Cause"
+            text: "Gangguan"
         },
         data: [{
             type: "pie",
@@ -31,6 +31,20 @@ window.onload = function() {
         }]
     });
     rootCauseChart.render();
+
+    var kendalaChart = new CanvasJS.Chart("kendalaChart", {
+        theme: "light2", // "light1", "dark1", "dark2"
+        animationEnabled: true, 		
+        title:{
+            text: "Kendala"
+        },
+        data: [{
+            type: "pie",
+            yValueFormatString: "#,##0\"\"",
+            dataPoints: <?php echo json_encode($ukArray, JSON_NUMERIC_CHECK); ?>
+        }]
+    });
+    kendalaChart.render();
 }
 </script>
 @endsection
@@ -84,7 +98,7 @@ window.onload = function() {
         <table style="float: left" width="45%">
             <thead class="thead-dark">
                 <tr>
-                    <th>Kategori Kendala</th>
+                    <th>Kategori Gangguan</th>
                     <th>Total</th>
                     <th>Rataan Durasi (Menit)</th>
                 </tr>
@@ -98,22 +112,26 @@ window.onload = function() {
             @endforeach
         </table>
         <table style="float: right" width="45%">
-            <tr>
-            <th>Kendala</th>
-            <th>Total</th>
-            </tr>
-            @for($i=0; $i < 3; $i++)
-            <tr>
-                <td>dummy {{$i}}</td>
-                <td>{{$i+4}}</td>
-            </tr>
-            @endfor
-        </table>
-    </div>
-    <table style="float: left" width="45%">
             <thead class="thead-dark">
                 <tr>
-                    <th>Kategori Kendala</th>
+                <th>Kategori Kendala</th>
+                <th>Total</th>
+                </tr>
+            </thead>
+            @foreach($ukArray as $uka)
+            <tr>
+                <td>{{$uka['label']}}</td>
+                <td>{{$uka['y']}}</td>
+            </tr>
+            @endforeach
+        </table>
+    </div>
+    @if(count($urcArray)!=0)
+    <div class="table table-responsive table-hover" >
+        <table>
+            <thead class="thead-dark">
+                <tr>
+                    <th>Kategori Gangguan</th>
                     <th>Total</th>
                 </tr>
             </thead>
@@ -124,7 +142,9 @@ window.onload = function() {
             </tr>
             @endforeach
         </table>
-    <table style="align: center; width: 90%;">
+    </div>
+    @endif
+    <table style="align: center; width: 100%;">
         <tr>
             <tbody>
                 <tr>
@@ -132,7 +152,7 @@ window.onload = function() {
                     <div id="rootCauseChart" style="height: 300px;width: 100%;"></div>
                     </td>
                     <td>
-                    <!-- <div id="rspsChart" style="height: 300px; width: 100%;"></div> -->
+                    <div id="kendalaChart" style="height: 300px;width: 100%;"></div>
                     </td>
                 </tr>
             </tbody>

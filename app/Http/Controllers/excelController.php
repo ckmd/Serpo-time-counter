@@ -43,7 +43,7 @@ class excelController extends Controller
         // ini_set('upload_max_filesize', '20M');
         ini_set('memory_limit', '-1');
         // Delete Database Sebelum Upload Baru
-        Excel::truncate();
+        // Excel::truncate();
         
         // maksimum time limit 900 seconds, bisa disesuaikan
         ini_set('max_execution_time', 900);
@@ -94,6 +94,30 @@ class excelController extends Controller
                 $rootCauseConclusion = "Lain";
             }
             return $rootCauseConclusion;
+        }
+
+        function findKendala($k){
+            $kendalaConclusion = null;
+            $k = explode(" ", $k);
+            $kendalaDict = array(
+                'tim' => array('tim','idle'),
+                'cuaca' => array('cuaca','hujan','banjir'),
+                'user' => array('user'),
+            );
+            $resultArray = array();
+            foreach ($kendalaDict as $kdKey => $kdValue) {
+                $kResult = count(array_intersect($k, $kdValue));
+                $resultArray[$kdKey] = $kResult;
+            }
+            $maxResult = max($resultArray);
+            $indeksResult = array_search(max($resultArray),$resultArray);
+            // Check Highest Root Cause
+            if($maxResult>0){
+                $kendalaConclusion = $indeksResult;
+            }else if($k!=null){
+                $kendalaConclusion = "Lain";
+            }
+            return $kendalaConclusion;
         }
         
         $getSheet = null;
@@ -190,11 +214,15 @@ class excelController extends Controller
                 //Menghitung Total durasi starts here
                 $total_durasi = null;
                 $root_cause = null;
+                $kendala = null;
                 if($rsps==100){
                     $total_durasi = $prepTime + $travelTime + $workTime;
                 }
                 if($getSheet[$i][23]!=null){
                     $root_cause = findRootCause($getSheet[$i][23]);
+                }
+                if($getSheet[$i][20]!=null){
+                    $kendala = findKendala($getSheet[$i][20]);
                 }
                 // code untuk menyimpan ke db (tabel excel)
                 $data = new Excel();
@@ -212,6 +240,7 @@ class excelController extends Controller
                     $data->rsps = $rsps;
                     $data->total_durasi = $total_durasi;
                     $data->root_cause = $root_cause;
+                    $data->kendala = $kendala;
                     $data->save();
                 }
             }
