@@ -113,6 +113,7 @@ class HomeController extends Controller
         
         // Filter untuk dropdown kosong
         $chartArray = array();
+        $urcdArray = array();
         $urcArray = array();
         if($regionName!=null){
             $dbAvgExcel = avgExcel::orderBy('basecamp','asc')->get();
@@ -148,24 +149,39 @@ class HomeController extends Controller
                 $result = round($result/$counter,2);
                 $chartArray[] = array('label'=>$ud,'y'=>$result);
             }
-            // Menghitung Root Cause
-            $uniqueRootCase = $getFilteredDate->pluck('root_cause')->unique();
-            foreach ($uniqueRootCase as $urc => $urcName) {
-                $urcValue = $getFilteredDate->where('root_cause',$urcName)->count();
-                if($urcName!=""){
-                    $urcArray[] = array( 
-                        'label' =>$urcName,
-                        'y'=>$urcValue
+            // Menghitung Root Cause dengan durasi
+            $uniqueRootCaseDuration = $getFilteredDate->where('total_durasi','<>','')->pluck('root_cause')->unique();
+            foreach ($uniqueRootCaseDuration as $urcd => $urcdName) {
+                $urcdValue = $getFilteredDate->where('total_durasi','<>','')->where('root_cause',$urcdName)->count();
+                $urcdDuration = round($getFilteredDate->where('total_durasi','<>','')->where('root_cause',$urcdName)->pluck('total_durasi')->sum()/$urcdValue,2);
+                if($urcdName!=""){
+                    $urcdArray[] = array( 
+                        'label' =>$urcdName,
+                        'y'=>$urcdValue,
+                        'durasi'=>$urcdDuration
                     );
                 }
             }
-            unset($urcArray[""]);
+            // return $getFilteredDate->where('total_durasi','<>','');
+
+            // Menghitung Root Cause tanpa durasi
+            $uniqueRootCase = $getFilteredDate->where('total_durasi','=','')->pluck('root_cause')->unique();
+            foreach ($uniqueRootCase as $urc => $urcName) {
+                $urcValue = $getFilteredDate->where('total_durasi','=','')->where('root_cause',$urcName)->count();
+                if($urcName!=""){
+                    $urcArray[] = array( 
+                        'label' =>$urcName,
+                        'y'=>$urcValue,
+                    );
+                }
+            }
+            // unset($urcArray[""]);
             // return $urcArray;
             // add order by array
 
         }else{
             $dbAvgExcel = null;
         }
-        return view('home', compact ('unique','regionName','dbAvgExcel','pAwal','pAkhir', 'cardArray','chartArray','urcArray'));
+        return view('home', compact ('unique','regionName','dbAvgExcel','pAwal','pAkhir', 'cardArray','chartArray','urcdArray','urcArray'));
     }
 }

@@ -27,7 +27,7 @@ window.onload = function() {
         data: [{
             type: "pie",
             yValueFormatString: "#,##0\"\"",
-            dataPoints: <?php echo json_encode($urcArray, JSON_NUMERIC_CHECK); ?>
+            dataPoints: <?php echo json_encode($urcdArray, JSON_NUMERIC_CHECK); ?>
         }]
     });
     rootCauseChart.render();
@@ -84,14 +84,16 @@ window.onload = function() {
         <table style="float: left" width="45%">
             <thead class="thead-dark">
                 <tr>
-                    <th>Tipe Root Cause</th>
+                    <th>Kategori Kendala</th>
                     <th>Total</th>
+                    <th>Rataan Durasi (Menit)</th>
                 </tr>
             </thead>
-            @foreach($urcArray as $urca)
+            @foreach($urcdArray as $urcda)
             <tr>
-                <td>{{$urca['label']}}</td>
-                <td>{{$urca['y']}}</td>
+                <td>{{$urcda['label']}}</td>
+                <td>{{$urcda['y']}}</td>
+                <td>{{$urcda['durasi']}}</td>
             </tr>
             @endforeach
         </table>
@@ -108,6 +110,20 @@ window.onload = function() {
             @endfor
         </table>
     </div>
+    <table style="float: left" width="45%">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Kategori Kendala</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+            @foreach($urcArray as $urca)
+            <tr>
+                <td>{{$urca['label']}}</td>
+                <td>{{$urca['y']}}</td>
+            </tr>
+            @endforeach
+        </table>
     <table style="align: center; width: 90%;">
         <tr>
             <tbody>
