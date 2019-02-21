@@ -22,7 +22,7 @@ window.onload = function() {
         theme: "light2", // "light1", "dark1", "dark2"
         animationEnabled: true, 		
         title:{
-            text: "Gangguan"
+            text: "Kategori Gangguan"
         },
         data: [{
             type: "pie",
@@ -36,7 +36,7 @@ window.onload = function() {
         theme: "light2", // "light1", "dark1", "dark2"
         animationEnabled: true, 		
         title:{
-            text: "Kendala"
+            text: "Kategori Kendala"
         },
         data: [{
             type: "pie",

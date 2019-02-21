@@ -6,6 +6,8 @@
 - AdminLTE Template
 - XLSX Writer/Loader Library
 # How to use
+- configure the php.ini (change the memory limit into -1 and file upload size 20MB++)
+- run composer update
 - Migrate the database using : php artisan migrate
 - run the application using : php artisan serve
 - open at localhost:8000
