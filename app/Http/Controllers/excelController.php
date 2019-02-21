@@ -43,7 +43,7 @@ class excelController extends Controller
         // ini_set('upload_max_filesize', '20M');
         ini_set('memory_limit', '-1');
         // Delete Database Sebelum Upload Baru
-        // Excel::truncate();
+        Excel::truncate();
         
         // maksimum time limit 900 seconds, bisa disesuaikan
         ini_set('max_execution_time', 900);
@@ -76,9 +76,9 @@ class excelController extends Controller
             $rootCauseConclusion = null;
             $string = explode(" ", $string);
             $cause = array(
-                'foc' => array('putus','core','kabel'),
-                'cuaca' => array('hujan'),
-                'team' => array('idle'),
+                'FOC' => array('foc','putus','core','kabel','cable','kable'),
+                'FOT' => array('fot','comm'),
+                'PS' => array('ps'),
             );
             $resultArray = array();
             foreach ($cause as $causeKey => $causeValue) {
@@ -87,10 +87,11 @@ class excelController extends Controller
             }
             $maxResult = max($resultArray);
             $indeksResult = array_search(max($resultArray),$resultArray);
+            // Check Highest Root Cause
             if($maxResult>0){
                 $rootCauseConclusion = $indeksResult;
             }else if($string!=null){
-                $rootCauseConclusion = "other";
+                $rootCauseConclusion = "Lain";
             }
             return $rootCauseConclusion;
         }
@@ -186,6 +187,15 @@ class excelController extends Controller
                         }
                     }
 
+                //Menghitung Total durasi starts here
+                $total_durasi = null;
+                $root_cause = null;
+                if($rsps==100){
+                    $total_durasi = $prepTime + $travelTime + $workTime;
+                }
+                if($getSheet[$i][23]!=null){
+                    $root_cause = findRootCause($getSheet[$i][23]);
+                }
                 // code untuk menyimpan ke db (tabel excel)
                 $data = new Excel();
                     $data->ar_id = $getSheet[$i][0];
@@ -200,7 +210,8 @@ class excelController extends Controller
                     $data->travel_time = $travelTime;
                     $data->work_time = $workTime;
                     $data->rsps = $rsps;
-                    $data->root_cause = findRootCause($getSheet[$i][20]);
+                    $data->total_durasi = $total_durasi;
+                    $data->root_cause = $root_cause;
                     $data->save();
                 }
             }

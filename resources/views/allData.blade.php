@@ -25,6 +25,8 @@
                         <th>travel time</th>
                         <th>working time</th>
                         <th>rsps</th>
+                        <th>Root Cause</th>
+                        <th>Kendala</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -54,6 +56,16 @@
                         <td>n.a</td>
                         @endif
                         <td>{{$cat->rsps}}%</td>
+                        @if($cat->root_cause!=null)
+                        <td>{{$cat->root_cause}}</td>
+                        @else
+                        <td>n.a</td>
+                        @endif
+                        @if($cat->kendala!=null)
+                        <td>{{$cat->kendala}}</td>
+                        @else
+                        <td>n.a</td>
+                        @endif
                     </tr>
                     @endforeach
                 </tbody>
