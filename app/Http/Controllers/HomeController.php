@@ -164,6 +164,7 @@ class HomeController extends Controller
                     );
                 }
             }
+            array_multisort (array_column($ukArray, 'y'), SORT_DESC, $ukArray);        
             // Menghitung Root Cause dengan durasi
             $rootCaseDuration = $getFilteredDate->where('total_durasi','<>','')->where('root_cause','<>','')->pluck('root_cause');
             $uniqueRootCaseDuration = $rootCaseDuration->unique();
@@ -179,6 +180,7 @@ class HomeController extends Controller
                     );
                 }
             }
+            array_multisort (array_column($urcdArray, 'y'), SORT_DESC, $urcdArray);
             // return $getFilteredDate->where('total_durasi','<>','');
 
             // Menghitung Root Cause tanpa durasi
@@ -192,10 +194,7 @@ class HomeController extends Controller
                     );
                 }
             }
-            // unset($urcArray[""]);
-            // return $urcArray;
-            // add order by array
-
+            array_multisort (array_column($urcArray, 'y'), SORT_DESC, $urcArray);
         }else{
             $dbAvgExcel = null;
         }

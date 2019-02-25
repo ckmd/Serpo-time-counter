@@ -27,6 +27,7 @@ window.onload = function() {
         data: [{
             type: "pie",
             yValueFormatString: "#,##0.00\"%\"",
+            indexLabel: "{label} ({y})",
             dataPoints: <?php echo json_encode($urcdArray, JSON_NUMERIC_CHECK); ?>
         }]
     });
@@ -41,6 +42,7 @@ window.onload = function() {
         data: [{
             type: "pie",
             yValueFormatString: "#,##0.00\"%\"",
+            indexLabel: "{label} ({y})",
             dataPoints: <?php echo json_encode($ukArray, JSON_NUMERIC_CHECK); ?>
         }]
     });
@@ -128,7 +130,7 @@ window.onload = function() {
     </div>
     @if(count($urcArray)!=0)
     <div class="table table-responsive table-hover" >
-        <table>
+        <table style="float: left" width="45%">
             <thead class="thead-dark">
                 <tr>
                     <th>Kategori Gangguan</th>

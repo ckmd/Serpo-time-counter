@@ -134,6 +134,7 @@ class NationalController extends Controller
                 );
             }
         }
+        array_multisort (array_column($urcdArray, 'y'), SORT_DESC, $urcdArray);
         // Menghitung Root Cause dengan durasi Secara Nasional Ends Here
         // Menghitung Root Cause tanpa durasi starts here
         $uniqueRootCase = $datas->where('total_durasi','=','')->pluck('root_cause')->unique();
@@ -146,6 +147,7 @@ class NationalController extends Controller
                 );
             }
         }
+        array_multisort (array_column($urcArray, 'y'), SORT_DESC, $urcArray);
         // Menghitung Root Cause tanpa durasi ends here
         // Menghitung Kendala Secara Nasional Starts Here
         $kendala = $datas->where('kendala','<>','')->pluck('kendala');
@@ -160,6 +162,7 @@ class NationalController extends Controller
                 );
             }
         }
+        array_multisort (array_column($ukArray, 'y'), SORT_DESC, $ukArray);
         // Menghitung Kendala Secara Nasional Ends Here
      
         $nationalDataForView = NationalData::all();
