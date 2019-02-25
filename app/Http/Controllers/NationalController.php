@@ -22,7 +22,10 @@ class NationalController extends Controller
         $woArray = null;
         $chartArray = null;
         $cardArray = null;
-        return view('NationalView', compact('nationalDataForView', 'rspsArray','woArray','chartArray','cardArray'));
+        $urcdArray = null;
+        $urcArray = null;
+        $ukArray = null;
+        return view('NationalView', compact('nationalDataForView', 'rspsArray','woArray','chartArray','cardArray','urcdArray','urcArray','ukArray'));
     }
 
     /**
@@ -52,6 +55,9 @@ class NationalController extends Controller
         $region = $datas->pluck('region')->unique();
         $woArray = array();
         $rspsArray = array();
+        $urcdArray = array();//Unique Root Cause Duration Array
+        $urcArray = array();//Unique Root Cause Array
+        $ukArray = array();//Unique Kendala Array
         foreach ($region as $key => $value) {
             $regionRow = $datas->where('region',$value);
             
@@ -112,9 +118,52 @@ class NationalController extends Controller
             $result = round($result/$counter,2);
             $chartArray[] = array('label'=>$um,'y'=>$result);
         }
-        // Menghitung performa / bulan ends here        
+        // Menghitung performa / bulan ends here   
+        // Menghitung Root Cause dengan durasi Secara Nasional Starts Here
+        $rootCaseDuration = $datas->where('total_durasi','<>','')->where('root_cause','<>','')->pluck('root_cause');
+        $uniqueRootCaseDuration = $rootCaseDuration->unique();
+        foreach ($uniqueRootCaseDuration as $urcd => $urcdName) {
+            $urcdValue = $datas->where('total_durasi','<>','')->where('root_cause',$urcdName)->count();
+            $urcdDuration = round($datas->where('total_durasi','<>','')->where('root_cause',$urcdName)->pluck('total_durasi')->sum()/$urcdValue,2);
+            if($urcdName!=""){
+                $urcdArray[] = array( 
+                    'label' =>$urcdName,
+                    'y'=>$urcdValue/$rootCaseDuration->count()*100,
+                    'total'=>$urcdValue,
+                    'durasi'=>$urcdDuration
+                );
+            }
+        }
+        // Menghitung Root Cause dengan durasi Secara Nasional Ends Here
+        // Menghitung Root Cause tanpa durasi starts here
+        $uniqueRootCase = $datas->where('total_durasi','=','')->pluck('root_cause')->unique();
+        foreach ($uniqueRootCase as $urc => $urcName) {
+            $urcValue = $datas->where('total_durasi','=','')->where('root_cause',$urcName)->count();
+            if($urcName!=""){
+                $urcArray[] = array( 
+                    'label' =>$urcName,
+                    'y'=>$urcValue,
+                );
+            }
+        }
+        // Menghitung Root Cause tanpa durasi ends here
+        // Menghitung Kendala Secara Nasional Starts Here
+        $kendala = $datas->where('kendala','<>','')->pluck('kendala');
+        $uniqueKendala = $kendala->unique();
+        foreach ($uniqueKendala as $ukKey => $ukName) {
+            $ukValue = $datas->where('kendala',$ukName)->count();
+            if($ukName!=""){
+                $ukArray[] = array( 
+                    'label' =>$ukName,
+                    'y'=>$ukValue/$kendala->count()*100,
+                    'total'=>$ukValue,
+                );
+            }
+        }
+        // Menghitung Kendala Secara Nasional Ends Here
+     
         $nationalDataForView = NationalData::all();
-        return view('NationalView', compact('nationalDataForView', 'rspsArray','woArray','pAwal','pAkhir','chartArray','cardArray'));
+        return view('NationalView', compact('nationalDataForView', 'rspsArray','woArray','pAwal','pAkhir','chartArray','cardArray','urcdArray','urcArray','ukArray'));
     }
 
     /**

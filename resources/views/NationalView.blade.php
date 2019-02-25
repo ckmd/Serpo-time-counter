@@ -43,11 +43,40 @@ window.onload = function() {
         data: [{
             type: "line",
             yValueFormatString: "#,##0.00\"%\"",
+            indexLabel: "{label} ({y})",
             dataPoints: <?php echo json_encode($chartArray, JSON_NUMERIC_CHECK); ?>
         }]
     });
     trendChart.render();
 
+    var rootCauseChart = new CanvasJS.Chart("rootCauseChart", {
+        theme: "light2", // "light1", "dark1", "dark2"
+        animationEnabled: true, 		
+        title:{
+            text: "Kategori Gangguan"
+        },
+        data: [{
+            type: "pie",
+            yValueFormatString: "#,##0.00\"%\"",
+            indexLabel: "{label} ({y})",
+            dataPoints: <?php echo json_encode($urcdArray, JSON_NUMERIC_CHECK); ?>
+        }]
+    });
+    rootCauseChart.render();
+
+    var kendalaChart = new CanvasJS.Chart("kendalaChart", {
+        theme: "light2", // "light1", "dark1", "dark2"
+        animationEnabled: true, 		
+        title:{
+            text: "Kategori Kendala"
+        },
+        data: [{
+            type: "pie",
+            yValueFormatString: "#,##0.00\"%\"",
+            dataPoints: <?php echo json_encode($ukArray, JSON_NUMERIC_CHECK); ?>
+        }]
+    });
+    kendalaChart.render();
 }
 </script>
 @endsection
@@ -111,8 +140,79 @@ window.onload = function() {
 </table>
 <br>
 <div id="chartContainer" style="height: 300px; width: 100%;"></div>
+<br>
 @endsection
 
+@section('pieChart')
+<div class="table table-responsive table-hover" >
+    @if($urcdArray!=null)
+    <table style="float: left" width="45%">
+        <thead class="thead-dark">
+            <tr>
+                <th>Kategori Gangguan</th>
+                <th>Total</th>
+                <th>Rataan Durasi (Menit)</th>
+            </tr>
+        </thead>
+        @foreach($urcdArray as $urcda)
+        <tr>
+            <td>{{$urcda['label']}}</td>
+            <td>{{$urcda['total']}}</td>
+            <td>{{$urcda['durasi']}}</td>
+        </tr>
+        @endforeach
+    </table>
+    @endif
+    @if($ukArray!=null)
+    <table style="float: right" width="45%">
+        <thead class="thead-dark">
+            <tr>
+            <th>Kategori Kendala</th>
+            <th>Total</th>
+            </tr>
+        </thead>
+        @foreach($ukArray as $uka)
+        <tr>
+            <td>{{$uka['label']}}</td>
+            <td>{{$uka['total']}}</td>
+        </tr>
+        @endforeach
+    </table>
+    @endif
+</div>
+<div class="table table-responsive table-hover" >
+@if($urcArray!=null)
+    <table style="float: left" width="45%">
+        <thead class="thead-dark">
+            <tr>
+                <th>Kategori Gangguan</th>
+                <th>Total</th>
+                <th>Durasi</th>
+            </tr>
+        </thead>
+        @foreach($urcArray as $urca)
+        <tr>
+            <td>{{$urca['label']}}</td>
+            <td>{{$urca['y']}}</td>
+            <td>n.a</td>
+        </tr>
+        @endforeach
+    </table>
+@endif
+</div>
+<table style="align: center; width: 100%;">
+        <tbody>
+            <tr>
+                <td>
+                <div id="rootCauseChart" style="height: 300px;width: 100%;"></div>
+                </td>
+                <td>
+                <div id="kendalaChart" style="height: 300px;width: 100%;"></div>
+                </td>
+            </tr>
+        </tbody>
+</table>
+@endsection
 @section('content')
 <blockquote class="blockquote text-center">
     <h3>
@@ -152,7 +252,8 @@ window.onload = function() {
 </blockquote>
 @yield('card')
 @yield('chart')
-<blockquote>
+@yield('pieChart')
+<blockquote class="blockquote text-center">
     <footer class="blockquote-footer">Data dalam satuan menit</footer>
 </blockquote>
 <table class="table table-bordered table-striped table-hover" style="text-align: center;">
