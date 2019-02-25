@@ -26,7 +26,7 @@ window.onload = function() {
         },
         data: [{
             type: "pie",
-            yValueFormatString: "#,##0\"\"",
+            yValueFormatString: "#,##0.00\"%\"",
             dataPoints: <?php echo json_encode($urcdArray, JSON_NUMERIC_CHECK); ?>
         }]
     });
@@ -40,7 +40,7 @@ window.onload = function() {
         },
         data: [{
             type: "pie",
-            yValueFormatString: "#,##0\"\"",
+            yValueFormatString: "#,##0.00\"%\"",
             dataPoints: <?php echo json_encode($ukArray, JSON_NUMERIC_CHECK); ?>
         }]
     });
@@ -106,7 +106,7 @@ window.onload = function() {
             @foreach($urcdArray as $urcda)
             <tr>
                 <td>{{$urcda['label']}}</td>
-                <td>{{$urcda['y']}}</td>
+                <td>{{$urcda['total']}}</td>
                 <td>{{$urcda['durasi']}}</td>
             </tr>
             @endforeach
@@ -121,7 +121,7 @@ window.onload = function() {
             @foreach($ukArray as $uka)
             <tr>
                 <td>{{$uka['label']}}</td>
-                <td>{{$uka['y']}}</td>
+                <td>{{$uka['total']}}</td>
             </tr>
             @endforeach
         </table>

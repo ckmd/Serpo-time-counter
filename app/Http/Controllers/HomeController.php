@@ -152,25 +152,29 @@ class HomeController extends Controller
                 $chartArray[] = array('label'=>$ud,'y'=>$result);
             }
             // Menghitung Kendala
-            $uniqueKendala = $getFilteredDate->pluck('kendala')->unique();
+            $kendala = $getFilteredDate->where('kendala','<>','')->pluck('kendala');
+            $uniqueKendala = $kendala->unique();
             foreach ($uniqueKendala as $ukKey => $ukName) {
                 $ukValue = $getFilteredDate->where('kendala',$ukName)->count();
                 if($ukName!=""){
                     $ukArray[] = array( 
                         'label' =>$ukName,
-                        'y'=>$ukValue,
+                        'y'=>$ukValue/$kendala->count()*100,
+                        'total'=>$ukValue,
                     );
                 }
             }
             // Menghitung Root Cause dengan durasi
-            $uniqueRootCaseDuration = $getFilteredDate->where('total_durasi','<>','')->pluck('root_cause')->unique();
+            $rootCaseDuration = $getFilteredDate->where('total_durasi','<>','')->where('root_cause','<>','')->pluck('root_cause');
+            $uniqueRootCaseDuration = $rootCaseDuration->unique();
             foreach ($uniqueRootCaseDuration as $urcd => $urcdName) {
                 $urcdValue = $getFilteredDate->where('total_durasi','<>','')->where('root_cause',$urcdName)->count();
                 $urcdDuration = round($getFilteredDate->where('total_durasi','<>','')->where('root_cause',$urcdName)->pluck('total_durasi')->sum()/$urcdValue,2);
                 if($urcdName!=""){
                     $urcdArray[] = array( 
                         'label' =>$urcdName,
-                        'y'=>$urcdValue,
+                        'y'=>$urcdValue/$rootCaseDuration->count()*100,
+                        'total'=>$urcdValue,
                         'durasi'=>$urcdDuration
                     );
                 }
