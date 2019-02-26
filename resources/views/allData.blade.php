@@ -70,6 +70,7 @@
                     @endforeach
                 </tbody>
             </table>
+            {{$datas->links()}}
         </div>
     </div>
 </div>
