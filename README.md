@@ -11,3 +11,8 @@
 - Migrate the database using : php artisan migrate
 - run the application using : php artisan serve
 - open at localhost:8000
+# How to Use in Linux Server
+- Clone or download file
+- set webserver directory in /etc/apache/sites-available/https.conf into /var/www/::Project Name::/public
+- run chmod -R 777 ::Project Name::/
+- run composer update
