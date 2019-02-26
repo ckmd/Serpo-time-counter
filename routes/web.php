@@ -19,7 +19,7 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 Route::post('/home','HomeController@reload');
-Route::resource('category','CategoryController')->middleware('auth');
+Route::resource('gangguan','GangguanController')->middleware('auth');
 Route::resource('excel','excelController')->middleware('auth');
 Route::resource('allData','DBController')->middleware('auth');
 Route::resource('national','NationalController')->middleware('auth');

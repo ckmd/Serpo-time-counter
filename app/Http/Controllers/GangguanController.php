@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Category;
+use App\Gangguan;
 
-class CategoryController extends Controller
+class GangguanController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,8 +14,8 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $categories = Category::all();
-        return view('category.index', compact('categories'));
+        $gangguans = Gangguan::all();
+        return view('gangguan.index', compact('gangguans'));
     }
 
     /**
@@ -36,7 +36,7 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        Category::create($request->all());
+        Gangguan::create($request->all());
         return back();
     }
 
@@ -80,8 +80,10 @@ class CategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-        //
+        $gangguan = Gangguan::findOrFail($request->gangguan_id);
+        $gangguan->delete();
+        return redirect('/gangguan');
     }
 }

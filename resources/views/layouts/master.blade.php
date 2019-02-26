@@ -70,6 +70,8 @@ if(isset($_POST['SubmitButton'])){ //check if form was submitted
         <li><a href="{{url('allData')}}"><i class="fa fa-table"></i> <span>All Data</span></a></li>
         <li><a href="{{url('home')}}"><i class="fa fa-map-o"></i> <span>Filter By Region</span></a></li>
         <li><a href="{{url('national')}}"><i class="fa fa-globe"></i> <span>Filter Nasional</span></a></li>
+        <li><a href="{{url('gangguan')}}"><i class="fa fa-globe"></i> <span>Daftar Gangguan</span></a></li>
+        <li><a href="{{url('category')}}"><i class="fa fa-globe"></i> <span>Daftar Kendala</span></a></li>
         <li>
             <a href="{{ route('logout') }}"
                 onclick="event.preventDefault();
@@ -119,5 +121,6 @@ print "message : ".$message;
 </div>
 <!-- <script src="{{asset('js/app.js')}}"></script> -->
 <script type = "text/javascript" src = "{{URL :: asset ('js/app.js')}}"> </script>
+@yield('footer')
 </body>
 </html>
