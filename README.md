@@ -12,7 +12,9 @@
 - run the application using : php artisan serve
 - open at localhost:8000
 # How to Use in Linux Server
-- Clone or download file
-- set webserver directory in /etc/apache/sites-available/https.conf into /var/www/::Project Name::/public
-- run chmod -R 777 ::Project Name::/
-- run composer update
+- Clone or download file into /var/www/
+  if Using HTTPS{
+    - set webserver directory in /etc/apache/sites-available/https.conf into /var/www/::Project Name::/public
+  }
+- run chmod -R 777 ::Project Name::/ outside ::Project Name::
+- run composer update inside ::Project Name::
