@@ -177,6 +177,10 @@ class excelController extends Controller
                     if($getSheet[$i][16]=='' || $getSheet[$i][12]==''){
                         $workTime = null;
                     }else{
+                        $stringStartWork = str_replace(array( '(', ')' ), '', $getSheet[$i][12]);
+                        $arrayStartWork = getDateTime('sw', $stringStartWork);
+                        $startWork = new DateTime($arrayStartWork['sw0']);
+
                         $stringComplete = str_replace(array( '(', ')' ), '', $getSheet[$i][16]);
                         $arrayComplete = getDateTime('cp',$stringComplete);
                         $complete = new DateTime($arrayComplete['cp0']);
@@ -192,6 +196,7 @@ class excelController extends Controller
                     if($arrayStartTravel != null && $arrayStartWork != null && $arrayComplete != null){
                         $arrayMerge = array_merge($arrayStartTravel, $arrayStartWork, $arrayComplete);
                         foreach ($arrayStopClock as $key => $value) {
+                            // Filter untuk anomalli data (timestamp stopclock diluar timestamp complete)
                             if(new DateTime($value) > $complete){
                                 continue;
                             }else{
