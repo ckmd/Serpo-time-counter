@@ -43,7 +43,7 @@ class excelController extends Controller
         // ini_set('upload_max_filesize', '20M');
         ini_set('memory_limit', '-1');
         // Delete Database Sebelum Upload Baru
-        // Excel::truncate();
+        Excel::truncate();
         
         // maksimum time limit 900 seconds, bisa disesuaikan
         ini_set('max_execution_time', 900);
@@ -60,10 +60,10 @@ class excelController extends Controller
         // Method untuk menrubah Selisih menjadi menit
         function filterMinute($dateDiff){
             $value = null;
-            if($dateDiff->d == 0 && $dateDiff->h == 0 && $dateDiff->i == 0 && $dateDiff->s == 0){
+            if($dateDiff->days == 0 && $dateDiff->h == 0 && $dateDiff->i == 0 && $dateDiff->s == 0){
             }
             else{
-                $value += $dateDiff->i + ($dateDiff->h * 60) + ($dateDiff->d * 24 * 60);
+                $value += $dateDiff->i + ($dateDiff->h * 60) + ($dateDiff->days * 24 * 60);
                 if($dateDiff->s>0){
                     $value += ($dateDiff->s/60);
                 }
@@ -192,21 +192,27 @@ class excelController extends Controller
                     if($arrayStartTravel != null && $arrayStartWork != null && $arrayComplete != null){
                         $arrayMerge = array_merge($arrayStartTravel, $arrayStartWork, $arrayComplete);
                         foreach ($arrayStopClock as $key => $value) {
-                            $tempAm = array();
-                            foreach ($arrayMerge as $am => $arr) {
-                                if($arr > $value){
-                                    $tempSCValue = round(filterMinute(date_diff(new DateTime($arr),new DateTime($value))),2);
-                                    $tempAm[$am] = $tempSCValue;
+                            if(new DateTime($value) > $complete){
+                                continue;
+                            }else{
+                                $tempAm = array();
+                                foreach ($arrayMerge as $am => $arr) {
+                                    if(new DateTime($arr) > new DateTime($value)){
+                                        $tempSCValue = round(filterMinute(date_diff(new DateTime($value),new DateTime($arr))),2);
+                                        $tempAm[$am] = $tempSCValue;
+                                    }
                                 }
-                            }
-                            $minValue = round(min($tempAm),2);
-                            $indeks = array_search(min($tempAm),$tempAm);
-                            if($indeks == 'st0' && $prepTime > $minValue){
-                                $prepTime -= $minValue;
-                            }else if(substr($indeks,0,2)=='st' && $travelTime > $minValue){
-                                $travelTime -= $minValue;
-                            }else if(substr($indeks,0,2)=='sw' && $workTime > $minValue){
-                                $workTime -= $minValue;
+                                $minValue = round(min($tempAm),2);
+                                $indeks = array_search(min($tempAm),$tempAm);
+                                // return $tempAm;
+                                // return $key.' :: '.$value.' , '.$indeks.' :: '.$minValue;
+                                if($indeks == 'st0' && $prepTime > $minValue){
+                                    $prepTime -= $minValue;
+                                }else if(substr($indeks,0,2)=='st' && $travelTime > $minValue){
+                                    $travelTime -= $minValue;
+                                }else if(substr($indeks,0,2)=='sw' && $workTime > $minValue){
+                                    $workTime -= $minValue;
+                                }
                             }
                         }
                     }
