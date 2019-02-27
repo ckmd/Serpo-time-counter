@@ -23,3 +23,4 @@ Route::resource('gangguan','GangguanController')->middleware('auth');
 Route::resource('excel','excelController')->middleware('auth');
 Route::resource('allData','DBController')->middleware('auth');
 Route::resource('national','NationalController')->middleware('auth');
+Route::get('refresh','DBController@refresh')->middleware('auth');

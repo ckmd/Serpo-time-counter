@@ -37,7 +37,7 @@
                         <td>{{$g->parameter}}</td>
                         <td>
                             <!-- <a href="#" class="btn btn-secondary">Update</a> -->
-                            <button data-gangid="{{$g->id}}" class="btn btn-danger" data-toggle="modal" data-target="#delete">Delete</button>
+                            <button data-gangid="{{$g->id}}" class="btn btn-danger" data-toggle="modal" data-target="#delete">Hapus</button>
                         </td>
                     </tr>
                     <?php $id++; ?>
@@ -49,6 +49,7 @@
         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
         Tambah Gangguan
         </button>
+        <a href="{{url('refresh')}}" class="btn btn-success">Refresh Data</a>
         </div>
     </div>
 </div>
@@ -58,7 +59,7 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h4 class="modal-title" id="myModalLabel">Data Gangguan</h4>
+        <h4 class="modal-title" id="myModalLabel">Tambah Gangguan</h4>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
       </div>
       <form action="{{route('gangguan.store')}}" method="post">
@@ -67,8 +68,8 @@
                     @include('gangguan.addform')
         </div>
         <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            <button type="submit" class="btn btn-primary">Save</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal">Kembali</button>
+            <button type="submit" class="btn btn-primary">Simpan</button>
         </div>
       </form>
     </div>
@@ -80,21 +81,21 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
+        <h4 class="modal-title" id="myModalLabel">Hapus Gangguan</h4>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Delete Confirmation</h4>
       </div>
       <form action="{{route('gangguan.destroy','test')}}" method="post">
       {{method_field('delete')}}
       {{csrf_field()}}
         <div class="modal-body">
         <p>
-            Do you want to delete the data ?
+            Apakah anda ingin menghapus Gangguan ?
         </p>
             <input type="hidden" name="gangguan_id" id="gang_id" value="">
         </div>
         <div class="modal-footer">
-            <button type="button" class="btn btn-primary" data-dismiss="modal">No, Cancel</button>
-            <button type="submit" class="btn btn-danger">Yes, Delete</button>
+            <button type="button" class="btn btn-primary" data-dismiss="modal">Kembali</button>
+            <button type="submit" class="btn btn-danger">Hapus</button>
         </div>
       </form>
     </div>

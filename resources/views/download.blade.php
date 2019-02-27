@@ -23,6 +23,8 @@ $header = array(
     'Travelling'=>'0.00',
     'Working'=>'0.00',
     'RSPS'=>'0%',
+    'gangguan'=>'string',
+    'kendala'=>'string',
 );
 
 $rows = array();
@@ -38,8 +40,10 @@ $rows = array();
             "$d->prep_time",
             "$d->travel_time",
             "$d->work_time",
-            "$d->rsps"
-        );
+            "$d->rsps",
+            "$d->root_cause",
+            "$d->kendala"
+            );
 		}
             $writer = new XLSXWriter();
 $writer->setAuthor('icon+'); 

@@ -261,6 +261,7 @@ class excelController extends Controller
                     $data->total_durasi = $total_durasi;
                     $data->root_cause = $root_cause;
                     $data->kendala = $kendala;
+                    $data->root_cause_description = $getSheet[$i][23];
                     $data->save();
                 }
             }

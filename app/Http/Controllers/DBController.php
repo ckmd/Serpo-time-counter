@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Excel;
+use App\Gangguan;
 use App\avgExcel;
 
 class DBController extends Controller
@@ -35,6 +36,45 @@ class DBController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+    public function refresh(){
+        function findRootCause($string, $gangguan, $uniqueGangguan){
+            $rootCauseConclusion = null;
+            $string = explode(" ", $string);
+            $cause = array();
+            foreach ($uniqueGangguan as $ugKey => $ugValue) {
+                $cause[$ugValue] = $gangguan->where('kategori_gangguan','=',$ugValue)->pluck('parameter')->toArray();
+            }
+            $resultArray = array();
+            foreach ($cause as $causeKey => $causeValue) {
+                $causeResult = count(array_intersect($causeValue, $string));
+                $resultArray[$causeKey] = $causeResult;
+            }
+            $maxResult = max($resultArray);
+            $indeksResult = array_search(max($resultArray),$resultArray);
+
+            // Check Highest Root Cause
+            if($maxResult>0){
+                $rootCauseConclusion = $indeksResult;
+            }else if($string!=null){
+                $rootCauseConclusion = "Lain";
+            }
+            return $rootCauseConclusion;
+        }
+
+        ini_set('max_execution_time', 900);
+        $excel = Excel::get();
+        $gangguan = Gangguan::get();
+        $uniqueGangguan = $gangguan->pluck('kategori_gangguan')->unique();
+        foreach($excel as $e){
+                $id = $excel->find($e->id);
+                if($e->root_cause_description!=null){
+                    $id->root_cause = findRootCause($e->root_cause_description,$gangguan,$uniqueGangguan);
+                    $id->save();
+                }
+            }
+        return redirect()->route('allData.index');
+    }
+
     public function store(Request $request)
     {
         $pAwal = $request->awal;
