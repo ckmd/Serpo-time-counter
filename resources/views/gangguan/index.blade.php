@@ -12,38 +12,46 @@
 @extends('layouts.master')
 
 @section('content')
-    <h3>Halaman Gangguan</h3>
-<!-- Table Start Here -->
-    <table class="table table-responsive">
-        <thead>
-            <tr>
-                <th>No</th>
-                <th>Kategori Gangguan</th>
-                <th>Parameter</th>
-                <th>Action</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php $id = 1;?>
-            @foreach($gangguans as $g)
-            <tr>
-                <th>{{$id}}</th>
-                <td>{{$g->kategori_gangguan}}</td>
-                <td>{{$g->parameter}}</td>
-                <td>
-                    <!-- <a href="#" class="btn btn-secondary">Update</a> -->
-                    <button data-gangid="{{$g->id}}" class="btn btn-danger" data-toggle="modal" data-target="#delete">Delete</button>
-                </td>
-            </tr>
-            <?php $id++; ?>
-            @endforeach
-        </tbody>
-    </table>
-<!-- Table Ends Here -->
-<!-- Button trigger modal -->
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
-  Tambah Gangguan
-</button>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="text-center">
+                <h3>Halaman Gangguan</h3>
+            </div>
+            <!-- Table Start Here -->
+            <table class="table table-striped table-hover table-bordered" >
+                <thead class="thead-light" style="text-align: center;">
+                    <tr>
+                        <th>No</th>
+                        <th>Kategori Gangguan</th>
+                        <th>Parameter</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php $id = 1;?>
+                    @foreach($gangguans as $g)
+                    <tr>
+                        <th>{{$id}}</th>
+                        <td>{{$g->kategori_gangguan}}</td>
+                        <td>{{$g->parameter}}</td>
+                        <td>
+                            <!-- <a href="#" class="btn btn-secondary">Update</a> -->
+                            <button data-gangid="{{$g->id}}" class="btn btn-danger" data-toggle="modal" data-target="#delete">Delete</button>
+                        </td>
+                    </tr>
+                    <?php $id++; ?>
+                    @endforeach
+                </tbody>
+            </table>
+            <!-- Table Ends Here -->
+        <!-- Button trigger modal -->
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
+        Tambah Gangguan
+        </button>
+        </div>
+    </div>
+</div>
 
 <!-- Modal -->
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">

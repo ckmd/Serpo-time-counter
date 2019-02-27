@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use PHPExcel_IOFactory;
 use DateTime;
 use App\Excel;
+use App\Gangguan;
 
 class excelController extends Controller
 {
@@ -75,18 +76,25 @@ class excelController extends Controller
         function findRootCause($string){
             $rootCauseConclusion = null;
             $string = explode(" ", $string);
-            $cause = array(
-                'FOC' => array('foc','putus','core','kabel','cable','kable'),
-                'FOT' => array('fot','comm'),
-                'PS' => array('ps'),
-            );
+            // $cause = array(
+            //     'FOC' => array('FOC','putus','core','kabel','cable','kable'),
+            //     'FOT' => array('FOT','comm'),
+            //     'PS' => array('PS'),
+            // );
+            $cause = array();
+            $gangguan = Gangguan::get();
+            $uniqueGangguan = $gangguan->pluck('kategori_gangguan')->unique();
+            foreach ($uniqueGangguan as $ugKey => $ugValue) {
+                $cause[$ugValue] = $gangguan->where('kategori_gangguan','=',$ugValue)->pluck('parameter')->toArray();
+            }
             $resultArray = array();
             foreach ($cause as $causeKey => $causeValue) {
-                $causeResult = count(array_intersect($string, $causeValue));
+                $causeResult = count(array_intersect($causeValue, $string));
                 $resultArray[$causeKey] = $causeResult;
             }
             $maxResult = max($resultArray);
             $indeksResult = array_search(max($resultArray),$resultArray);
+
             // Check Highest Root Cause
             if($maxResult>0){
                 $rootCauseConclusion = $indeksResult;
@@ -232,6 +240,7 @@ class excelController extends Controller
                 if($getSheet[$i][23]!=null){
                     $root_cause = findRootCause($getSheet[$i][23]);
                 }
+                // return $root_cause;
                 if($getSheet[$i][20]!=null){
                     $kendala = findKendala($getSheet[$i][20]);
                 }
