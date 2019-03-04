@@ -8,8 +8,6 @@ use App\Gangguan;
 use App\Kendala;
 use App\avgExcel;
 use App\DataGangguan;
-use DateTime;
-use DateInterval;
 
 class DBController extends Controller
 {
@@ -98,7 +96,7 @@ class DBController extends Controller
         }
         
         ini_set('max_execution_time', 900);
-        $excel = Excel::get();
+        $excel = Excel::all();
 
         $gangguan = Gangguan::get();
         $uniqueGangguan = $gangguan->pluck('kategori_gangguan')->unique();
@@ -107,6 +105,7 @@ class DBController extends Controller
         $uniqueKendala = $kendala->pluck('kategori_kendala')->unique();
 
         foreach($excel as $e){
+            // Find yang Membuat Berats
                 $id = $excel->find($e->id);
                 if($e->root_cause_description!=null){
                     $id->root_cause = findRootCause($e->root_cause_description,$gangguan,$uniqueGangguan);
@@ -141,45 +140,6 @@ class DBController extends Controller
         return view('avgDownload', compact('nameFile','dbAvgExcel'));
     }
 
-    public function gangguanData($label, $region, $pAwal, $pAkhir){
-        DataGangguan::truncate();
-        function removeStar($star){
-            if($star=='*'){
-                $star = NULL;
-            }
-            return $star;
-        }
-        $pAwal = removeStar($pAwal);
-        $pAkhir = removeStar($pAkhir);
-        $addOneDay = null;
-        $addOneDay = (new DateTime($pAkhir))->add(new DateInterval('P1D'))->format('Y-m-d');
-        $dataGangguan = Excel::where('region' , $region)->get();
-        $dataGangguan = $dataGangguan->where('wo_date','>=',$pAwal)->where('wo_date','<=',$addOneDay)
-        ->where('root_cause',$label)->where('rsps','=','100');
-        foreach($dataGangguan as $dg){
-            $data = new DataGangguan;
-            $data->ar_id = $dg->ar_id;
-            $data->prob_id = $dg->prob_id;
-            $data->kode_wo = $dg->kode_wo;
-            $data->region = $dg->region;
-            $data->basecamp = $dg->basecamp;
-            $data->serpo = $dg->serpo;
-            $data->wo_date = $dg->wo_date;
-            $data->durasi_sbu = $dg->durasi_sbu;
-            $data->prep_time = $dg->prep_time;
-            $data->travel_time = $dg->travel_time;
-            $data->work_time = $dg->work_time;
-            $data->rsps = $dg->rsps/100;
-            $data->total_durasi = $dg->total_durasi;
-            $data->root_cause = $dg->root_cause;
-            $data->kendala = $dg->kendala;
-            $data->root_cause_description = $dg->root_cause_description;
-            $data->kendala_description = $dg->kendala_description;
-            $data->save();
-        }
-        $dataGangguan = DataGangguan::all();
-        return view('gangguan.data', compact('dataGangguan','label'));
-    }
     /**
      * Display the specified resource.
      *

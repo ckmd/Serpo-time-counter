@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Gangguan;
+use App\Excel;
 use App\DataGangguan;
+use DateTime;
+use DateInterval;
 
 class GangguanController extends Controller
 {
@@ -39,6 +42,45 @@ class GangguanController extends Controller
     {
         Gangguan::create($request->all());
         return back();
+    }
+    public function gangguanData($label, $region, $pAwal, $pAkhir){
+        DataGangguan::truncate();
+        function removeStar($star){
+            if($star=='*'){
+                $star = NULL;
+            }
+            return $star;
+        }
+        $pAwal = removeStar($pAwal);
+        $pAkhir = removeStar($pAkhir);
+        $addOneDay = null;
+        $addOneDay = (new DateTime($pAkhir))->add(new DateInterval('P1D'))->format('Y-m-d');
+        $dataGangguan = Excel::where('region' , $region)->get();
+        $dataGangguan = $dataGangguan->where('wo_date','>=',$pAwal)->where('wo_date','<=',$addOneDay)
+        ->where('root_cause',$label)->where('rsps','=','100');
+        foreach($dataGangguan as $dg){
+            $data = new DataGangguan;
+            $data->ar_id = $dg->ar_id;
+            $data->prob_id = $dg->prob_id;
+            $data->kode_wo = $dg->kode_wo;
+            $data->region = $dg->region;
+            $data->basecamp = $dg->basecamp;
+            $data->serpo = $dg->serpo;
+            $data->wo_date = $dg->wo_date;
+            $data->durasi_sbu = $dg->durasi_sbu;
+            $data->prep_time = $dg->prep_time;
+            $data->travel_time = $dg->travel_time;
+            $data->work_time = $dg->work_time;
+            $data->rsps = $dg->rsps/100;
+            $data->total_durasi = $dg->total_durasi;
+            $data->root_cause = $dg->root_cause;
+            $data->kendala = $dg->kendala;
+            $data->root_cause_description = $dg->root_cause_description;
+            $data->kendala_description = $dg->kendala_description;
+            $data->save();
+        }
+        $dataGangguan = DataGangguan::paginate(50);
+        return view('gangguan.data', compact('dataGangguan','label'));
     }
 
     /**
