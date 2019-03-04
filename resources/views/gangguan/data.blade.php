@@ -8,7 +8,7 @@
             <div class="text-center">
                 <h1 class="display-6">Data Gangguan {{$label}} </h1>
             </div>
-            <a href="{{route('excel.create')}}" class="btn btn-success">Download to .xlsx</a>
+            <a href="{{route('gangguan.create')}}" class="btn btn-success">Download to .xlsx</a>
             <table class="table-responsive table-hover table-bordered table-striped" style="text-align: center;">
                 <thead>
                     <tr>
@@ -55,7 +55,7 @@
                         @else
                         <td>n.a</td>
                         @endif
-                        <td>{{$cat->rsps}}%</td>
+                        <td>{{$cat->rsps * 100}}%</td>
                         @if($cat->root_cause!=null)
                         <td>{{$cat->root_cause}}</td>
                         @else

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Gangguan;
+use App\DataGangguan;
 
 class GangguanController extends Controller
 {
@@ -25,9 +26,9 @@ class GangguanController extends Controller
      */
     public function create()
     {
-        //
+        $datas = DataGangguan::all();
+        return view('gangguan.download', compact('datas'));
     }
-
     /**
      * Store a newly created resource in storage.
      *
