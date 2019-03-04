@@ -7,6 +7,7 @@ use PHPExcel_IOFactory;
 use DateTime;
 use App\Excel;
 use App\Gangguan;
+use App\Kendala;
 
 class excelController extends Controller
 {
@@ -44,7 +45,7 @@ class excelController extends Controller
         // ini_set('upload_max_filesize', '20M');
         ini_set('memory_limit', '-1');
         // Delete Database Sebelum Upload Baru
-        Excel::truncate();
+        // Excel::truncate();
         
         // maksimum time limit 900 seconds, bisa disesuaikan
         ini_set('max_execution_time', 900);
@@ -107,11 +108,18 @@ class excelController extends Controller
         function findKendala($k){
             $kendalaConclusion = null;
             $k = explode(" ", $k);
-            $kendalaDict = array(
-                'tim' => array('tim','idle'),
-                'cuaca' => array('cuaca','hujan','banjir'),
-                'user' => array('user'),
-            );
+            // $kendalaDict = array(
+            //     'tim' => array('tim','idle'),
+            //     'cuaca' => array('cuaca','hujan','banjir'),
+            //     'user' => array('user'),
+            // );
+            $kendalaDict = array();
+            $kendala = Kendala::get();
+            $uniqueKendala = $kendala->pluck('kategori_kendala')->unique();
+            foreach ($uniqueKendala as $ukKey => $ukValue) {
+                $kendalaDict[$ukValue] = $kendala->where('kategori_kendala','=',$ukValue)->pluck('parameter')->toArray();
+            }
+
             $resultArray = array();
             foreach ($kendalaDict as $kdKey => $kdValue) {
                 $kResult = count(array_intersect($k, $kdValue));
@@ -130,7 +138,7 @@ class excelController extends Controller
         
         $getSheet = null;
         $highestRow = null;
-        require_once '../classes/PHPExcel/IOFactory.php';
+        require_once '../Classes/PHPExcel/IOFactory.php';
         if(isset($_FILES['excelFile']) && !empty($_FILES['excelFile']['tmp_name']))
         {
             $excelObject = PHPExcel_IOFactory::load($_FILES['excelFile']['tmp_name']);
@@ -240,7 +248,6 @@ class excelController extends Controller
                 if($getSheet[$i][23]!=null){
                     $root_cause = findRootCause($getSheet[$i][23]);
                 }
-                // return $root_cause;
                 if($getSheet[$i][20]!=null){
                     $kendala = findKendala($getSheet[$i][20]);
                 }
@@ -262,6 +269,7 @@ class excelController extends Controller
                     $data->root_cause = $root_cause;
                     $data->kendala = $kendala;
                     $data->root_cause_description = $getSheet[$i][23];
+                    $data->kendala_description = $getSheet[$i][20];
                     $data->save();
                 }
             }
