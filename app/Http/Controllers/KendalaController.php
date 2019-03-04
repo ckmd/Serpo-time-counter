@@ -4,6 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Kendala;
+use App\DataKendala;
+use App\Excel;
+use DateTime;
+use DateInterval;
 
 class KendalaController extends Controller
 {
@@ -25,8 +29,9 @@ class KendalaController extends Controller
      */
     public function create()
     {
+        $datas = DataKendala::all();
+        return view('kendala.download', compact('datas'));
     }
-
     /**
      * Store a newly created resource in storage.
      *
@@ -39,6 +44,45 @@ class KendalaController extends Controller
         return back();
     }
 
+    public function kendalaData($label, $region, $pAwal, $pAkhir){
+        DataKendala::truncate();
+        function removeStar($star){
+            if($star=='*'){
+                $star = NULL;
+            }
+            return $star;
+        }
+        $pAwal = removeStar($pAwal);
+        $pAkhir = removeStar($pAkhir);
+        $addOneDay = null;
+        $addOneDay = (new DateTime($pAkhir))->add(new DateInterval('P1D'))->format('Y-m-d');
+        $dataKendala = Excel::where('region' , $region)->get();
+        $dataKendala = $dataKendala->where('wo_date','>=',$pAwal)->where('wo_date','<=',$addOneDay)
+        ->where('kendala',$label)->where('rsps','=','100');
+        foreach($dataKendala as $dk){
+            $data = new DataKendala;
+            $data->ar_id = $dk->ar_id;
+            $data->prob_id = $dk->prob_id;
+            $data->kode_wo = $dk->kode_wo;
+            $data->region = $dk->region;
+            $data->basecamp = $dk->basecamp;
+            $data->serpo = $dk->serpo;
+            $data->wo_date = $dk->wo_date;
+            $data->durasi_sbu = $dk->durasi_sbu;
+            $data->prep_time = $dk->prep_time;
+            $data->travel_time = $dk->travel_time;
+            $data->work_time = $dk->work_time;
+            $data->rsps = $dk->rsps/100;
+            $data->total_durasi = $dk->total_durasi;
+            $data->root_cause = $dk->root_cause;
+            $data->kendala = $dk->kendala;
+            $data->root_cause_description = $dk->root_cause_description;
+            $data->kendala_description = $dk->kendala_description;
+            $data->save();
+        }
+        $dataKendala = DataKendala::paginate(50);
+        return view('kendala.data', compact('dataKendala','label'));
+    }
     /**
      * Display the specified resource.
      *

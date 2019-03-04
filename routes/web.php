@@ -27,4 +27,4 @@ Route::resource('national','NationalController')->middleware('auth');
 Route::get('refresh','DBController@refresh')->middleware('auth');
 
 Route::get('gangguan-data/{label}/{region}/{pAwal?}/{pAkhir?}','GangguanController@gangguanData')->middleware('auth');
-Route::get('kendala-data','DBController@kendalaData')->middleware('auth');
+Route::get('kendala-data/{label}/{region}/{pAwal?}/{pAkhir?}','KendalaController@kendalaData')->middleware('auth');

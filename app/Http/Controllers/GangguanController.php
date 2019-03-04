@@ -55,7 +55,11 @@ class GangguanController extends Controller
         $pAkhir = removeStar($pAkhir);
         $addOneDay = null;
         $addOneDay = (new DateTime($pAkhir))->add(new DateInterval('P1D'))->format('Y-m-d');
-        $dataGangguan = Excel::where('region' , $region)->get();
+        if($region!='national'){
+            $dataGangguan = Excel::where('region' , $region)->get();
+        }else{
+            $dataGangguan = Excel::all();
+        }
         $dataGangguan = $dataGangguan->where('wo_date','>=',$pAwal)->where('wo_date','<=',$addOneDay)
         ->where('root_cause',$label)->where('rsps','=','100');
         foreach($dataGangguan as $dg){
@@ -80,6 +84,9 @@ class GangguanController extends Controller
             $data->save();
         }
         $dataGangguan = DataGangguan::paginate(50);
+        if($region=='national'){
+            $label = 'National '.$label;
+        }
         return view('gangguan.data', compact('dataGangguan','label'));
     }
 
