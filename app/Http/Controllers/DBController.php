@@ -42,54 +42,60 @@ class DBController extends Controller
     public function refresh(){
         function findRootCause($string, $gangguan, $uniqueGangguan){
             $rootCauseConclusion = null;
-            $string = explode(" ", $string);
+            if($gangguan->count()!=null){
 
-            $cause = array();
-            foreach ($uniqueGangguan as $ugKey => $ugValue) {
-                $cause[$ugValue] = $gangguan->where('kategori_gangguan','=',$ugValue)->pluck('parameter')->toArray();
-            }
-            $resultArray = array();
-            foreach ($cause as $causeKey => $causeValue) {
-                $causeResult = count(array_intersect($causeValue, $string));
-                $resultArray[$causeKey] = $causeResult;
-            }
-            $maxResult = max($resultArray);
-            $indeksResult = array_search(max($resultArray),$resultArray);
-
-            // Check Highest Root Cause
-            if($maxResult>0){
-                $rootCauseConclusion = $indeksResult;
-            }else if($string!=null){
+                $string = explode(" ", $string);
+                
+                $cause = array();
+                foreach ($uniqueGangguan as $ugKey => $ugValue) {
+                    $cause[$ugValue] = $gangguan->where('kategori_gangguan','=',$ugValue)->pluck('parameter')->toArray();
+                }
+                $resultArray = array();
+                foreach ($cause as $causeKey => $causeValue) {
+                    $causeResult = count(array_intersect($causeValue, $string));
+                    $resultArray[$causeKey] = $causeResult;
+                }
+                $maxResult = max($resultArray);
+                $indeksResult = array_search(max($resultArray),$resultArray);
+                
+                // Check Highest Root Cause
+                if($maxResult>0){
+                    $rootCauseConclusion = $indeksResult;
+                }else if($string!=null){
                 $rootCauseConclusion = "Lain";
             }
-            return $rootCauseConclusion;
+        }
+        return $rootCauseConclusion;
         }
 
         function findKendala($k, $kendala, $uniqueKendala){
             $kendalaConclusion = null;
-            $k = explode(" ", $k);
+            if($kendala->count()!=null){
 
-            $kendalaDict = array();
-            foreach ($uniqueKendala as $ukKey => $ukValue) {
-                $kendalaDict[$ukValue] = $kendala->where('kategori_kendala','=',$ukValue)->pluck('parameter')->toArray();
-            }
-
-            $resultArray = array();
-            foreach ($kendalaDict as $kdKey => $kdValue) {
-                $kResult = count(array_intersect($k, $kdValue));
-                $resultArray[$kdKey] = $kResult;
-            }
-            $maxResult = max($resultArray);
-            $indeksResult = array_search(max($resultArray),$resultArray);
+                $k = explode(" ", $k);
+                
+                $kendalaDict = array();
+                foreach ($uniqueKendala as $ukKey => $ukValue) {
+                    $kendalaDict[$ukValue] = $kendala->where('kategori_kendala','=',$ukValue)->pluck('parameter')->toArray();
+                }
+                
+                $resultArray = array();
+                foreach ($kendalaDict as $kdKey => $kdValue) {
+                    $kResult = count(array_intersect($k, $kdValue));
+                    $resultArray[$kdKey] = $kResult;
+                }
+                $maxResult = max($resultArray);
+                $indeksResult = array_search(max($resultArray),$resultArray);
             // Check Highest Root Cause
             if($maxResult>0){
                 $kendalaConclusion = $indeksResult;
             }else if($k!=null){
                 $kendalaConclusion = "Lain";
             }
-            return $kendalaConclusion;
         }
-
+        return $kendalaConclusion;
+        }
+        
         ini_set('max_execution_time', 900);
         $excel = Excel::get();
 

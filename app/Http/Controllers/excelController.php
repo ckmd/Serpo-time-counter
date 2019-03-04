@@ -84,23 +84,25 @@ class excelController extends Controller
             // );
             $cause = array();
             $gangguan = Gangguan::get();
-            $uniqueGangguan = $gangguan->pluck('kategori_gangguan')->unique();
-            foreach ($uniqueGangguan as $ugKey => $ugValue) {
-                $cause[$ugValue] = $gangguan->where('kategori_gangguan','=',$ugValue)->pluck('parameter')->toArray();
-            }
-            $resultArray = array();
-            foreach ($cause as $causeKey => $causeValue) {
-                $causeResult = count(array_intersect($causeValue, $string));
-                $resultArray[$causeKey] = $causeResult;
-            }
-            $maxResult = max($resultArray);
-            $indeksResult = array_search(max($resultArray),$resultArray);
-
-            // Check Highest Root Cause
-            if($maxResult>0){
-                $rootCauseConclusion = $indeksResult;
-            }else if($string!=null){
-                $rootCauseConclusion = "Lain";
+            if($gangguan->count()!=null){
+                $uniqueGangguan = $gangguan->pluck('kategori_gangguan')->unique();
+                foreach ($uniqueGangguan as $ugKey => $ugValue) {
+                    $cause[$ugValue] = $gangguan->where('kategori_gangguan','=',$ugValue)->pluck('parameter')->toArray();
+                }
+                $resultArray = array();
+                foreach ($cause as $causeKey => $causeValue) {
+                    $causeResult = count(array_intersect($causeValue, $string));
+                    $resultArray[$causeKey] = $causeResult;
+                }
+                $maxResult = max($resultArray);
+                $indeksResult = array_search(max($resultArray),$resultArray);
+                
+                // Check Highest Root Cause
+                if($maxResult>0){
+                    $rootCauseConclusion = $indeksResult;
+                }else if($string!=null){
+                    $rootCauseConclusion = "Lain";
+                }
             }
             return $rootCauseConclusion;
         }
@@ -115,11 +117,13 @@ class excelController extends Controller
             // );
             $kendalaDict = array();
             $kendala = Kendala::get();
-            $uniqueKendala = $kendala->pluck('kategori_kendala')->unique();
-            foreach ($uniqueKendala as $ukKey => $ukValue) {
-                $kendalaDict[$ukValue] = $kendala->where('kategori_kendala','=',$ukValue)->pluck('parameter')->toArray();
-            }
+            if($kendala->count()!=null){
 
+                $uniqueKendala = $kendala->pluck('kategori_kendala')->unique();
+                foreach ($uniqueKendala as $ukKey => $ukValue) {
+                    $kendalaDict[$ukValue] = $kendala->where('kategori_kendala','=',$ukValue)->pluck('parameter')->toArray();
+            }
+            
             $resultArray = array();
             foreach ($kendalaDict as $kdKey => $kdValue) {
                 $kResult = count(array_intersect($k, $kdValue));
@@ -133,7 +137,8 @@ class excelController extends Controller
             }else if($k!=null){
                 $kendalaConclusion = "Lain";
             }
-            return $kendalaConclusion;
+        }
+        return $kendalaConclusion;
         }
         
         $getSheet = null;
