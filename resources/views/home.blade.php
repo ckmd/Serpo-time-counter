@@ -1,3 +1,11 @@
+@section('footer')
+<script>
+    $(".clickable-row").click(function() {
+        window.location = $(this).data("href");
+    });
+</script>
+@endsection
+
 @extends('layouts.master')
 
 @section('header')
@@ -106,7 +114,7 @@ window.onload = function() {
                 </tr>
             </thead>
             @foreach($urcdArray as $urcda)
-            <tr>
+            <tr class='clickable-row' data-href="/gangguan-data/{{$urcda['label']}}/{{$regionName}}">
                 <td>{{$urcda['label']}}</td>
                 <td>{{$urcda['total']}}</td>
                 <td>{{$urcda['durasi']}}</td>

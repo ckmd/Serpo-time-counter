@@ -25,3 +25,6 @@ Route::resource('excel','excelController')->middleware('auth');
 Route::resource('allData','DBController')->middleware('auth');
 Route::resource('national','NationalController')->middleware('auth');
 Route::get('refresh','DBController@refresh')->middleware('auth');
+
+Route::get('gangguan-data/{label}/{region}','DBController@gangguanData')->middleware('auth');
+Route::get('kendala-data','DBController@kendalaData')->middleware('auth');

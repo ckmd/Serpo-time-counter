@@ -132,6 +132,13 @@ class DBController extends Controller
         return view('avgDownload', compact('nameFile','dbAvgExcel'));
     }
 
+    public function gangguanData($label, $region){
+        $dataGangguan = Excel::where('region','=',$region)
+            ->where('root_cause','=',$label)
+            ->where('rsps','=','100')
+            ->paginate(20);
+        return view('gangguan.data', compact('dataGangguan','label'));
+    }
     /**
      * Display the specified resource.
      *
