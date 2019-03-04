@@ -7,6 +7,8 @@ use App\Excel;
 use App\Gangguan;
 use App\Kendala;
 use App\avgExcel;
+use DateTime;
+use DateInterval;
 
 class DBController extends Controller
 {
@@ -132,8 +134,10 @@ class DBController extends Controller
         return view('avgDownload', compact('nameFile','dbAvgExcel'));
     }
 
-    public function gangguanData($label, $region){
+    public function gangguanData($label, $region, $pAwal = null, $pAkhir = null){
+        $addOneDay = (new DateTime($pAkhir))->add(new DateInterval('P1D'))->format('Y-m-d');
         $dataGangguan = Excel::where('region','=',$region)
+            ->where('wo_date','>=',$pAwal)->where('wo_date','<=',$addOneDay)
             ->where('root_cause','=',$label)
             ->where('rsps','=','100')
             ->paginate(20);

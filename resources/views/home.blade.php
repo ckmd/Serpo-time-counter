@@ -104,6 +104,18 @@ window.onload = function() {
     @section('chart')
     <div id="chartContainer" style="height: 300px; width: 100%;"></div>
     <br>
+    <?php
+    $awal = $pAwal;
+    $akhir = $pAkhir;
+    if($pAkhir==null && $pAwal==null){
+        $awal = '*';
+        $akhir = '*';
+    }else if($pAkhir==null){
+        $akhir = '*';
+    }else if($pAwal==null){
+        $awal = '*';
+    }
+    ?>
     <div class="table table-responsive table-hover" >
         <table style="float: left" width="45%">
             <thead class="thead-dark">
@@ -114,7 +126,7 @@ window.onload = function() {
                 </tr>
             </thead>
             @foreach($urcdArray as $urcda)
-            <tr class='clickable-row' data-href="/gangguan-data/{{$urcda['label']}}/{{$regionName}}">
+            <tr class='clickable-row' data-href="/gangguan-data/{{$urcda['label']}}/{{$regionName}}/{{$awal}}/{{$akhir}}">
                 <td>{{$urcda['label']}}</td>
                 <td>{{$urcda['total']}}</td>
                 <td>{{$urcda['durasi']}}</td>
