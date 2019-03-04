@@ -134,13 +134,20 @@ class DBController extends Controller
         return view('avgDownload', compact('nameFile','dbAvgExcel'));
     }
 
-    public function gangguanData($label, $region, $pAwal = null, $pAkhir = null){
+    public function gangguanData($label, $region, $pAwal, $pAkhir){
+        function removeStar($star){
+            if($star=='*'){
+                $star = NULL;
+            }
+            return $star;
+        }
+        $pAwal = removeStar($pAwal);
+        $pAkhir = removeStar($pAkhir);
+        $addOneDay = null;
         $addOneDay = (new DateTime($pAkhir))->add(new DateInterval('P1D'))->format('Y-m-d');
-        $dataGangguan = Excel::where('region','=',$region)
-            ->where('wo_date','>=',$pAwal)->where('wo_date','<=',$addOneDay)
-            ->where('root_cause','=',$label)
-            ->where('rsps','=','100')
-            ->paginate(20);
+        $dataGangguan = Excel::where('region' , $region)->get();
+        $dataGangguan = $dataGangguan->where('wo_date','>=',$pAwal)->where('wo_date','<=',$addOneDay)
+        ->where('root_cause',$label)->where('rsps','=','100');
         return view('gangguan.data', compact('dataGangguan','label'));
     }
     /**

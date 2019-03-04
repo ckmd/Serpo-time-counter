@@ -29,7 +29,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                <?php $id = $dataGangguan->firstItem() ?>
+                <?php $id = 1 ?>
                     @foreach($dataGangguan as $cat)
                     <tr>
                         <th>{{$id}}</th>
@@ -71,7 +71,6 @@
                     @endforeach
                 </tbody>
             </table>
-            {{$dataGangguan->links()}}
         </div>
     </div>
 </div>
