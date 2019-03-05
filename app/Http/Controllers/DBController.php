@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Excel;
+use App\Gangguan;
+use App\Kendala;
 use App\avgExcel;
+use App\DataGangguan;
 
 class DBController extends Controller
 {
@@ -35,6 +38,86 @@ class DBController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+    public function refresh(){
+        function findRootCause($string, $gangguan, $uniqueGangguan){
+            $rootCauseConclusion = null;
+            if($gangguan->count()!=null){
+
+                $string = explode(" ", $string);
+                
+                $cause = array();
+                foreach ($uniqueGangguan as $ugKey => $ugValue) {
+                    $cause[$ugValue] = $gangguan->where('kategori_gangguan','=',$ugValue)->pluck('parameter')->toArray();
+                }
+                $resultArray = array();
+                foreach ($cause as $causeKey => $causeValue) {
+                    $causeResult = count(array_intersect($causeValue, $string));
+                    $resultArray[$causeKey] = $causeResult;
+                }
+                $maxResult = max($resultArray);
+                $indeksResult = array_search(max($resultArray),$resultArray);
+                
+                // Check Highest Root Cause
+                if($maxResult>0){
+                    $rootCauseConclusion = $indeksResult;
+                }else if($string!=null){
+                $rootCauseConclusion = "Lain";
+            }
+        }
+        return $rootCauseConclusion;
+        }
+
+        function findKendala($k, $kendala, $uniqueKendala){
+            $kendalaConclusion = null;
+            if($kendala->count()!=null){
+
+                $k = explode(" ", $k);
+                
+                $kendalaDict = array();
+                foreach ($uniqueKendala as $ukKey => $ukValue) {
+                    $kendalaDict[$ukValue] = $kendala->where('kategori_kendala','=',$ukValue)->pluck('parameter')->toArray();
+                }
+                
+                $resultArray = array();
+                foreach ($kendalaDict as $kdKey => $kdValue) {
+                    $kResult = count(array_intersect($k, $kdValue));
+                    $resultArray[$kdKey] = $kResult;
+                }
+                $maxResult = max($resultArray);
+                $indeksResult = array_search(max($resultArray),$resultArray);
+            // Check Highest Root Cause
+            if($maxResult>0){
+                $kendalaConclusion = $indeksResult;
+            }else if($k!=null){
+                $kendalaConclusion = "Lain";
+            }
+        }
+        return $kendalaConclusion;
+        }
+        
+        ini_set('max_execution_time', 900);
+        $excel = Excel::all();
+
+        $gangguan = Gangguan::get();
+        $uniqueGangguan = $gangguan->pluck('kategori_gangguan')->unique();
+
+        $kendala = Kendala::get();
+        $uniqueKendala = $kendala->pluck('kategori_kendala')->unique();
+
+        foreach($excel as $e){
+            // Find yang Membuat Berats
+                $id = $excel->find($e->id);
+                if($e->root_cause_description!=null){
+                    $id->root_cause = findRootCause($e->root_cause_description,$gangguan,$uniqueGangguan);
+                }
+                if($e->kendala_description!=null){
+                    $id->kendala = findKendala($e->kendala_description, $kendala, $uniqueKendala);
+                }
+                $id->save();
+            }
+        return redirect()->route('allData.index');
+    }
+
     public function store(Request $request)
     {
         $pAwal = $request->awal;

@@ -4,7 +4,7 @@ ini_set('display_errors', 0);
 ini_set('log_errors', 1);
 error_reporting(E_ALL & ~E_NOTICE);
 
-$filename = "All Data.xlsx";
+$filename = "Data Gangguan.xlsx";
 header('Content-disposition: attachment; filename="'.XLSXWriter::sanitize_filename($filename).'"');
 header("Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
 header('Content-Transfer-Encoding: binary');
@@ -25,6 +25,8 @@ $header = array(
     'RSPS'=>'0%',
     'gangguan'=>'string',
     'kendala'=>'string',
+    'gangguan_description'=>'string',
+    'kendala_description'=>'string',
 );
 
 $rows = array();
@@ -42,7 +44,9 @@ $rows = array();
             "$d->work_time",
             "$d->rsps",
             "$d->root_cause",
-            "$d->kendala"
+            "$d->kendala",
+            "$d->root_cause_description",
+            "$d->kendala_description"
             );
 		}
             $writer = new XLSXWriter();

@@ -4,7 +4,7 @@ ini_set('display_errors', 0);
 ini_set('log_errors', 1);
 error_reporting(E_ALL & ~E_NOTICE);
 
-$filename = "All Data.xlsx";
+$filename = "Data Kendala.xlsx";
 header('Content-disposition: attachment; filename="'.XLSXWriter::sanitize_filename($filename).'"');
 header("Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
 header('Content-Transfer-Encoding: binary');
@@ -12,24 +12,29 @@ header('Cache-Control: must-revalidate');
 header('Pragma: public');
 
 $header = array(
-    'AR_id'=>'0',
-    'Prob_id'=>'0',
-    'Kode_wo'=>'0',
+    'No'=>'0',
+    'AR_ID'=>'0',
+    'Prob_ID'=>'0',
+    'Kode_WO'=>'0',
     'Region'=>'string',
     'Basecamp'=>'string',
     'Serpo'=>'string',
     'Durasi_SBU'=>'0.00',
-    'Preparation'=>'0.00',
-    'Travelling'=>'0.00',
-    'Working'=>'0.00',
+    'Preparation Time'=>'0.00',
+    'Travelling Time'=>'0.00',
+    'Working Time'=>'0.00',
     'RSPS'=>'0%',
-    'gangguan'=>'string',
-    'kendala'=>'string',
+    'Gangguan'=>'string',
+    'Kendala'=>'string',
+    'Deskripsi Gangguan'=>'string',
+    'Deskripsi Kendala'=>'string',
 );
 
 $rows = array();
+$i = 1;
 		foreach($datas as $d) {
             $rows[] = array(
+            "$i",
             "$d->ar_id",
             "$d->prob_id",
             "$d->kode_wo",
@@ -42,8 +47,11 @@ $rows = array();
             "$d->work_time",
             "$d->rsps",
             "$d->root_cause",
-            "$d->kendala"
+            "$d->kendala",
+            "$d->root_cause_description",
+            "$d->kendala_description"
             );
+            $i++;
 		}
             $writer = new XLSXWriter();
 $writer->setAuthor('icon+'); 

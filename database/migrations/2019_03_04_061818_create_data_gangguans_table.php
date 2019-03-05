@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateExcelsTable extends Migration
+class CreateDataGangguansTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateExcelsTable extends Migration
      */
     public function up()
     {
-        Schema::create('excels', function (Blueprint $table) {
+        Schema::create('data_gangguans', function (Blueprint $table) {
             $table->increments('id');
             $table->bigInteger('ar_id');
             $table->bigInteger('prob_id');
@@ -43,6 +43,6 @@ class CreateExcelsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('excels');
+        Schema::dropIfExists('data_gangguans');
     }
 }

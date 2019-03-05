@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use PHPExcel_IOFactory;
 use DateTime;
 use App\Excel;
+use App\Gangguan;
+use App\Kendala;
 
 class excelController extends Controller
 {
@@ -75,23 +77,32 @@ class excelController extends Controller
         function findRootCause($string){
             $rootCauseConclusion = null;
             $string = explode(" ", $string);
-            $cause = array(
-                'FOC' => array('foc','putus','core','kabel','cable','kable'),
-                'FOT' => array('fot','comm'),
-                'PS' => array('ps'),
-            );
-            $resultArray = array();
-            foreach ($cause as $causeKey => $causeValue) {
-                $causeResult = count(array_intersect($string, $causeValue));
-                $resultArray[$causeKey] = $causeResult;
-            }
-            $maxResult = max($resultArray);
-            $indeksResult = array_search(max($resultArray),$resultArray);
-            // Check Highest Root Cause
-            if($maxResult>0){
-                $rootCauseConclusion = $indeksResult;
-            }else if($string!=null){
-                $rootCauseConclusion = "Lain";
+            // $cause = array(
+            //     'FOC' => array('FOC','putus','core','kabel','cable','kable'),
+            //     'FOT' => array('FOT','comm'),
+            //     'PS' => array('PS'),
+            // );
+            $cause = array();
+            $gangguan = Gangguan::get();
+            if($gangguan->count()!=null){
+                $uniqueGangguan = $gangguan->pluck('kategori_gangguan')->unique();
+                foreach ($uniqueGangguan as $ugKey => $ugValue) {
+                    $cause[$ugValue] = $gangguan->where('kategori_gangguan','=',$ugValue)->pluck('parameter')->toArray();
+                }
+                $resultArray = array();
+                foreach ($cause as $causeKey => $causeValue) {
+                    $causeResult = count(array_intersect($causeValue, $string));
+                    $resultArray[$causeKey] = $causeResult;
+                }
+                $maxResult = max($resultArray);
+                $indeksResult = array_search(max($resultArray),$resultArray);
+                
+                // Check Highest Root Cause
+                if($maxResult>0){
+                    $rootCauseConclusion = $indeksResult;
+                }else if($string!=null){
+                    $rootCauseConclusion = "Lain";
+                }
             }
             return $rootCauseConclusion;
         }
@@ -99,11 +110,20 @@ class excelController extends Controller
         function findKendala($k){
             $kendalaConclusion = null;
             $k = explode(" ", $k);
-            $kendalaDict = array(
-                'tim' => array('tim','idle'),
-                'cuaca' => array('cuaca','hujan','banjir'),
-                'user' => array('user'),
-            );
+            // $kendalaDict = array(
+            //     'tim' => array('tim','idle'),
+            //     'cuaca' => array('cuaca','hujan','banjir'),
+            //     'user' => array('user'),
+            // );
+            $kendalaDict = array();
+            $kendala = Kendala::get();
+            if($kendala->count()!=null){
+
+                $uniqueKendala = $kendala->pluck('kategori_kendala')->unique();
+                foreach ($uniqueKendala as $ukKey => $ukValue) {
+                    $kendalaDict[$ukValue] = $kendala->where('kategori_kendala','=',$ukValue)->pluck('parameter')->toArray();
+            }
+            
             $resultArray = array();
             foreach ($kendalaDict as $kdKey => $kdValue) {
                 $kResult = count(array_intersect($k, $kdValue));
@@ -117,7 +137,8 @@ class excelController extends Controller
             }else if($k!=null){
                 $kendalaConclusion = "Lain";
             }
-            return $kendalaConclusion;
+        }
+        return $kendalaConclusion;
         }
         
         $getSheet = null;
@@ -252,6 +273,8 @@ class excelController extends Controller
                     $data->total_durasi = $total_durasi;
                     $data->root_cause = $root_cause;
                     $data->kendala = $kendala;
+                    $data->root_cause_description = $getSheet[$i][23];
+                    $data->kendala_description = $getSheet[$i][20];
                     $data->save();
                 }
             }

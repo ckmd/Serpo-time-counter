@@ -1,3 +1,15 @@
+@section('footer')
+<script>
+    $(".clickable-row").click(function() {
+        window.location = $(this).data("gangguanhref");
+    });
+
+    $(".kendala-row").click(function() {
+        window.location = $(this).data("kendalahref");
+    });
+</script>
+@endsection
+
 @extends('layouts.master')
 
 @section('header')
@@ -146,6 +158,18 @@ window.onload = function() {
 @section('pieChart')
 <div class="table table-responsive table-hover" >
     @if($urcdArray!=null)
+    <?php
+    $awal = $pAwal;
+    $akhir = $pAkhir;
+    if($pAkhir==null && $pAwal==null){
+        $awal = '*';
+        $akhir = '*';
+    }else if($pAkhir==null){
+        $akhir = '*';
+    }else if($pAwal==null){
+        $awal = '*';
+    }
+    ?>
     <table style="float: left" width="45%">
         <thead class="thead-dark">
             <tr>
@@ -155,7 +179,7 @@ window.onload = function() {
             </tr>
         </thead>
         @foreach($urcdArray as $urcda)
-        <tr>
+        <tr class='clickable-row' data-gangguanhref="/gangguan-data/{{$urcda['label']}}/national/{{$awal}}/{{$akhir}}">
             <td>{{$urcda['label']}}</td>
             <td>{{$urcda['total']}}</td>
             <td>{{$urcda['durasi']}}</td>
@@ -172,7 +196,7 @@ window.onload = function() {
             </tr>
         </thead>
         @foreach($ukArray as $uka)
-        <tr>
+        <tr class='kendala-row' data-kendalahref="/kendala-data/{{$uka['label']}}/national/{{$awal}}/{{$akhir}}">
             <td>{{$uka['label']}}</td>
             <td>{{$uka['total']}}</td>
         </tr>
