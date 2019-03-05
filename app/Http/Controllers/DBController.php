@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Excel;
 use App\Gangguan;
 use App\Kendala;
-use App\avgExcel;
+use App\AvgExcel;
 use App\DataGangguan;
 
 class DBController extends Controller
@@ -97,6 +97,7 @@ class DBController extends Controller
         
         ini_set('max_execution_time', 900);
         $excel = Excel::all();
+        Excel::truncate();
 
         $gangguan = Gangguan::get();
         $uniqueGangguan = $gangguan->pluck('kategori_gangguan')->unique();
@@ -105,15 +106,36 @@ class DBController extends Controller
         $uniqueKendala = $kendala->pluck('kategori_kendala')->unique();
 
         foreach($excel as $e){
-            // Find yang Membuat Berats
-                $id = $excel->find($e->id);
+            // Old Method -- Find yang Membuat Berats, karena menciptakan query eksponensial
+                // $id = $excel->find($e->id);
+            // New Method is Much but Lighter
+                $data = new Excel();
+                $data->ar_id = $e->ar_id;
+                $data->prob_id = $e->prob_id;
+                $data->kode_wo = $e->kode_wo;
+                $data->region = $e->region;
+                $data->basecamp = $e->basecamp;
+                $data->serpo = $e->serpo;
+                $data->wo_date = $e->wo_date;
+                $data->durasi_sbu = $e->durasi_sbu;
+                $data->prep_time = $e->prep_time;
+                $data->travel_time = $e->travel_time;
+                $data->work_time = $e->work_time;
+                $data->rsps = $e->rsps;
+                $data->total_durasi = $e->total_durasi;
                 if($e->root_cause_description!=null){
-                    $id->root_cause = findRootCause($e->root_cause_description,$gangguan,$uniqueGangguan);
+                    $data->root_cause = findRootCause($e->root_cause_description,$gangguan,$uniqueGangguan);
+                }else{
+                    $data->root_cause = null;
                 }
                 if($e->kendala_description!=null){
-                    $id->kendala = findKendala($e->kendala_description, $kendala, $uniqueKendala);
+                    $data->kendala = findKendala($e->kendala_description, $kendala, $uniqueKendala);
+                }else{
+                    $data->kendala = null;
                 }
-                $id->save();
+                $data->root_cause_description = $e->root_cause_description;
+                $data->kendala_description = $e->kendala_description;
+                $data->save();        
             }
         return redirect()->route('allData.index');
     }
@@ -136,7 +158,7 @@ class DBController extends Controller
         else{
             $nameFile = $region." ".$pAwal." s.d ".$pAkhir;
         }
-        $dbAvgExcel = avgExcel::orderBy('basecamp','asc')->get();
+        $dbAvgExcel = AvgExcel::orderBy('basecamp','asc')->get();
         return view('avgDownload', compact('nameFile','dbAvgExcel'));
     }
 

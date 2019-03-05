@@ -66,7 +66,7 @@
       <form action="{{route('kendala.store')}}" method="post">
       {{csrf_field()}}
         <div class="modal-body">
-                    @include('kendala.addform')
+                    @include('kendala.addForm')
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">Kembali</button>
