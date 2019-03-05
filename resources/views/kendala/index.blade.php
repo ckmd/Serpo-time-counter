@@ -29,7 +29,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <?php $id = 1;?>
+                    <?php $id = $kendalas->firstItem();?>
                     @foreach($kendalas as $k)
                     <tr>
                         <th>{{$id}}</th>
@@ -44,6 +44,7 @@
                     @endforeach
                 </tbody>
             </table>
+            {{$kendalas->links()}}
             <!-- Table Ends Here -->
         <!-- Button trigger modal -->
         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">

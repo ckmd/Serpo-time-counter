@@ -29,7 +29,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <?php $id = 1;?>
+                    <?php $id = $gangguans->firstItem();?>
                     @foreach($gangguans as $g)
                     <tr>
                         <th>{{$id}}</th>
@@ -44,6 +44,7 @@
                     @endforeach
                 </tbody>
             </table>
+            {{$gangguans->links()}}
             <!-- Table Ends Here -->
         <!-- Button trigger modal -->
         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">

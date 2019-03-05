@@ -18,7 +18,7 @@ class KendalaController extends Controller
      */
     public function index()
     {
-        $kendalas = Kendala::orderBy('kategori_kendala','asc')->get();
+        $kendalas = Kendala::orderBy('kategori_kendala','asc')->orderBy('parameter','asc')->paginate(10);
         return view('kendala.index', compact('kendalas'));
     }
 
@@ -56,9 +56,13 @@ class KendalaController extends Controller
         $pAkhir = removeStar($pAkhir);
         $addOneDay = null;
         $addOneDay = (new DateTime($pAkhir))->add(new DateInterval('P1D'))->format('Y-m-d');
-        $dataKendala = Excel::where('region' , $region)->get();
+        if($region!='national'){
+            $dataKendala = Excel::where('region' , $region)->get();
+        }else{
+            $dataKendala = Excel::all();
+        }
         $dataKendala = $dataKendala->where('wo_date','>=',$pAwal)->where('wo_date','<=',$addOneDay)
-        ->where('kendala',$label)->where('rsps','=','100');
+        ->where('kendala',$label);
         foreach($dataKendala as $dk){
             $data = new DataKendala;
             $data->ar_id = $dk->ar_id;
@@ -81,6 +85,9 @@ class KendalaController extends Controller
             $data->save();
         }
         $dataKendala = DataKendala::paginate(50);
+        if($region=='national'){
+            $label = 'National '.$label;
+        }
         return view('kendala.data', compact('dataKendala','label'));
     }
     /**

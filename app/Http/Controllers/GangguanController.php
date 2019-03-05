@@ -18,7 +18,7 @@ class GangguanController extends Controller
      */
     public function index()
     {
-        $gangguans = Gangguan::orderBy('kategori_gangguan','asc')->get();
+        $gangguans = Gangguan::orderBy('kategori_gangguan','asc')->orderBy('parameter','asc')->paginate(10);
         return view('gangguan.index', compact('gangguans'));
     }
 
