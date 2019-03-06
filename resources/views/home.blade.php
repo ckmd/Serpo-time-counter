@@ -130,7 +130,7 @@ window.onload = function() {
                 </tr>
             </thead>
             @foreach($urcdArray as $urcda)
-            <tr class='clickable-row' data-gangguanhref="/gangguan-data/{{$urcda['label']}}/{{$regionName}}/{{$awal}}/{{$akhir}}">
+            <tr class='clickable-row' data-gangguanhref="gangguan-data/{{$urcda['label']}}/{{$regionName}}/{{$awal}}/{{$akhir}}">
                 <td>{{$urcda['label']}}</td>
                 <td>{{$urcda['total']}}</td>
                 <td>{{$urcda['durasi']}}</td>
@@ -145,7 +145,7 @@ window.onload = function() {
                 </tr>
             </thead>
             @foreach($ukArray as $uka)
-            <tr class='kendala-row' data-kendalahref="/kendala-data/{{$uka['label']}}/{{$regionName}}/{{$awal}}/{{$akhir}}">
+            <tr class='kendala-row' data-kendalahref="kendala-data/{{$uka['label']}}/{{$regionName}}/{{$awal}}/{{$akhir}}">
                 <td>{{$uka['label']}}</td>
                 <td>{{$uka['total']}}</td>
             </tr>
