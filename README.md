@@ -2,7 +2,7 @@
 
 # Serpo-time-counter :bar_chart:
 # Project Based on
-- Laravel 5.5.* Framework
+- Laravel 5.7.* Framework
 - AdminLTE Template
 - XLSX Writer/Loader Library
 # How to use

@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Excel;
-use App\avgExcel;
+use App\AvgExcel;
 use DateTime;
 use DateInterval;
 
@@ -50,7 +50,7 @@ class HomeController extends Controller
             return $toNull;
         }
         // Delete Database inside avgExcel
-        avgExcel::truncate();
+        AvgExcel::truncate();
         // Filter berdasarkan region
         $regionName = $request->region;
         $filteredRegion = Excel::orderBy('wo_date','asc')->where('region' , $regionName)->get();
@@ -100,7 +100,7 @@ class HomeController extends Controller
             $avgTravelTime = zeroIsNull($avgTravelTime);
             $avgWorkTime = zeroIsNull($avgWorkTime);
             // save into database
-            $avgExcel = new avgExcel();
+            $avgExcel = new AvgExcel();
                 $avgExcel->basecamp = $basecamp;
                 $avgExcel->serpo = $key;
                 $avgExcel->jumlah_wo = $uniqueSerpoCount;
@@ -118,7 +118,7 @@ class HomeController extends Controller
         $urcArray = array();
         $ukArray = array();
         if($regionName!=null){
-            $dbAvgExcel = avgExcel::orderBy('basecamp','asc')->get();
+            $dbAvgExcel = AvgExcel::orderBy('basecamp','asc')->get();
             // Get the total WO and Average data
             // Assign the calculated value into array
             $regionSum = $getFilteredDate->count();
