@@ -13,7 +13,8 @@
                     <th>Kode WO</th>
                     <th>Kode Asset</th>
                     <th>Region</th>
-                    <th>Type PM</th>
+                    <th>Category PM</th>
+                    <th>Category POP</th>
                 </thead>
                 <tbody>
                 <?php $id = $datas->firstItem(); ?>
@@ -23,7 +24,8 @@
                             <td>{{$d->wo_code}}</td>
                             <td>{{$d->asset_code}}</td>
                             <td>{{$d->region}}</td>
-                            <td>{{$d->type}}</td>
+                            <td>{{$d->category_pm}}</td>
+                            <td>{{$d->category_pop}}</td>
                         </tr>
                         <?php $id++ ?>
                     @endforeach

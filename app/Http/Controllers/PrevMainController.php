@@ -41,7 +41,7 @@ class PrevMainController extends Controller
             $rootCauseConclusion = null;
             $string = explode(" ", $string);
             $cause = array(
-                'PM FOC' => array('Link', 'Patroli'),
+                'PM FOC' => array('Patroli'),
                 'PM POP' => array('POP'),
             );
             $resultArray = array();
@@ -61,6 +61,10 @@ class PrevMainController extends Controller
             return $rootCauseConclusion;
         }
 
+        function findPOP($code){
+            return Asset::where('site_id',$code)->value('type');
+        }
+
         $getSheet = null;
         $highestRow = null;
         require_once '../Classes/PHPExcel/IOFactory.php';
@@ -71,11 +75,17 @@ class PrevMainController extends Controller
             $highestRow = $excelObject->setActiveSheetIndex(0)->getHighestDataRow();
         }
         PrevMain::truncate();
+        $assets = Asset::all();
         for ($i=1; $i < $highestRow; $i++) {
             $asset = explode(" ", $getSheet[$i][6]);
             $assetCode = $asset[0];
             $assetCodeDesc = $asset[1]." ".$asset[2];
-
+            
+            $categoryPM = findDescription($getSheet[$i][4]);
+            $categoryPOP = null;
+            if($categoryPM == "PM POP"){
+                $categoryPOP = findPOP($assetCode);
+            }
             $prevMantData = new PrevMain(); 
                 $prevMantData->status = $getSheet[$i][0];
                 $prevMantData->scheduled_date = $getSheet[$i][1];
@@ -93,34 +103,46 @@ class PrevMainController extends Controller
                 $prevMantData->basecamp = $getSheet[$i][12];
                 $prevMantData->serpo = $getSheet[$i][13];
                 $prevMantData->company = $getSheet[$i][14];
-                $prevMantData->type = findDescription($getSheet[$i][4]);
+                $prevMantData->category_pm = $categoryPM;
+                $prevMantData->category_pop = $categoryPOP;
             $prevMantData->save();
         }
         return redirect('prevMainData');
     }
     
     public function data(){
-        $datas = PrevMain::paginate(10);
+        $datas = PrevMain::paginate(100);
         return view('prevMain.data', compact('datas'));
     }
 
     public function popData(){
         $datas = PrevMain::all();
+        $assets = Asset::all();
+        $uniqueRegion = $datas->pluck('region')->unique();
+        // return $uniqueRegion;
         $arrayPOP = array();
-        foreach ($datas as $datasKey) {
-            $assetType = $datasKey->type;
-            if($datasKey->type == 'PM POP'){
-                $assetType = Asset::where('site_id', '=', $datasKey->asset_code)->value('type');
+        foreach ($uniqueRegion as $urKey) {
+            $eachRegion = $datas->where('region',$urKey);
+            $sumEachRegion = $eachRegion->count();
+            $sumPOP = $eachRegion->where('category_pm', 'PM POP')->count();
+            if($sumPOP!=0){
+                $popBdec = round($eachRegion->where('category_pop', 'POP B')->count()/$sumPOP,4);
+                $popSBdec = round($eachRegion->where('category_pop', 'POP SB')->count()/$sumPOP,4);
+                $popDdec = round($eachRegion->where('category_pop', 'POP D')->count()/$sumPOP,4);
+            }else{
+                $popBdec = 0;
+                $popSBdec = 0;
+                $popDdec = 0;
             }
             $arrayPOP[] = array(
-                'wo_code' => $datasKey->wo_code,
-                'asset_code' => $datasKey->asset_code,
-                'region' => $datasKey->region,
-                'type' => $datasKey->type,
-                'assetType' => $assetType
+                'region' => $urKey,
+                'total_wo' => $sumEachRegion,
+                'total_pop' => $sumPOP,
+                'POP B' => $popBdec,
+                'POP SB' => $popSBdec,
+                'POP D' => $popDdec,
             );
         }
-        // return $arrayPOP;
         return view('prevMain.popData', compact('arrayPOP'));
     }
     /**

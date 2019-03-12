@@ -85,16 +85,16 @@ if(isset($_POST['SubmitButton'])){ //check if form was submitted
         <li class="treeview">
           <a href="#"><span>Preventive Maintenance</span> <i class="fa fa-angle-left pull-right"></i></a>
           <ul class="treeview-menu">
-            <li><a href="{{url('prevMain')}}"><i class="fa fa-spinner"></i> <span>Preventive Maintenance</span></a></li>
-            <li><a href="{{url('prevMainData')}}"><i class="fa fa-spinner"></i> <span>Data Preventive Maintenance</span></a></li>
-            <li><a href="{{url('popPrevMainData')}}"><i class="fa fa-spinner"></i> <span>Filter POP</span></a></li>
+            <li><a href="{{url('prevMain')}}"><i class="fa fa-upload"></i> <span>Upload PM</span></a></li>
+            <li><a href="{{url('prevMainData')}}"><i class="fa fa-table"></i> <span>Data PM</span></a></li>
+            <li><a href="{{url('popPrevMainData')}}"><i class="fa fa-map-o"></i> <span>Report PM POP</span></a></li>
           </ul>
         </li>
         <li class="treeview">
           <a href="#"><span>Asset</span> <i class="fa fa-angle-left pull-right"></i></a>
           <ul class="treeview-menu">
-            <li><a href="{{url('asset')}}"><i class="fa fa-spinner"></i> <span>Upload Asset</span></a></li>
-            <li><a href="{{url('assetData')}}"><i class="fa fa-spinner"></i> <span>Daftar Asset</span></a></li>
+            <li><a href="{{url('asset')}}"><i class="fa fa-upload"></i> <span>Upload Asset</span></a></li>
+            <li><a href="{{url('assetData')}}"><i class="fa fa-table"></i> <span>Daftar Asset</span></a></li>
           </ul>
         </li>
         <li>

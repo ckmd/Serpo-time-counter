@@ -74,6 +74,12 @@ window.onload = function() {
         </div>
         <div class="card text-white bg-secondary">
             <div class="card-body">
+                <h5 class="card-title">Rand Menit</h5>
+                <p class="card-text">Total Durasi</p>
+            </div>
+        </div>
+        <div class="card text-white bg-secondary">
+            <div class="card-body">
                 <h5 class="card-title">{{$cardArray['avgDurasiSBU']}} Menit</h5>
                 <p class="card-text">Durasi SBU</p>
             </div>

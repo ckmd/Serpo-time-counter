@@ -26,12 +26,13 @@ class CreatePrevMainsTable extends Migration
             $table->string('material_code');
             $table->string('classification');
             $table->string('child_asset');
-            $table->string('address');
+            $table->string('address')->nullable()->default(NULL);
             $table->string('region');
             $table->string('basecamp');
             $table->string('serpo');
             $table->string('company');
-            $table->string('type')->nullable()->default(NULL);
+            $table->string('category_pm')->nullable()->default(NULL);
+            $table->string('category_pop')->nullable()->default(NULL);
             $table->timestamps();
         });
     }
