@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use PHPExcel_IOFactory;
 use App\PrevMain;
+use App\Asset;
 
 class PrevMainController extends Controller
 {
@@ -104,8 +105,23 @@ class PrevMainController extends Controller
     }
 
     public function popData(){
-        $datas = PrevMain::where('type', 'PM POP')->get();
-        return view('prevMain.popData', compact('datas'));
+        $datas = PrevMain::all();
+        $arrayPOP = array();
+        foreach ($datas as $datasKey) {
+            $assetType = $datasKey->type;
+            if($datasKey->type == 'PM POP'){
+                $assetType = Asset::where('site_id', '=', $datasKey->asset_code)->value('type');
+            }
+            $arrayPOP[] = array(
+                'wo_code' => $datasKey->wo_code,
+                'asset_code' => $datasKey->asset_code,
+                'region' => $datasKey->region,
+                'type' => $datasKey->type,
+                'assetType' => $assetType
+            );
+        }
+        // return $arrayPOP;
+        return view('prevMain.popData', compact('arrayPOP'));
     }
     /**
      * Display the specified resource.

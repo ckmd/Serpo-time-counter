@@ -13,14 +13,16 @@
                     <th>Kode Asset</th>
                     <th>Region</th>
                     <th>Type PM</th>
+                    <th>Asset Type</th>
                 </thead>
                 <tbody>
-                    @foreach ($datas as $d)
+                    @foreach ($arrayPOP as $d)
                         <tr>
-                            <td>{{$d->wo_code}}</td>
-                            <td>{{$d->asset_code}}</td>
-                            <td>{{$d->region}}</td>
-                            <td>{{$d->type}}</td>
+                            <td>{{$d['wo_code']}}</td>
+                            <td>{{$d['asset_code']}}</td>
+                            <td>{{$d['region']}}</td>
+                            <td>{{$d['type']}}</td>
+                            <td>{{$d['assetType']}}</td>
                         </tr>
                     @endforeach
                 </tbody>
