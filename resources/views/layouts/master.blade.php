@@ -72,6 +72,8 @@ if(isset($_POST['SubmitButton'])){ //check if form was submitted
         <li><a href="{{url('national')}}"><i class="fa fa-globe"></i> <span>Filter Nasional</span></a></li>
         <li><a href="{{url('gangguan')}}"><i class="fa fa-ban"></i> <span>Daftar Gangguan</span></a></li>
         <li><a href="{{url('kendala')}}"><i class="fa fa-spinner"></i> <span>Daftar Kendala</span></a></li>
+        <li><a href="{{url('prevMain')}}"><i class="fa fa-spinner"></i> <span>Preventive Maintenance</span></a></li>
+        <li><a href="{{url('prevMainData')}}"><i class="fa fa-spinner"></i> <span>Data Preventive Maintenance</span></a></li>
         <li>
             <a href="{{ route('logout') }}"
                 onclick="event.preventDefault();

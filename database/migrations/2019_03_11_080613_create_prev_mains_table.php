@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreatePrevMantsTable extends Migration
+class CreatePrevMainsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreatePrevMantsTable extends Migration
      */
     public function up()
     {
-        Schema::create('prev_mants', function (Blueprint $table) {
+        Schema::create('prev_mains', function (Blueprint $table) {
             $table->increments('id');
             $table->string('status');
             $table->datetime('scheduled_date');
@@ -22,6 +22,7 @@ class CreatePrevMantsTable extends Migration
             $table->longtext('description');
             $table->datetime('wo_date');
             $table->string('asset_code');
+            $table->string('asset_code_desc');
             $table->string('material_code');
             $table->string('classification');
             $table->string('child_asset');
@@ -42,6 +43,6 @@ class CreatePrevMantsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('prev_mants');
+        Schema::dropIfExists('prev_mains');
     }
 }
