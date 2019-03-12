@@ -103,6 +103,10 @@ class PrevMainController extends Controller
         return view('prevMain.data', compact('datas'));
     }
 
+    public function popData(){
+        $datas = PrevMain::where('type', 'PM POP')->get();
+        return view('prevMain.popData', compact('datas'));
+    }
     /**
      * Display the specified resource.
      *

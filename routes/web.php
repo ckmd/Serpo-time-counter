@@ -25,8 +25,12 @@ Route::resource('excel','excelController')->middleware('auth');
 Route::resource('prevMain','PrevMainController')->middleware('auth');
 Route::resource('allData','DBController')->middleware('auth');
 Route::resource('national','NationalController')->middleware('auth');
+Route::resource('asset','AssetController')->middleware('auth');
 Route::get('refresh','DBController@refresh')->middleware('auth');
 
 Route::get('gangguan-data/{label}/{region}/{pAwal?}/{pAkhir?}','GangguanController@gangguanData')->middleware('auth');
 Route::get('kendala-data/{label}/{region}/{pAwal?}/{pAkhir?}','KendalaController@kendalaData')->middleware('auth');
 Route::get('prevMainData','PrevMainController@data')->middleware('auth');
+Route::get('popPrevMainData','PrevMainController@popData')->middleware('auth');
+
+Route::get('assetData','AssetController@data')->middleware('auth');

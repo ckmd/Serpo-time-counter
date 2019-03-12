@@ -74,6 +74,9 @@ if(isset($_POST['SubmitButton'])){ //check if form was submitted
         <li><a href="{{url('kendala')}}"><i class="fa fa-spinner"></i> <span>Daftar Kendala</span></a></li>
         <li><a href="{{url('prevMain')}}"><i class="fa fa-spinner"></i> <span>Preventive Maintenance</span></a></li>
         <li><a href="{{url('prevMainData')}}"><i class="fa fa-spinner"></i> <span>Data Preventive Maintenance</span></a></li>
+        <li><a href="{{url('popPrevMainData')}}"><i class="fa fa-spinner"></i> <span>Filter POP</span></a></li>
+        <li><a href="{{url('asset')}}"><i class="fa fa-spinner"></i> <span>Upload Asset</span></a></li>
+        <li><a href="{{url('assetData')}}"><i class="fa fa-spinner"></i> <span>Daftar Asset</span></a></li>
         <li>
             <a href="{{ route('logout') }}"
                 onclick="event.preventDefault();
