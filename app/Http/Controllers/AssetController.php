@@ -69,6 +69,7 @@ class AssetController extends Controller
         $datas = Asset::paginate(100);
         return view('asset.data', compact('datas'));
     }
+
     /**
      * Display the specified resource.
      *

@@ -115,7 +115,7 @@ class PrevMainController extends Controller
         return view('prevMain.data', compact('datas'));
     }
 
-    public function popData(){
+    public function report(){
         $datas = PrevMain::all();
         $assets = Asset::all();
         $uniqueRegion = $datas->pluck('region')->unique();
@@ -125,33 +125,43 @@ class PrevMainController extends Controller
             switch ($urKey) {
                 case 'RINT':
                     $region = $assets->where('sbu', 'SBU MAKASSAR');
+                    $sbu = 'SBU MAKASSAR';
                     break;
                 case 'RSBS':
                     $region = $assets->where('sbu', 'SBU PALEMBANG');
+                    $sbu = 'SBU PALEMBANG';
                     break;
                 case 'RSBU':
                     $region = $assets->where('sbu', 'SBU MEDAN');
+                    $sbu = 'SBU MEDAN';
                     break;
                 case 'RBNT':
                     $region = $assets->where('sbu', 'SBU DENPASAR');
+                    $sbu = 'SBU DENPASAR';
                     break;
                 case 'RKAL':
                     $region = $assets->where('sbu', 'SBU BALIKPAPAN');
+                    $sbu = 'SBU BALIKPAPAN';
                     break;
                 case 'RJBR':
                     $region = $assets->where('sbu', 'SBU BANDUNG');
+                    $sbu = 'SBU BANDUNG';
                     break;
                 case 'RJTY':
                     $region = $assets->where('sbu', 'SBU SEMARANG');
+                    $sbu = 'SBU SEMARANG';
                     break;
                 case 'RSBT':
                     $region = $assets->where('sbu', 'SBU PEKANBARU');
+                    $sbu = 'SBU PEKANBARU';
                     break;
                 case 'ROJB':
                     $region = $assets->where('sbu', 'SBU JAKARTA');
+                    $sbu = 'SBU JAKARTA';
                     break;
                 case 'RJTM':
                     $region = $assets->where('sbu', 'SBU SURABAYA');
+                    $sbu = 'SBU SURABAYA';
                     break;
             }
 
@@ -178,7 +188,7 @@ class PrevMainController extends Controller
                 $popDdec = 0;
             }
             $arrayPOP[] = array(
-                'region' => $urKey,
+                'region' => $sbu,
                 'total_wo' => $region->count(),
                 'total_pop' => $sumPOP,
                 'percentageAll' => $per,
@@ -193,7 +203,26 @@ class PrevMainController extends Controller
                 'percentagePOPSB' => round($sumPOPSB/$assetPOPSB,4),
             );
         }
-        return view('prevMain.popData', compact('arrayPOP'));
+        return view('prevMain.report', compact('arrayPOP'));
+    }
+
+    public function reportRegion($region){
+        $datas = Asset::where('sbu', $region)->get();
+        $arrayRegion = array();
+        $totalPM = 0;
+        foreach ($datas as $data) {
+            $PM = PrevMain::where('category_pm', 'PM POP')->where('asset_code', $data->site_id)->count();
+            $totalPM += $PM;
+            $arrayRegion[] = array(
+                'site_id' => $data->site_id,
+                'site_name' => $data->site,
+                'category' => $data->type,
+                'pm' => $PM
+            );
+        }
+        array_multisort (array_column($arrayRegion, 'pm'), SORT_DESC, $arrayRegion);        
+
+        return view('prevMain.reportRegion', compact('region', 'arrayRegion', 'totalPM'));
     }
     /**
      * Display the specified resource.

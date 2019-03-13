@@ -1,3 +1,10 @@
+@section('footer')
+<script>
+    $(".report-row").click(function() {
+        window.location = $(this).data("reporthref");
+    });
+</script>
+@endsection
 @extends('layouts.master')
 @section('content')
 <div class="container">
@@ -33,7 +40,7 @@
                 <tbody>
                 <?php $id = 1;?>
                     @foreach ($arrayPOP as $d)
-                        <tr>
+                        <tr class='report-row' data-reporthref="report-data/{{$d['region']}}">
                             <th>{{$id}}</th>
                             <td>{{$d['region']}}</td>
                             <td>{{$d['total_wo']}}</td>

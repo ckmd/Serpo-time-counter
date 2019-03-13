@@ -31,6 +31,7 @@ Route::get('refresh','DBController@refresh')->middleware('auth');
 Route::get('gangguan-data/{label}/{region}/{pAwal?}/{pAkhir?}','GangguanController@gangguanData')->middleware('auth');
 Route::get('kendala-data/{label}/{region}/{pAwal?}/{pAkhir?}','KendalaController@kendalaData')->middleware('auth');
 Route::get('prevMainData','PrevMainController@data')->middleware('auth');
-Route::get('popPrevMainData','PrevMainController@popData')->middleware('auth');
+Route::get('popPrevMainData','PrevMainController@report')->middleware('auth');
 
 Route::get('assetData','AssetController@data')->middleware('auth');
+Route::get('report-data/{region}','PrevmainController@reportRegion')->middleware('auth');
