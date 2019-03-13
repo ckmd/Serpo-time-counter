@@ -87,6 +87,7 @@ class NationalController extends Controller
         // Kalkulasi data pada card starts here
         $cardArray = array(
             'regionSum' => $totalWO,
+            'avgTotalDurasi'=> round($datas->pluck('total_durasi')->sum()/$datas->where('rsps', 100)->count(),2),
             'avgDurasiSBU' => round($datas->pluck('durasi_sbu')->sum()/$totalWO,2),
             'avgPrepTime' => round($datas->pluck('prep_time')->sum()/$totalWO,2),
             'avgTravelTime' => round($datas->pluck('travel_time')->sum()/$totalWO,2),
