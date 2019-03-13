@@ -224,6 +224,11 @@ class PrevMainController extends Controller
 
         return view('prevMain.reportRegion', compact('region', 'arrayRegion', 'totalPM'));
     }
+
+    public function reportDataSite($asset_code){
+        $datas = PrevMain::where('category_pm', 'PM POP')->where('asset_code', $asset_code)->get();
+        return view('prevMain.PMsite', compact('datas', 'asset_code'));
+    }
     /**
      * Display the specified resource.
      *

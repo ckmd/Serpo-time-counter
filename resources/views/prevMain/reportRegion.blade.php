@@ -1,3 +1,11 @@
+@section('footer')
+<script>
+    $(".reportsite-row").click(function() {
+        window.location = $(this).data("reportsitehref");
+    });
+</script>
+@endsection
+
 @extends('layouts.master')
 @section('content')
 <div class="container">
@@ -19,7 +27,7 @@
                 <tbody>
                     <?php $id = 1; ?>
                     @foreach ($arrayRegion as $d)
-                        <tr>
+                        <tr class='reportsite-row' data-reportsitehref="/report-data-site/{{$d['site_id']}}">
                             <td>{{$id}}</td>
                             <td>{{$d['site_id']}}</td>
                             <td>{{$d['site_name']}}</td>
