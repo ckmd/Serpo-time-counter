@@ -122,9 +122,52 @@ class PrevMainController extends Controller
         // return $uniqueRegion;
         $arrayPOP = array();
         foreach ($uniqueRegion as $urKey) {
+            switch ($urKey) {
+                case 'RINT':
+                    $region = $assets->where('sbu', 'SBU MAKASSAR');
+                    break;
+                case 'RSBS':
+                    $region = $assets->where('sbu', 'SBU PALEMBANG');
+                    break;
+                case 'RSBU':
+                    $region = $assets->where('sbu', 'SBU MEDAN');
+                    break;
+                case 'RBNT':
+                    $region = $assets->where('sbu', 'SBU DENPASAR');
+                    break;
+                case 'RKAL':
+                    $region = $assets->where('sbu', 'SBU BALIKPAPAN');
+                    break;
+                case 'RJBR':
+                    $region = $assets->where('sbu', 'SBU BANDUNG');
+                    break;
+                case 'RJTY':
+                    $region = $assets->where('sbu', 'SBU SEMARANG');
+                    break;
+                case 'RSBT':
+                    $region = $assets->where('sbu', 'SBU PEKANBARU');
+                    break;
+                case 'ROJB':
+                    $region = $assets->where('sbu', 'SBU JAKARTA');
+                    break;
+                case 'RJTM':
+                    $region = $assets->where('sbu', 'SBU SURABAYA');
+                    break;
+            }
+
             $eachRegion = $datas->where('region',$urKey);
-            $sumEachRegion = $eachRegion->count();
             $sumPOP = $eachRegion->where('category_pm', 'PM POP')->count();
+
+            $assetPOPD = $region->where('type','POP D')->count();
+            $sumPOPD = $eachRegion->where('category_pop', 'POP D')->count();
+        
+            $assetPOPB = $region->where('type','POP B')->count();
+            $sumPOPB = $eachRegion->where('category_pop', 'POP B')->count();
+
+            $assetPOPSB = $region->where('type','POP SB')->count();
+            $sumPOPSB = $eachRegion->where('category_pop', 'POP SB')->count();
+
+            $per = round($sumPOP/$region->count(),4);
             if($sumPOP!=0){
                 $popBdec = round($eachRegion->where('category_pop', 'POP B')->count()/$sumPOP,4);
                 $popSBdec = round($eachRegion->where('category_pop', 'POP SB')->count()/$sumPOP,4);
@@ -136,11 +179,18 @@ class PrevMainController extends Controller
             }
             $arrayPOP[] = array(
                 'region' => $urKey,
-                'total_wo' => $sumEachRegion,
+                'total_wo' => $region->count(),
                 'total_pop' => $sumPOP,
-                'POP B' => $popBdec,
-                'POP SB' => $popSBdec,
-                'POP D' => $popDdec,
+                'percentageAll' => $per,
+                'assetPOPD' => $assetPOPD,
+                'POPD' => $sumPOPD,
+                'percentagePOPD' => round($sumPOPD/$assetPOPD,4),
+                'assetPOPB' => $assetPOPB,
+                'POPB' => $sumPOPB,
+                'percentagePOPB' => round($sumPOPB/$assetPOPB,4),
+                'assetPOPSB' => $assetPOPSB,
+                'POPSB' => $sumPOPSB,
+                'percentagePOPSB' => round($sumPOPSB/$assetPOPSB,4),
             );
         }
         return view('prevMain.popData', compact('arrayPOP'));
