@@ -10,8 +10,9 @@
             <table class="table-bordered table-striped" width="100%" style="text-align: center;">
                 <thead>
                     <th>No</th>
+                    <th>WO Code</th>
+                    <th>WO Date</th>
                     <th>Site ID</th>
-                    <th>Site Code</th>
                     <th>Region</th>
                     <th>Category PM</th>
                     <th>Category POP</th>
@@ -22,10 +23,12 @@
                         <tr>
                             <th>{{$id}}</th>
                             <td>{{$d->wo_code}}</td>
+                            <td>{{$d->wo_date}}</td>
                             <td>{{$d->asset_code}}</td>
                             <td>{{$d->region}}</td>
                             <td>{{$d->category_pm}}</td>
-                            <td>{{$d->category_pop}}</td>                        </tr>
+                            <td>{{$d->category_pop}}</td>     
+                        </tr>
                     <?php $id++; ?>
                     @endforeach
                 </tbody>

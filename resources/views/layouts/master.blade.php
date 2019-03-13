@@ -76,7 +76,7 @@ if(isset($_POST['SubmitButton'])){ //check if form was submitted
           </ul>
         </li>
         <li class="treeview">
-          <a href="#"><i class="fa fa-universal-access"></i><span>Gangguan dan Kendala</span> <i class="fa fa-angle-left pull-right"></i></a>
+          <a href="#"><i class="fa fa-warning"></i><span>Gangguan dan Kendala</span> <i class="fa fa-angle-left pull-right"></i></a>
           <ul class="treeview-menu">
             <li><a href="{{url('gangguan')}}"><i class="fa fa-ban"></i> <span>Daftar Gangguan</span></a></li>
             <li><a href="{{url('kendala')}}"><i class="fa fa-spinner"></i> <span>Daftar Kendala</span></a></li>
