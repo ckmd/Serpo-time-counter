@@ -10,11 +10,11 @@
             <table class="table-bordered table-striped" width="100%" style="text-align: center;">
                 <thead>
                     <th>No</th>
-                    <th>Kode WO</th>
-                    <th>Kode Asset</th>
+                    <th>Kode_WO</th>
+                    <th>Kode_Asset</th>
                     <th>Region</th>
-                    <th>Category PM</th>
-                    <th>Category POP</th>
+                    <th>Category_PM</th>
+                    <th>Category_POP</th>
                 </thead>
                 <tbody>
                 <?php $id = $datas->firstItem(); ?>

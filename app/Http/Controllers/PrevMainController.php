@@ -40,6 +40,7 @@ class PrevMainController extends Controller
         function findDescription($string){
             $rootCauseConclusion = null;
             $string = explode(" ", $string);
+            // Keyword Sementara
             $cause = array(
                 'PM FOC' => array('Patroli'),
                 'PM POP' => array('POP'),
@@ -56,7 +57,7 @@ class PrevMainController extends Controller
             if($maxResult>0){
                 $rootCauseConclusion = $indeksResult;
             }else if($string!=null){
-                $rootCauseConclusion = "Lain";
+                $rootCauseConclusion = "Lain - Lain";
             }
             return $rootCauseConclusion;
         }
@@ -177,16 +178,10 @@ class PrevMainController extends Controller
             $assetPOPSB = $region->where('type','POP SB')->count();
             $sumPOPSB = $eachRegion->where('category_pop', 'POP SB')->count();
 
+            $sumFOC = $eachRegion->where('category_pm', 'PM FOC')->count();
+            $sumLain = $eachRegion->where('category_pm', 'Lain - Lain')->count();
+
             $per = round($sumPOP/$region->count(),4);
-            if($sumPOP!=0){
-                $popBdec = round($eachRegion->where('category_pop', 'POP B')->count()/$sumPOP,4);
-                $popSBdec = round($eachRegion->where('category_pop', 'POP SB')->count()/$sumPOP,4);
-                $popDdec = round($eachRegion->where('category_pop', 'POP D')->count()/$sumPOP,4);
-            }else{
-                $popBdec = 0;
-                $popSBdec = 0;
-                $popDdec = 0;
-            }
             $arrayPOP[] = array(
                 'region' => $sbu,
                 'total_wo' => $region->count(),
@@ -201,6 +196,8 @@ class PrevMainController extends Controller
                 'assetPOPSB' => $assetPOPSB,
                 'POPSB' => $sumPOPSB,
                 'percentagePOPSB' => round($sumPOPSB/$assetPOPSB,4),
+                'pmFOC' => $sumFOC,
+                'pmLain' => $sumLain,
             );
         }
         return view('prevMain.report', compact('arrayPOP'));
@@ -212,13 +209,15 @@ class PrevMainController extends Controller
         $totalPM = 0;
         foreach ($datas as $data) {
             $PM = PrevMain::where('category_pm', 'PM POP')->where('asset_code', $data->site_id)->count();
-            $totalPM += $PM;
-            $arrayRegion[] = array(
-                'site_id' => $data->site_id,
-                'site_name' => $data->site,
-                'category' => $data->type,
-                'pm' => $PM
-            );
+            if($PM != 0){
+                $totalPM += $PM;
+                $arrayRegion[] = array(
+                    'site_id' => $data->site_id,
+                    'site_name' => $data->site,
+                    'category' => $data->type,
+                    'pm' => $PM
+                );
+            }
         }
         array_multisort (array_column($arrayRegion, 'pm'), SORT_DESC, $arrayRegion);        
 
@@ -226,8 +225,51 @@ class PrevMainController extends Controller
     }
 
     public function reportDataSite($asset_code){
+        $title = Asset::where('site_id',$asset_code)->first(); // + nama asset + region
         $datas = PrevMain::where('category_pm', 'PM POP')->where('asset_code', $asset_code)->get();
-        return view('prevMain.PMsite', compact('datas', 'asset_code'));
+        return view('prevMain.PMsite', compact('datas', 'title'));
+    }
+
+    public function pmFOC($region){
+        $datas = Asset::where('sbu', $region)->get();
+        $arrayRegion = array();
+        $totalPMFOC = 0;
+        foreach ($datas as $data) {
+            $PM = PrevMain::where('category_pm', 'PM FOC')->where('asset_code', $data->site_id)->count();
+            if($PM != 0){
+                $totalPMFOC += $PM;
+                $arrayRegion[] = array(
+                    'site_id' => $data->site_id,
+                    'site_name' => $data->site,
+                    'category' => $data->type,
+                    'pm' => $PM
+                );
+            }
+        }
+        array_multisort (array_column($arrayRegion, 'pm'), SORT_DESC, $arrayRegion);        
+
+        return view('prevMain.pmFOC', compact('region', 'arrayRegion', 'totalPMFOC'));
+    }
+
+    public function pmLain($region){
+        $datas = Asset::where('sbu', $region)->get();
+        $arrayRegion = array();
+        $totalPMLain = 0;
+        foreach ($datas as $data) {
+            $PM = PrevMain::where('category_pm', 'Lain - Lain')->where('asset_code', $data->site_id)->count();
+            if($PM != 0){
+                $totalPMLain += $PM;
+                $arrayRegion[] = array(
+                    'site_id' => $data->site_id,
+                    'site_name' => $data->site,
+                    'category' => $data->type,
+                    'pm' => $PM
+                );
+            }
+        }
+        array_multisort (array_column($arrayRegion, 'pm'), SORT_DESC, $arrayRegion);        
+
+        return view('prevMain.pmLain', compact('region', 'arrayRegion', 'totalPMLain'));
     }
     /**
      * Display the specified resource.

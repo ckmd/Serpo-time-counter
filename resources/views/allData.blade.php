@@ -6,26 +6,28 @@
     <div class="row justify-content-center">
         <div class="col-md-12">
             <div class="text-center">
-                <h1 class="display-6">All Data from Database</h1>
+                <h4 class="display-6">Calculated Raw Data Data</h4>
                 <footer class="blockquote-footer">*Durasi dalam satuan menit</footer>
             </div>
-            <a href="{{route('excel.create')}}" class="btn btn-success">Download to .xlsx</a>
-            <table class="table-responsive table-hover table-bordered table-striped" style="text-align: center;">
+            <a href="{{route('excel.create')}}" class="btn btn-success"><i class="fa fa-download"></i><span> Download</span></a>
+            <br>
+            <br>
+            <table class="table table-responsive table-hover table-bordered table-striped" style="text-align: center;">
                 <thead>
                     <tr>
-                        <th>id</th>
+                        <th>ID</th>
                         <!-- <th>AR ID</th>
                         <th>Prob ID</th> -->
-                        <th>kode_wo</th>
-                        <th>region</th>
-                        <th>basecamp</th>
-                        <th>serpo</th>
-                        <th>durasi SBU</th>
-                        <th>preparation time</th>
-                        <th>travel time</th>
-                        <th>working time</th>
-                        <th>rsps</th>
-                        <th>Root Cause</th>
+                        <th>Kode_wo</th>
+                        <th>Region</th>
+                        <th>Basecamp</th>
+                        <th>Service_Point</th>
+                        <th>Durasi_SBU</th>
+                        <th>Preparation_Time</th>
+                        <th>Travel_Time</th>
+                        <th>Working_Time</th>
+                        <th>RSPS</th>
+                        <th>Root_Cause</th>
                         <th>Kendala</th>
                     </tr>
                 </thead>

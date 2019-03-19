@@ -78,6 +78,15 @@ window.onload = function() {
                 <p class="card-text-small">Total Durasi</p>
             </div>
         </div>
+        <div class="card text-white bg-info">
+            <div class="card-body">
+                <h5 class="card-title">{{$cardArray['avgRSPS']}} %</h5>
+                <p class="card-text">RSPS</p>
+            </div>
+        </div>
+    </div>
+    <br>
+    <div class="card-deck">
         <div class="card text-white bg-secondary">
             <div class="card-body">
                 <h5 class="card-title">{{$cardArray['avgDurasiSBU']}} Menit</h5>
@@ -102,12 +111,6 @@ window.onload = function() {
                 <p class="card-text">Work Time</p>
             </div>
         </div>
-        <div class="card text-white bg-info">
-            <div class="card-body">
-                <h5 class="card-title">{{$cardArray['avgRSPS']}} %</h5>
-                <p class="card-text">RSPS</p>
-            </div>
-        </div>
     </div>
     <br>
     @endsection
@@ -130,7 +133,7 @@ window.onload = function() {
         <table style="float: left" width="45%">
             <thead class="thead-dark">
                 <tr>
-                    <th>Kategori Gangguan</th>
+                    <th>Kategori Gangguan (RSPS = 100)</th>
                     <th>Total</th>
                     <th>Rataan Durasi (Menit)</th>
                 </tr>
@@ -163,7 +166,7 @@ window.onload = function() {
         <table style="float: left" width="45%">
             <thead class="thead-dark">
                 <tr>
-                    <th>Kategori Gangguan</th>
+                    <th>Kategori Gangguan (RSPS < 100)</th>
                     <th>Total</th>
                 </tr>
             </thead>
@@ -274,10 +277,11 @@ window.onload = function() {
                         <th colspan="6">Average (Dalam Satuan Menit)</th>
                     </tr>
                     <tr>
-                        <th>Durasi SBU</th>
-                        <th>Preparation Time</th>
-                        <th>Travel Time</th>
-                        <th>Working Time</th>
+                        <th>Total Durasi (A+B+C+D)</th>
+                        <th>A.Durasi SBU</th>
+                        <th>B.Preparation Time</th>
+                        <th>C.Travel Time</th>
+                        <th>D.Working Time</th>
                         <th>RSPS</th>
                     </tr>
                 </thead>
@@ -289,6 +293,7 @@ window.onload = function() {
                         <td>{{$data->basecamp}}</td>
                         <td>{{$data->serpo}}</td>
                         <td>{{$data->jumlah_wo}}</td>
+                        <td>{{round($data->total_durasi,2)}}</td>
                         <td>{{round($data->durasi_sbu,2)}}</td>
                         @if($data->prep_time!=null)
                         <td>{{round($data->prep_time,2)}}</td>

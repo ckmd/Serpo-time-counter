@@ -61,7 +61,7 @@ class DBController extends Controller
                 if($maxResult>0){
                     $rootCauseConclusion = $indeksResult;
                 }else if($string!=null){
-                $rootCauseConclusion = "Lain";
+                $rootCauseConclusion = "Lain - Lain";
             }
         }
         return $rootCauseConclusion;
@@ -89,7 +89,7 @@ class DBController extends Controller
             if($maxResult>0){
                 $kendalaConclusion = $indeksResult;
             }else if($k!=null){
-                $kendalaConclusion = "Lain";
+                $kendalaConclusion = "Lain - Lain";
             }
         }
         return $kendalaConclusion;

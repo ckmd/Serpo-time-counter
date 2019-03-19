@@ -70,6 +70,7 @@ class HomeController extends Controller
         
         foreach ($uniqueSerpo as $key) {
             // Variable Initiation
+            $totalDurasi = null;
             $avgDurasiSBU = null;
             $avgPrepTime = null;
             $avgTravelTime = null;
@@ -81,6 +82,7 @@ class HomeController extends Controller
             $uniqueSerpoRow = $getFilteredDate->where('serpo',$key);
             
             foreach ($uniqueSerpoRow as $ubc) {
+                $totalDurasi += $ubc->total_durasi;
                 $avgDurasiSBU += $ubc->durasi_sbu;
                 $avgPrepTime += $ubc->prep_time;
                 $avgTravelTime += $ubc->travel_time;
@@ -95,6 +97,10 @@ class HomeController extends Controller
             $avgTravelTime /= $uniqueSerpoCount;
             $avgWorkTime /= $uniqueSerpoCount;
             $avgRSPS /= $uniqueSerpoCount;
+            // Total Durasi dibagi dengan jumlah WO
+            $totalDurasi /= $uniqueSerpoCount;
+            // Total Durasi dibagi dengan jumlah banyaknya total_durasi
+            // $totalDurasi /= $getFilteredDate->where('serpo',$key)->where('rsps', 100)->count();
             // Zero is Null
             $avgPrepTime = zeroIsNull($avgPrepTime);
             $avgTravelTime = zeroIsNull($avgTravelTime);
@@ -104,6 +110,7 @@ class HomeController extends Controller
                 $avgExcel->basecamp = $basecamp;
                 $avgExcel->serpo = $key;
                 $avgExcel->jumlah_wo = $uniqueSerpoCount;
+                $avgExcel->total_durasi = $totalDurasi;
                 $avgExcel->durasi_sbu = $avgDurasiSBU;
                 $avgExcel->prep_time = $avgPrepTime;
                 $avgExcel->travel_time = $avgTravelTime;
@@ -117,7 +124,7 @@ class HomeController extends Controller
         $urcdArray = array();
         $urcArray = array();
         $ukArray = array();
-        if($regionName!=null){
+        if($regionName!=null && $getFilteredDate->count()!=null){
             $dbAvgExcel = AvgExcel::orderBy('basecamp','asc')->get();
             // Get the total WO and Average data
             // Assign the calculated value into array
