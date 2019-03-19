@@ -51,6 +51,10 @@ class NationalController extends Controller
         $pAkhir = $request->pakhir;
         $addOneDay = (new DateTime($pAkhir))->add(new DateInterval('P1D'))->format('Y-m-d');
         $datas = Excel::orderBy('wo_date','asc')->get()->where('wo_date','>=',$pAwal)->where('wo_date','<=',$addOneDay);
+        // Filter apabila hasil filter data yang berjumlah nol
+        if($datas->count()==null){
+            return redirect('national');
+        }
         $totalWO = $datas->count();
         $region = $datas->pluck('region')->unique();
         $woArray = array();

@@ -124,7 +124,7 @@ class HomeController extends Controller
         $urcdArray = array();
         $urcArray = array();
         $ukArray = array();
-        if($regionName!=null){
+        if($regionName!=null && $getFilteredDate->count()!=null){
             $dbAvgExcel = AvgExcel::orderBy('basecamp','asc')->get();
             // Get the total WO and Average data
             // Assign the calculated value into array
