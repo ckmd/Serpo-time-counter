@@ -36,3 +36,5 @@ Route::get('popPrevMainData','PrevMainController@report')->middleware('auth');
 Route::get('assetData','AssetController@data')->middleware('auth');
 Route::get('report-data/{region}','PrevmainController@reportRegion')->middleware('auth');
 Route::get('report-data/report-data-site/{asset_code}','PrevMainController@reportDataSite')->middleware('auth');
+Route::get('report-pm-foc/{region}','PrevmainController@pmFOC')->middleware('auth');
+Route::get('report-pm-lain/{region}','PrevmainController@pmLain')->middleware('auth');

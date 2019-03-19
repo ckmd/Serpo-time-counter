@@ -1,29 +1,20 @@
-@section('footer')
-<script>
-    $(".reportsite-row").click(function() {
-        window.location = $(this).data("reportsitehref");
-    });
-</script>
-@endsection
-
 @extends('layouts.master')
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-12">
             <div class="text-center">
-                <h3>Daftar Asset PM POP Region {{$region}}</h3>
+                <h3>Daftar Asset PM Lain - Lain Region {{$region}}</h3>
             </div>
             <div class="table table-responsive table-hover" >
-            <h5>Total PM POP : {{$totalPM}}</h5>
+            <h5>Total PM Lain - Lain : {{$totalPMLain}}</h5>
             <table class="table-bordered table-striped" width="100%" style="text-align: center;">
                 <thead>
                     <th>No</th>
-                    <th>Site_ID</th>
-                    <th>Site_Name</th>
+                    <th>Site ID</th>
+                    <th>Site Name</th>
                     <th>Category</th>
-                    <th>Jumlah_PM</th>
-                    <th>Action</th>
+                    <th>Jumlah PM</th>
                 </thead>
                 <tbody>
                     <?php $id = 1; ?>
@@ -34,7 +25,6 @@
                             <td>{{$d['site_name']}}</td>
                             <td>{{$d['category']}}</td>
                             <td>{{$d['pm']}}</td>
-                            <td><button class="btn btn-primary reportsite-row" data-reportsitehref="report-data-site/{{$d['site_id']}}">Detail</button></td>
                         </tr>
                     <?php $id++; ?>
                     @endforeach

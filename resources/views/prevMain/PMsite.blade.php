@@ -4,11 +4,8 @@
     <div class="row justify-content-center">
         <div class="col-md-12">
             <div class="table table-responsive" >
+            <h4>Detail Asset</h4>
                 <table style="float: left">
-                    <tr>
-                        <th>Detail Asset</th>
-                        <td>&nbsp</td>
-                    </tr>
                     <tr>
                         <th>Site ID</th>
                         <td>{{$title->site_id}}</td>
@@ -34,10 +31,6 @@
                     </tr>
                 </table>
                 <table style="float: left">
-                    <tr>
-                        <th>&nbsp</th>
-                        <td>&nbsp</td>
-                    </tr>
                     <tr>
                         <th>Model</th>
                         <td>{{$title->model}}</td>
@@ -67,12 +60,12 @@
             <table class="table-bordered table-striped" width="100%" style="text-align: center;">
                 <thead>
                     <th>No</th>
-                    <th>WO Code</th>
-                    <th>WO Date</th>
+                    <th>WO_Code</th>
+                    <th>WO_Date</th>
                     <th>Basecamp</th>
                     <th>Serpo</th>
-                    <th>Category PM</th>
-                    <th>Category POP</th>
+                    <th>Category_PM</th>
+                    <th>Category_POP</th>
                 </thead>
                 <tbody>
                     <?php $id = 1; ?>
