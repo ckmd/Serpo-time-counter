@@ -27,7 +27,7 @@
                 <tbody>
                     <?php $id = 1; ?>
                     @foreach ($arrayRegion as $d)
-                        <tr class='reportsite-row' data-reportsitehref="/report-data-site/{{$d['site_id']}}">
+                        <tr class='reportsite-row' data-reportsitehref="report-data-site/{{$d['site_id']}}">
                             <td>{{$id}}</td>
                             <td>{{$d['site_id']}}</td>
                             <td>{{$d['site_name']}}</td>

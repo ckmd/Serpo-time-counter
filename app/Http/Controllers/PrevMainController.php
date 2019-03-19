@@ -226,8 +226,9 @@ class PrevMainController extends Controller
     }
 
     public function reportDataSite($asset_code){
+        $title = Asset::where('site_id',$asset_code)->first(); // + nama asset + region
         $datas = PrevMain::where('category_pm', 'PM POP')->where('asset_code', $asset_code)->get();
-        return view('prevMain.PMsite', compact('datas', 'asset_code'));
+        return view('prevMain.PMsite', compact('datas', 'title'));
     }
     /**
      * Display the specified resource.
