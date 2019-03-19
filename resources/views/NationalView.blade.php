@@ -107,6 +107,15 @@ window.onload = function() {
                 <p class="card-text-small">Total Durasi</p>
             </div>
         </div>
+        <div class="card text-white bg-info">
+            <div class="card-body">
+                <h5 class="card-title">{{$cardArray['avgRSPS']}} %</h5>
+                <p class="card-text">RSPS</p>
+            </div>
+        </div>
+    </div>
+    <br>
+    <div class="card-deck">
         <div class="card text-white bg-secondary">
             <div class="card-body">
                 <h5 class="card-title">{{$cardArray['avgDurasiSBU']}} Menit</h5>
@@ -129,12 +138,6 @@ window.onload = function() {
             <div class="card-body">
                 <h5 class="card-title">{{$cardArray['avgWorkTime']}} Menit</h5>
                 <p class="card-text">Work Time</p>
-            </div>
-        </div>
-        <div class="card text-white bg-info">
-            <div class="card-body">
-                <h5 class="card-title">{{$cardArray['avgRSPS']}} %</h5>
-                <p class="card-text">RSPS</p>
             </div>
         </div>
     </div>
@@ -179,7 +182,7 @@ window.onload = function() {
     <table style="float: left" width="45%">
         <thead class="thead-dark">
             <tr>
-                <th>Kategori Gangguan</th>
+                <th>Kategori Gangguan (RSPS = 100)</th>
                 <th>Total</th>
                 <th>Rataan Durasi (Menit)</th>
             </tr>
@@ -215,7 +218,7 @@ window.onload = function() {
     <table style="float: left" width="45%">
         <thead class="thead-dark">
             <tr>
-                <th>Kategori Gangguan</th>
+                <th>Kategori Gangguan (RSPS < 100)</th>
                 <th>Total</th>
                 <th>Durasi</th>
             </tr>
@@ -283,18 +286,23 @@ window.onload = function() {
 @yield('card')
 @yield('chart')
 @yield('pieChart')
-<blockquote class="blockquote text-center">
-    <footer class="blockquote-footer">Data dalam satuan menit</footer>
-</blockquote>
+<br>
+<div class="text-center">
+    <h4>Rata - Rata Data Nasional Berdasarkan Regional</h4>
+</div>
 <table class="table table-bordered table-striped table-hover" style="text-align: center;">
     <thead class="thead-dark">
+        <tr valign="top" >
+            <th rowspan="2">Region</th>
+            <th rowspan="2">Jumlah WO</th>
+            <th colspan="6">Average (Dalam Satuan Menit)</th>
+        </tr>
         <tr>
-            <th>Region</th>
-            <th>Jumlah WO</th>
-            <th>Durasi SBU</th>
-            <th>Preparation Time</th>
-            <th>Travel Time</th>
-            <th>Working Time</th>
+            <th>Total Durasi (A+B+C+D)</th>
+            <th>A.Durasi SBU</th>
+            <th>B.Preparation Time</th>
+            <th>C.Travel Time</th>
+            <th>D.Working Time</th>
             <th>RSPS</th>
         </tr>
     </thead>
@@ -303,6 +311,7 @@ window.onload = function() {
         <tr>
             <td>{{$data->region}}</td>
             <td>{{$data->jumlah_wo}}</td>
+            <td>{{$data->total_durasi}}</td>
             <td>{{$data->durasi_sbu}}</td>
             <td>{{$data->prep_time}}</td>
             <td>{{$data->travel_time}}</td>

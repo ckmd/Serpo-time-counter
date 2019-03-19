@@ -64,6 +64,9 @@ class NationalController extends Controller
 //            $regionName = $regionRow->pluck('region')->unique();
             $regionSum = $regionRow->pluck('region')->count();
 
+            // Digunakan untuk pembagi sesuai banyaknya total_durasi
+            // $avgTotalDurasi = round($regionRow->pluck('total_durasi')->sum()/$regionRow->where('rsps',100)->pluck('region')->count(),2);
+            $avgTotalDurasi = round($regionRow->pluck('total_durasi')->sum()/$regionSum,2);
             $avgDurasiSBU = round($regionRow->pluck('durasi_sbu')->sum()/$regionSum,2);
             $avgPrepTime = round($regionRow->pluck('prep_time')->sum()/$regionSum,2);
             $avgtravelTime = round($regionRow->pluck('travel_time')->sum()/$regionSum,2);
@@ -73,6 +76,7 @@ class NationalController extends Controller
             $nationalData = new NationalData();
                 $nationalData->region = $value;
                 $nationalData->jumlah_wo = $regionSum;
+                $nationalData->total_durasi = $avgTotalDurasi;
                 $nationalData->durasi_sbu = $avgDurasiSBU;
                 $nationalData->prep_time = $avgPrepTime;
                 $nationalData->travel_time = $avgtravelTime;

@@ -18,6 +18,7 @@ class CreateAvgExcelsTable extends Migration
             $table->string('basecamp');
             $table->string('serpo');
             $table->integer('jumlah_wo');
+            $table->decimal('total_durasi',10,2)->nullable()->default(NULL);
             $table->decimal('durasi_sbu',10,2)->nullable()->default(NULL);
             $table->decimal('prep_time',10,2)->nullable()->default(NULL);
             $table->decimal('travel_time',10,2)->nullable()->default(NULL);

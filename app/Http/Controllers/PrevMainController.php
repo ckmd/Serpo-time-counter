@@ -56,7 +56,7 @@ class PrevMainController extends Controller
             if($maxResult>0){
                 $rootCauseConclusion = $indeksResult;
             }else if($string!=null){
-                $rootCauseConclusion = "Lain";
+                $rootCauseConclusion = "Lain - Lain";
             }
             return $rootCauseConclusion;
         }
