@@ -86,7 +86,7 @@ if(isset($_POST['SubmitButton'])){ //check if form was submitted
           <a href="#"><i class="fa fa-wrench"></i><span>Preventive Maintenance</span> <i class="fa fa-angle-left pull-right"></i></a>
           <ul class="treeview-menu">
             <li><a href="{{url('prevMain')}}"><i class="fa fa-upload"></i> <span>Upload PM</span></a></li>
-            <li><a href="{{url('prevMain')}}"><i class="fa fa-circle"></i> <span>Daftar Kategori PM</span></a></li>
+            <li><a href="{{url('kategoriPM')}}"><i class="fa fa-circle"></i> <span>Daftar Kategori PM</span></a></li>
             <li><a href="{{url('prevMainData')}}"><i class="fa fa-table"></i> <span>Data PM</span></a></li>
             <li><a href="{{url('popPrevMainData')}}"><i class="fa fa-map-o"></i> <span>Report PM POP</span></a></li>
           </ul>

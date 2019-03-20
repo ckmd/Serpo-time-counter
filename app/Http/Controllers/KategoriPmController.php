@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\KategoriPm;
 
 class KategoriPmController extends Controller
 {
@@ -13,7 +14,8 @@ class KategoriPmController extends Controller
      */
     public function index()
     {
-        //
+        $kategoriPM = KategoriPm::orderBy('kategori_pm','asc')->orderBy('parameter','asc')->paginate(10);
+        return view('kategoriPM.index', compact('kategoriPM'));
     }
 
     /**
@@ -34,7 +36,8 @@ class KategoriPmController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        KategoriPm::create($request->all());
+        return back();
     }
 
     /**
@@ -77,8 +80,10 @@ class KategoriPmController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-        //
+        $data = KategoriPm::findOrFail($request->kategoriPM_id);
+        $data->delete();
+        return redirect('/kategoriPM');
     }
 }
