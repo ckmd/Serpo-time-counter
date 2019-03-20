@@ -228,21 +228,12 @@ window.onload = function() {
                 <br>
                 <div class="row">
                     <div class="col">
-                        <input type="submit" class="btn btn-primary" value="Filter">
+                        <button type="submit" class="btn btn-primary"><i class="fa fa-filter"></i><span> Filter</span></button>
                     </div>
                         </form>
                         <br>
                         @if($dbAvgExcel!=null)
-                        <form method="post" action="{{route('allData.store')}}">
-                        {{csrf_field()}}
-                            <input type="hidden" name="awal" value="{{$pAwal}}">
-                            <input type="hidden" name="akhir" value="{{$pAkhir}}">
-                            <input type="hidden" name="region" value="{{$regionName}}">
-                    <div class="col">
-                        <input type="submit" class="btn btn-success" value="Download to .xlsx">
-                    </div>
                 </div>
-            </form>
         </div>
     </div>
 </div>
@@ -267,21 +258,32 @@ window.onload = function() {
             @yield('card')
             @yield('chart')
             <br>
-            <table class="table table-striped table-hover table-bordered" >
+            <div class="text-center">
+                <h3>Data Performa Rata - Rata Serpo Berdasarkan Region {{$regionName}}</h3>
+            </div>
+            <form method="post" action="{{route('allData.store')}}">
+                    {{csrf_field()}}
+                        <input type="hidden" name="awal" value="{{$pAwal}}">
+                        <input type="hidden" name="akhir" value="{{$pAkhir}}">
+                        <input type="hidden" name="region" value="{{$regionName}}">
+                        <button type="submit" class="btn btn-success"><i class="fa fa-download"></i><span> Download</span></button>
+            </form>
+            <br>
+            <table class="table table-responsive table-striped table-hover table-bordered" >
                 <thead class="thead-light" style="text-align: center;">
                     <tr valign="top" >
                         <th rowspan="2">No</th>
                         <th rowspan="2">Basecamp</th>
-                        <th rowspan="2">Serpo</th>
-                        <th rowspan="2">Jumlah WO</th>
+                        <th rowspan="2">Service_Point</th>
+                        <th rowspan="2">Jumlah_WO</th>
                         <th colspan="6">Average (Dalam Satuan Menit)</th>
                     </tr>
                     <tr>
-                        <th>Total Durasi (A+B+C+D)</th>
-                        <th>A.Durasi SBU</th>
-                        <th>B.Preparation Time</th>
-                        <th>C.Travel Time</th>
-                        <th>D.Working Time</th>
+                        <th>Total_Durasi_(A+B+C+D)</th>
+                        <th>A.Durasi_SBU</th>
+                        <th>B.Preparation_Time</th>
+                        <th>C.Travel_Time</th>
+                        <th>D.Working_Time</th>
                         <th>RSPS</th>
                     </tr>
                 </thead>

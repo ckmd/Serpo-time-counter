@@ -266,7 +266,9 @@ window.onload = function() {
         </div>
         <div class="col">
             <br>
-            <input type="submit" class="btn btn-primary btn-lg" value="Filter">
+            <button type="submit" class="btn btn-primary btn-lg"><i class="fa fa-filter"></i><span> Filter</span></button>
+
+            <!-- <input type="submit" class="btn btn-primary btn-lg" value="Filter"> -->
         </div>
     </div>
 </form>

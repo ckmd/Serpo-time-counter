@@ -48,9 +48,9 @@
             <!-- Table Ends Here -->
         <!-- Button trigger modal -->
         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
-        Tambah Kendala
+        <i class="fa fa-plus"></i> Tambah Kendala
         </button>
-        <a href="{{url('refresh')}}" class="btn btn-success">Refresh Data</a>
+        <a href="{{url('refresh')}}" class="btn btn-success"><i class="fa fa-refresh"></i> Refresh Data</a>
         </div>
     </div>
 </div>

@@ -48,9 +48,10 @@
             <!-- Table Ends Here -->
         <!-- Button trigger modal -->
         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
-        Tambah Kategori PM
+        <i class="fa fa-plus"></i>
+         Tambah Kategori PM
         </button>
-        <a href="{{url('refreshPM')}}" class="btn btn-success">Refresh Data PM</a>
+        <a href="{{url('refreshPM')}}" class="btn btn-success"><i class="fa fa-refresh"></i> Refresh Data PM</a>
         </div>
     </div>
 </div>

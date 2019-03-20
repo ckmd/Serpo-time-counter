@@ -130,9 +130,14 @@ class HomeController extends Controller
             // Get the total WO and Average data
             // Assign the calculated value into array
             $regionSum = $getFilteredDate->count();
+            $rsps100Sum = $getFilteredDate->where('rsps', 1)->count();
+            // Filter if found rsps 100 average is null
+            if($rsps100Sum == 0){
+                $rsps100Sum = 1;
+            }
             $cardArray = array(
                 'regionSum' => $regionSum,
-                'avgTotalDurasi'=> round($getFilteredDate->pluck('total_durasi')->sum()/$getFilteredDate->where('rsps', 1)->count(),2),
+                'avgTotalDurasi'=> round($getFilteredDate->pluck('total_durasi')->sum()/$rsps100Sum,2),
                 'avgDurasiSBU' => round($getFilteredDate->pluck('durasi_sbu')->sum()/$regionSum,2),
                 'avgPrepTime' => round($getFilteredDate->pluck('prep_time')->sum()/$regionSum,2),
                 'avgTravelTime' => round($getFilteredDate->pluck('travel_time')->sum()/$regionSum,2),
