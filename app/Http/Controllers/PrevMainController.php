@@ -75,19 +75,22 @@ class PrevMainController extends Controller
             $getSheet = $excelObject->getActiveSheet()->toArray(null);
             $highestRow = $excelObject->setActiveSheetIndex(0)->getHighestDataRow();
         }
-        PrevMain::truncate();
         $assets = Asset::all();
         for ($i=1; $i < $highestRow; $i++) {
-            $asset = explode(" ", $getSheet[$i][6]);
-            $assetCode = $asset[0];
-            $assetCodeDesc = $asset[1]." ".$asset[2];
-            
-            $categoryPM = findDescription($getSheet[$i][4]);
-            $categoryPOP = null;
-            if($categoryPM == "PM POP"){
-                $categoryPOP = findPOP($assetCode);
-            }
-            $prevMantData = new PrevMain(); 
+            $filteredWO = PrevMain::where('wo_code',$getSheet[$i][3])->value('wo_code');
+            // seleksi untuk menyimpan daftar PM yang unik
+            if($filteredWO!=$getSheet[$i][3]){
+                // Code untuk memecah Asset menjadi asset code dan asset description
+                $asset = explode(" ", $getSheet[$i][6]);
+                $assetCode = $asset[0];
+                $assetCodeDesc = $asset[1]." ".$asset[2];
+                
+                $categoryPM = findDescription($getSheet[$i][4]);
+                $categoryPOP = null;
+                if($categoryPM == "PM POP"){
+                    $categoryPOP = findPOP($assetCode);
+                }
+                $prevMantData = new PrevMain(); 
                 $prevMantData->status = $getSheet[$i][0];
                 $prevMantData->scheduled_date = $getSheet[$i][1];
                 $prevMantData->duration = $getSheet[$i][2];
@@ -106,7 +109,8 @@ class PrevMainController extends Controller
                 $prevMantData->company = $getSheet[$i][14];
                 $prevMantData->category_pm = $categoryPM;
                 $prevMantData->category_pop = $categoryPOP;
-            $prevMantData->save();
+                $prevMantData->save();
+            }
         }
         return redirect('prevMainData');
     }

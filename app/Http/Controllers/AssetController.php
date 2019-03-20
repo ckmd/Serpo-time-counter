@@ -36,7 +36,7 @@ class AssetController extends Controller
      */
     public function store(Request $request)
     {
-        Asset::truncate();
+        // Asset::truncate();
         $getSheet = null;
         $highestRow = null;
         require_once '../Classes/PHPExcel/IOFactory.php';
@@ -48,7 +48,10 @@ class AssetController extends Controller
         }
         for ($i=1; $i < $highestRow; $i++) {
             if($getSheet[$i][0]!=null){
-                $datas = new Asset;
+                $filteredWO = Asset::where('site_id',$getSheet[$i][1])->value('site_id');
+                // seleksi untuk menyimpan daftar PM yang unik
+                if($filteredWO!=$getSheet[$i][1]){
+                    $datas = new Asset;
                     $datas->site_id = $getSheet[$i][1];
                     $datas->site = $getSheet[$i][2];
                     $datas->kota = $getSheet[$i][3];
@@ -59,9 +62,10 @@ class AssetController extends Controller
                     $datas->updated_time = $getSheet[$i][8];
                     $datas->updated_by = $getSheet[$i][9];
                     $datas->status = $getSheet[$i][10];
-                $datas->save();
+                    $datas->save();
+                }
             }
-        }
+        }    
         return redirect('assetData');
     }
 
