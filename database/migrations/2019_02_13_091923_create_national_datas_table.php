@@ -22,7 +22,7 @@ class CreateNationalDatasTable extends Migration
             $table->decimal('prep_time',10,2)->nullable()->default(NULL);
             $table->decimal('travel_time',10,2)->nullable()->default(NULL);
             $table->decimal('work_time',10,2)->nullable()->default(NULL);
-            $table->decimal('rsps',10,2)->nullable()->default(NULL);
+            $table->decimal('rsps',10,4)->nullable()->default(NULL);
             $table->timestamps();
         });
     }

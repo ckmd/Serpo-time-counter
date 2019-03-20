@@ -105,6 +105,7 @@ class HomeController extends Controller
             $avgPrepTime = zeroIsNull($avgPrepTime);
             $avgTravelTime = zeroIsNull($avgTravelTime);
             $avgWorkTime = zeroIsNull($avgWorkTime);
+            $totalDurasi = zeroIsNull($totalDurasi);
             // save into database
             $avgExcel = new AvgExcel();
                 $avgExcel->basecamp = $basecamp;
@@ -131,12 +132,12 @@ class HomeController extends Controller
             $regionSum = $getFilteredDate->count();
             $cardArray = array(
                 'regionSum' => $regionSum,
-                'avgTotalDurasi'=> round($getFilteredDate->pluck('total_durasi')->sum()/$getFilteredDate->where('rsps', 100)->count(),2),
+                'avgTotalDurasi'=> round($getFilteredDate->pluck('total_durasi')->sum()/$getFilteredDate->where('rsps', 1)->count(),2),
                 'avgDurasiSBU' => round($getFilteredDate->pluck('durasi_sbu')->sum()/$regionSum,2),
                 'avgPrepTime' => round($getFilteredDate->pluck('prep_time')->sum()/$regionSum,2),
                 'avgTravelTime' => round($getFilteredDate->pluck('travel_time')->sum()/$regionSum,2),
                 'avgWorkTime' => round($getFilteredDate->pluck('work_time')->sum()/$regionSum,2),
-                'avgRSPS' => round($getFilteredDate->pluck('rsps')->sum()/$regionSum,2)
+                'avgRSPS' => round($getFilteredDate->pluck('rsps')->sum()/$regionSum,4)
             );
             // Menghitung grafik performa rsps / bulan
             $rspsArray = array();
@@ -156,8 +157,8 @@ class HomeController extends Controller
                         $counter++;
                     }
                 }
-                $result = round($result/$counter,2);
-                $chartArray[] = array('label'=>$ud,'y'=>$result);
+                $result = round($result/$counter,4);
+                $chartArray[] = array('label'=>$ud,'y'=>$result*100);
             }
             // Menghitung Kendala
             $kendala = $getFilteredDate->where('kendala','<>','')->pluck('kendala');

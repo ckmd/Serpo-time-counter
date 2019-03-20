@@ -109,7 +109,7 @@ window.onload = function() {
         </div>
         <div class="card text-white bg-info">
             <div class="card-body">
-                <h5 class="card-title">{{$cardArray['avgRSPS']}} %</h5>
+                <h5 class="card-title">{{$cardArray['avgRSPS']*100}} %</h5>
                 <p class="card-text">RSPS</p>
             </div>
         </div>
@@ -316,7 +316,7 @@ window.onload = function() {
             <td>{{$data->prep_time}}</td>
             <td>{{$data->travel_time}}</td>
             <td>{{$data->work_time}}</td>
-            <td>{{$data->rsps}}%</td>
+            <td>{{$data->rsps*100}}%</td>
         </tr>
         @endforeach
     </tbody>

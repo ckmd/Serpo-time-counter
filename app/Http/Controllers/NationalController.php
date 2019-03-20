@@ -75,7 +75,7 @@ class NationalController extends Controller
             $avgPrepTime = round($regionRow->pluck('prep_time')->sum()/$regionSum,2);
             $avgtravelTime = round($regionRow->pluck('travel_time')->sum()/$regionSum,2);
             $avgWorkTime = round($regionRow->pluck('work_time')->sum()/$regionSum,2);
-            $avgRSPS = round($regionRow->pluck('rsps')->sum()/$regionSum,2);
+            $avgRSPS = round($regionRow->pluck('rsps')->sum()/$regionSum,4);
 
             $nationalData = new NationalData();
                 $nationalData->region = $value;
@@ -89,18 +89,18 @@ class NationalController extends Controller
             $nationalData->save();
 
             
-            $rspsArray[] = array('y' => $avgRSPS, 'label'=>$value);
+            $rspsArray[] = array('y' => $avgRSPS*100, 'label'=>$value);
             $woArray[] = array('label'=>$value, 'y'=>$regionSum/$totalWO*100);
         }
         // Kalkulasi data pada card starts here
         $cardArray = array(
             'regionSum' => $totalWO,
-            'avgTotalDurasi'=> round($datas->pluck('total_durasi')->sum()/$datas->where('rsps', 100)->count(),2),
+            'avgTotalDurasi'=> round($datas->pluck('total_durasi')->sum()/$datas->where('rsps', 1)->count(),2),
             'avgDurasiSBU' => round($datas->pluck('durasi_sbu')->sum()/$totalWO,2),
             'avgPrepTime' => round($datas->pluck('prep_time')->sum()/$totalWO,2),
             'avgTravelTime' => round($datas->pluck('travel_time')->sum()/$totalWO,2),
             'avgWorkTime' => round($datas->pluck('work_time')->sum()/$totalWO,2),
-            'avgRSPS' => round($datas->pluck('rsps')->sum()/$totalWO,2)
+            'avgRSPS' => round($datas->pluck('rsps')->sum()/$totalWO,4)
         );
         // Kalkulasi data pada cart ends here
         // Menghitung Trend Performa / Bulan starts here
@@ -112,7 +112,7 @@ class NationalController extends Controller
             $month = date_format(new DateTime($data->wo_date),"Y-m");
             $rsps = $data->rsps;
             // echo $data->wo_date.' : '.$rsps.'<br>';
-            $trendArray[] = array('month' => $month, 'rsps'=>$rsps);
+            $trendArray[] = array('month' => $month, 'rsps'=>$rsps*100);
         }
         $uniqueMonth = array_unique(array_column($trendArray, 'month'));
         foreach ($uniqueMonth as $um) {

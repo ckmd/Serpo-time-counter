@@ -57,7 +57,7 @@
                         @else
                         <td>n.a</td>
                         @endif
-                        <td>{{$cat->rsps}}%</td>
+                        <td>{{$cat->rsps*100}}%</td>
                         @if($cat->root_cause!=null)
                         <td>{{$cat->root_cause}}</td>
                         @else

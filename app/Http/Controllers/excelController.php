@@ -269,7 +269,7 @@ class excelController extends Controller
                     $data->prep_time = $prepTime;
                     $data->travel_time = $travelTime;
                     $data->work_time = $workTime;
-                    $data->rsps = $rsps;
+                    $data->rsps = $rsps/100;
                     $data->total_durasi = $total_durasi;
                     $data->root_cause = $root_cause;
                     $data->kendala = $kendala;

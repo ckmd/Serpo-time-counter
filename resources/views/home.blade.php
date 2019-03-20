@@ -80,7 +80,7 @@ window.onload = function() {
         </div>
         <div class="card text-white bg-info">
             <div class="card-body">
-                <h5 class="card-title">{{$cardArray['avgRSPS']}} %</h5>
+                <h5 class="card-title">{{$cardArray['avgRSPS']*100}} %</h5>
                 <p class="card-text">RSPS</p>
             </div>
         </div>
@@ -293,7 +293,11 @@ window.onload = function() {
                         <td>{{$data->basecamp}}</td>
                         <td>{{$data->serpo}}</td>
                         <td>{{$data->jumlah_wo}}</td>
+                        @if($data->total_durasi!=null)
                         <td>{{round($data->total_durasi,2)}}</td>
+                        @else
+                        <td>n.a</td>
+                        @endif
                         <td>{{round($data->durasi_sbu,2)}}</td>
                         @if($data->prep_time!=null)
                         <td>{{round($data->prep_time,2)}}</td>
@@ -310,7 +314,7 @@ window.onload = function() {
                         @else
                         <td>n.a</td>
                         @endif
-                        <td>{{$data->rsps}}%</td>
+                        <td>{{$data->rsps*100}}%</td>
                     </tr>
                     <?php $i++; ?>
             @endforeach

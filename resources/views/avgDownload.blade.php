@@ -12,28 +12,34 @@ header('Cache-Control: must-revalidate');
 header('Pragma: public');
 
 $header = array(
+    'No' => 'number',
     'Basecamp'=>'string',
     'Serpo'=>'string',
     'Jumlah WO'=>'number',
-    'Durasi SBU'=>'0.00',
-    'Preparation Time'=>'0.00',
-    'Travel Time'=>'0.00',
-    'Work Time'=>'0.00',
-    'RSPS'=>'0%',
+    'Total Durasi (A+B+C+D)' => '0.00',
+    'A.Durasi SBU'=>'0.00',
+    'B.Preparation Time'=>'0.00',
+    'C.Travel Time'=>'0.00',
+    'D.Work Time'=>'0.00',
+    'RSPS'=>'0.00%',
 );
 
 $rows = array();
+$i = 1;
 		foreach($dbAvgExcel as $d) {
             $rows[] = array(
-            "$d->basecamp",
-            "$d->serpo",
-            "$d->jumlah_wo",
-            "$d->durasi_sbu",
-            "$d->prep_time",
-            "$d->travel_time",
-            "$d->work_time",
-            "$d->rsps"
-        );
+                "$i",
+                "$d->basecamp",
+                "$d->serpo",
+                "$d->jumlah_wo",
+                "$d->total_durasi",
+                "$d->durasi_sbu",
+                "$d->prep_time",
+                "$d->travel_time",
+                "$d->work_time",
+                "$d->rsps"
+            );
+            $i++;
 		}
             $writer = new XLSXWriter();
 $writer->setAuthor('icon+'); 
