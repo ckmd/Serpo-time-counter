@@ -50,7 +50,7 @@
         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
         Tambah Kategori PM
         </button>
-        <a href="{{url('refresh')}}" class="btn btn-success">Refresh Data PM</a>
+        <a href="{{url('refreshPM')}}" class="btn btn-success">Refresh Data PM</a>
         </div>
     </div>
 </div>

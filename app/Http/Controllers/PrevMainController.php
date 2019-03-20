@@ -7,6 +7,7 @@ use PHPExcel_IOFactory;
 use App\PrevMain;
 use App\Asset;
 use App\Report;
+use App\KategoriPm;
 
 class PrevMainController extends Controller
 {
@@ -39,29 +40,35 @@ class PrevMainController extends Controller
      */
     public function store(Request $request)
     {
-        function findDescription($string){
-            $rootCauseConclusion = null;
-            $string = explode(" ", $string);
-            // Keyword Sementara
-            $cause = array(
-                'PM FOC' => array('Patroli'),
-                'PM POP' => array('POP'),
-            );
-            $resultArray = array();
-            foreach ($cause as $causeKey => $causeValue) {
-                $causeResult = count(array_intersect($causeValue, $string));
-                $resultArray[$causeKey] = $causeResult;
-            }
-            $maxResult = max($resultArray);
-            $indeksResult = array_search(max($resultArray),$resultArray);
+        function findKategoriPM($desc){
+            $kategoriPMConclusion = null;
+            $kategoriPM = KategoriPm::get();
             
+            if($kategoriPM->count()!=null){
+                $uniqueKategoriPM = $kategoriPM->pluck('kategori_pm')->unique();
+
+                $desc = explode(" ", $desc);
+                
+                $kategoriPMDict = array();
+                foreach ($uniqueKategoriPM as $ukKey => $ukValue) {
+                    $kategoriPMDict[$ukValue] = $kategoriPM->where('kategori_pm','=',$ukValue)->pluck('parameter')->toArray();
+                }
+                
+                $resultArray = array();
+                foreach ($kategoriPMDict as $kdKey => $kdValue) {
+                    $kResult = count(array_intersect($desc, $kdValue));
+                    $resultArray[$kdKey] = $kResult;
+                }
+                $maxResult = max($resultArray);
+                $indeksResult = array_search(max($resultArray),$resultArray);
             // Check Highest Root Cause
-            if($maxResult>0){
-                $rootCauseConclusion = $indeksResult;
-            }else if($string!=null){
-                $rootCauseConclusion = "Lain - Lain";
+                if($maxResult>0){
+                    $kategoriPMConclusion = $indeksResult;
+                }else if($desc!=null){
+                    $kategoriPMConclusion = "Lain - Lain";
+                }
             }
-            return $rootCauseConclusion;
+        return $kategoriPMConclusion;
         }
 
         function findPOP($code){
@@ -87,7 +94,7 @@ class PrevMainController extends Controller
                 $assetCode = $asset[0];
                 $assetCodeDesc = $asset[1]." ".$asset[2];
                 
-                $categoryPM = findDescription($getSheet[$i][4]);
+                $categoryPM = findKategoriPM($getSheet[$i][4]);
                 $categoryPOP = null;
                 if($categoryPM == "PM POP"){
                     $categoryPOP = findPOP($assetCode);

@@ -122,23 +122,23 @@ class excelController extends Controller
                 $uniqueKendala = $kendala->pluck('kategori_kendala')->unique();
                 foreach ($uniqueKendala as $ukKey => $ukValue) {
                     $kendalaDict[$ukValue] = $kendala->where('kategori_kendala','=',$ukValue)->pluck('parameter')->toArray();
+                }
+                
+                $resultArray = array();
+                foreach ($kendalaDict as $kdKey => $kdValue) {
+                    $kResult = count(array_intersect($k, $kdValue));
+                    $resultArray[$kdKey] = $kResult;
+                }
+                $maxResult = max($resultArray);
+                $indeksResult = array_search(max($resultArray),$resultArray);
+                // Check Highest Root Cause
+                if($maxResult>0){
+                    $kendalaConclusion = $indeksResult;
+                }else if($k!=null){
+                    $kendalaConclusion = "Lain - Lain";
+                }
             }
-            
-            $resultArray = array();
-            foreach ($kendalaDict as $kdKey => $kdValue) {
-                $kResult = count(array_intersect($k, $kdValue));
-                $resultArray[$kdKey] = $kResult;
-            }
-            $maxResult = max($resultArray);
-            $indeksResult = array_search(max($resultArray),$resultArray);
-            // Check Highest Root Cause
-            if($maxResult>0){
-                $kendalaConclusion = $indeksResult;
-            }else if($k!=null){
-                $kendalaConclusion = "Lain - Lain";
-            }
-        }
-        return $kendalaConclusion;
+            return $kendalaConclusion;
         }
         
         $getSheet = null;
