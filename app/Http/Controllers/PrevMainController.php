@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use PHPExcel_IOFactory;
 use App\PrevMain;
 use App\Asset;
+use App\Report;
 
 class PrevMainController extends Controller
 {
@@ -26,7 +27,8 @@ class PrevMainController extends Controller
      */
     public function create()
     {
-        //
+        $datas = Report::all();
+        return view('prevMain.download', compact('datas'));
     }
 
     /**
@@ -121,6 +123,7 @@ class PrevMainController extends Controller
     }
 
     public function report(){
+        Report::truncate();
         $datas = PrevMain::all();
         $assets = Asset::all();
         $uniqueRegion = $datas->pluck('region')->unique();
@@ -185,26 +188,26 @@ class PrevMainController extends Controller
             $sumFOC = $eachRegion->where('category_pm', 'PM FOC')->count();
             $sumLain = $eachRegion->where('category_pm', 'Lain - Lain')->count();
 
-            $per = round($sumPOP/$region->count(),4);
-            $arrayPOP[] = array(
-                'region' => $sbu,
-                'total_wo' => $region->count(),
-                'total_pop' => $sumPOP,
-                'percentageAll' => $per,
-                'assetPOPD' => $assetPOPD,
-                'POPD' => $sumPOPD,
-                'percentagePOPD' => round($sumPOPD/$assetPOPD,4),
-                'assetPOPB' => $assetPOPB,
-                'POPB' => $sumPOPB,
-                'percentagePOPB' => round($sumPOPB/$assetPOPB,4),
-                'assetPOPSB' => $assetPOPSB,
-                'POPSB' => $sumPOPSB,
-                'percentagePOPSB' => round($sumPOPSB/$assetPOPSB,4),
-                'pmFOC' => $sumFOC,
-                'pmLain' => $sumLain,
-            );
+            $report = new Report(); 
+            $report->region = $sbu;
+            $report->total_POP_asset = $region->count();
+            $report->total_PM_POP = $sumPOP;
+            $report->ratio_total = round($sumPOP/$region->count(),4);
+            $report->asset_POP_D = $assetPOPD;
+            $report->PM_POP_D = $sumPOPD;
+            $report->ratio_POP_D = round($sumPOPD/$assetPOPD,4);
+            $report->asset_POP_B = $assetPOPB;
+            $report->PM_POP_B = $sumPOPB;
+            $report->ratio_POP_B = round($sumPOPB/$assetPOPB,4);
+            $report->asset_POP_SB = $assetPOPSB;
+            $report->PM_POP_SB = $sumPOPSB;
+            $report->ratio_POP_SB = round($sumPOPSB/$assetPOPSB,4);
+            $report->PM_FOC = $sumFOC;
+            $report->PM_lain = $sumLain;
+            $report->save();
         }
-        return view('prevMain.report', compact('arrayPOP'));
+        $report = Report::all();
+        return view('prevMain.report', compact('report'));
     }
 
     public function reportRegion($region){
