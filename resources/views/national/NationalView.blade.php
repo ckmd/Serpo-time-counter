@@ -85,6 +85,7 @@ window.onload = function() {
         data: [{
             type: "pie",
             yValueFormatString: "#,##0.00\"%\"",
+            indexLabel: "{label} ({y})",
             dataPoints: <?php echo json_encode($ukArray, JSON_NUMERIC_CHECK); ?>
         }]
     });
@@ -292,6 +293,10 @@ window.onload = function() {
 <div class="text-center">
     <h4>Rata - Rata Data Nasional Berdasarkan Regional</h4>
 </div>
+<a href="{{route('national.create')}}" class="btn btn-success"><i class="fa fa-download"></i><span> Download</span></a>
+<br>
+<br>
+
 <table class="table table-bordered table-striped table-hover" style="text-align: center;">
     <thead class="thead-dark">
         <tr valign="top" >

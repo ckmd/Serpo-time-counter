@@ -25,7 +25,7 @@ class NationalController extends Controller
         $urcdArray = null;
         $urcArray = null;
         $ukArray = null;
-        return view('NationalView', compact('nationalDataForView', 'rspsArray','woArray','chartArray','cardArray','urcdArray','urcArray','ukArray'));
+        return view('national.NationalView', compact('nationalDataForView', 'rspsArray','woArray','chartArray','cardArray','urcdArray','urcArray','ukArray'));
     }
 
     /**
@@ -35,7 +35,8 @@ class NationalController extends Controller
      */
     public function create()
     {
-        //
+        $datas = NationalData::all();
+        return view('national.download', compact('datas'));
     }
 
     /**
@@ -175,7 +176,7 @@ class NationalController extends Controller
         // Menghitung Kendala Secara Nasional Ends Here
      
         $nationalDataForView = NationalData::all();
-        return view('NationalView', compact('nationalDataForView', 'rspsArray','woArray','pAwal','pAkhir','chartArray','cardArray','urcdArray','urcArray','ukArray'));
+        return view('national.NationalView', compact('nationalDataForView', 'rspsArray','woArray','pAwal','pAkhir','chartArray','cardArray','urcdArray','urcArray','ukArray'));
     }
 
     /**
