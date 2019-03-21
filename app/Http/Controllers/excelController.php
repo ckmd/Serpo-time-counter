@@ -18,7 +18,7 @@ class excelController extends Controller
      */
     public function index()
     {
-        return view('excel');
+        return view('serpo.excel');
     }
     
     /**
@@ -29,7 +29,7 @@ class excelController extends Controller
     public function create()
     {
         $datas = Excel::all();
-        return view('download', compact('datas'));
+        return view('serpo.download', compact('datas'));
     }
     
     /**

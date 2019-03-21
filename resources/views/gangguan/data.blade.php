@@ -6,9 +6,11 @@
     <div class="row justify-content-center">
         <div class="col-md-12">
             <div class="text-center">
-                <h1 class="display-6">Data Gangguan {{$label}} </h1>
+                <h4 class="display-6">Data Gangguan {{$label}} </h4>
             </div>
-            <a href="{{route('gangguan.create')}}" class="btn btn-success">Download to .xlsx</a>
+            <a href="{{route('gangguan.create')}}" class="btn btn-success"><i class="fa fa-download"></i><span> Download</span></a>
+            <br>
+            <br>
             <table class="table-responsive table-hover table-bordered table-striped" style="text-align: center;">
                 <thead>
                     <tr>

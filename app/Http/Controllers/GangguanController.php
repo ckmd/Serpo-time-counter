@@ -61,7 +61,7 @@ class GangguanController extends Controller
             $dataGangguan = Excel::all();
         }
         $dataGangguan = $dataGangguan->where('wo_date','>=',$pAwal)->where('wo_date','<=',$addOneDay)
-        ->where('root_cause',$label)->where('rsps','=','100');
+        ->where('root_cause',$label)->where('rsps','=','1');
         foreach($dataGangguan as $dg){
             $data = new DataGangguan;
             $data->ar_id = $dg->ar_id;
@@ -75,7 +75,7 @@ class GangguanController extends Controller
             $data->prep_time = $dg->prep_time;
             $data->travel_time = $dg->travel_time;
             $data->work_time = $dg->work_time;
-            $data->rsps = $dg->rsps/100;
+            $data->rsps = $dg->rsps;
             $data->total_durasi = $dg->total_durasi;
             $data->root_cause = $dg->root_cause;
             $data->kendala = $dg->kendala;

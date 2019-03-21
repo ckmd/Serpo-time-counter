@@ -35,7 +35,7 @@ class HomeController extends Controller
         $chartArray = null;
         $urcdArray = null;
         $ukArray = null;
-        return view('home', compact('unique','dbAvgExcel','chartArray','urcdArray','ukArray'));
+        return view('region.home', compact('unique','dbAvgExcel','chartArray','urcdArray','ukArray'));
     }
 
     public function download(Request $request){
@@ -100,7 +100,7 @@ class HomeController extends Controller
             // Total Durasi dibagi dengan jumlah WO
             $totalDurasi /= $uniqueSerpoCount;
             // Total Durasi dibagi dengan jumlah banyaknya total_durasi
-            // $totalDurasi /= $getFilteredDate->where('serpo',$key)->where('rsps', 100)->count();
+            // $totalDurasi /= $getFilteredDate->where('serpo',$key)->where('rsps', 1)->count();
             // Zero is Null
             $avgPrepTime = zeroIsNull($avgPrepTime);
             $avgTravelTime = zeroIsNull($avgTravelTime);
@@ -212,6 +212,6 @@ class HomeController extends Controller
         }else{
             $dbAvgExcel = null;
         }
-        return view('home', compact ('unique','regionName','dbAvgExcel','pAwal','pAkhir', 'cardArray','chartArray','urcdArray','urcArray','ukArray'));
+        return view('region.home', compact ('unique','regionName','dbAvgExcel','pAwal','pAkhir', 'cardArray','chartArray','urcdArray','urcArray','ukArray'));
     }
 }
