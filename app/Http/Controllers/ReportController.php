@@ -32,6 +32,26 @@ class ReportController extends Controller
         //
     }
 
+    public function download(Request $request){
+        $pAwal = $request->awal;
+        $pAkhir = $request->akhir;
+        $region = "Report PM ";
+
+        if(($pAwal==null) && ($pAkhir==null)){
+            $nameFile = $region." All Data";
+        }
+        elseif($pAwal==null){
+            $nameFile = $region." awal s.d. ".$pAkhir;
+        }
+        elseif($pAkhir==null){
+            $nameFile = $region." ".$pAwal." s.d. akhir";
+        }
+        else{
+            $nameFile = $region." ".$pAwal." s.d ".$pAkhir;
+        }
+        $datas = Report::all();
+        return view('prevMain.download', compact('datas', 'nameFile'));
+    }
     /**
      * Store a newly created resource in storage.
      *

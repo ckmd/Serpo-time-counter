@@ -32,8 +32,7 @@ class PrevMainController extends Controller
      */
     public function create()
     {
-        $datas = Report::all();
-        return view('prevMain.download', compact('datas'));
+
     }
 
     /**
