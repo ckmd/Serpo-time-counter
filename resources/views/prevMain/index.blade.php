@@ -12,7 +12,7 @@
                     <form action="{{route('prevMain.store')}}" method="POST" enctype="multipart/form-data">
                         {{csrf_field()}}
                         <input type="file" class="btn btn-primary btn-md" name="excelFile">
-                        <input type="submit" class="btn btn-primary" value="submit">
+                        <button type="submit" class="btn btn-primary"><i class="fa fa-upload"></i><span> Upload</span></button>
                     </form>
                 </div>
             </div>

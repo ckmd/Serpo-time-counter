@@ -85,6 +85,7 @@ window.onload = function() {
         data: [{
             type: "pie",
             yValueFormatString: "#,##0.00\"%\"",
+            indexLabel: "{label} ({y})",
             dataPoints: <?php echo json_encode($ukArray, JSON_NUMERIC_CHECK); ?>
         }]
     });
@@ -109,7 +110,7 @@ window.onload = function() {
         </div>
         <div class="card text-white bg-info">
             <div class="card-body">
-                <h5 class="card-title">{{$cardArray['avgRSPS']}} %</h5>
+                <h5 class="card-title">{{$cardArray['avgRSPS']*100}} %</h5>
                 <p class="card-text">RSPS</p>
             </div>
         </div>
@@ -266,7 +267,9 @@ window.onload = function() {
         </div>
         <div class="col">
             <br>
-            <input type="submit" class="btn btn-primary btn-lg" value="Filter">
+            <button type="submit" class="btn btn-primary btn-lg"><i class="fa fa-filter"></i><span> Filter</span></button>
+
+            <!-- <input type="submit" class="btn btn-primary btn-lg" value="Filter"> -->
         </div>
     </div>
 </form>
@@ -290,6 +293,10 @@ window.onload = function() {
 <div class="text-center">
     <h4>Rata - Rata Data Nasional Berdasarkan Regional</h4>
 </div>
+<a href="{{route('national.create')}}" class="btn btn-success"><i class="fa fa-download"></i><span> Download</span></a>
+<br>
+<br>
+
 <table class="table table-bordered table-striped table-hover" style="text-align: center;">
     <thead class="thead-dark">
         <tr valign="top" >
@@ -316,7 +323,7 @@ window.onload = function() {
             <td>{{$data->prep_time}}</td>
             <td>{{$data->travel_time}}</td>
             <td>{{$data->work_time}}</td>
-            <td>{{$data->rsps}}%</td>
+            <td>{{$data->rsps*100}}%</td>
         </tr>
         @endforeach
     </tbody>

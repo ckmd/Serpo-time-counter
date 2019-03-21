@@ -19,7 +19,7 @@ class DBController extends Controller
     public function index()
     {
         $datas = Excel::paginate(100);
-        return view('allData',compact('datas'));
+        return view('serpo.allData',compact('datas'));
     }
 
     /**
@@ -159,7 +159,7 @@ class DBController extends Controller
             $nameFile = $region." ".$pAwal." s.d ".$pAkhir;
         }
         $dbAvgExcel = AvgExcel::orderBy('basecamp','asc')->get();
-        return view('avgDownload', compact('nameFile','dbAvgExcel'));
+        return view('region.avgDownload', compact('nameFile','dbAvgExcel'));
     }
 
     /**

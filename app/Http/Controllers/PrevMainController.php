@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use PHPExcel_IOFactory;
 use App\PrevMain;
 use App\Asset;
+use App\Report;
+use App\KategoriPm;
 
 class PrevMainController extends Controller
 {
@@ -26,7 +28,8 @@ class PrevMainController extends Controller
      */
     public function create()
     {
-        //
+        $datas = Report::all();
+        return view('prevMain.download', compact('datas'));
     }
 
     /**
@@ -37,29 +40,35 @@ class PrevMainController extends Controller
      */
     public function store(Request $request)
     {
-        function findDescription($string){
-            $rootCauseConclusion = null;
-            $string = explode(" ", $string);
-            // Keyword Sementara
-            $cause = array(
-                'PM FOC' => array('Patroli'),
-                'PM POP' => array('POP'),
-            );
-            $resultArray = array();
-            foreach ($cause as $causeKey => $causeValue) {
-                $causeResult = count(array_intersect($causeValue, $string));
-                $resultArray[$causeKey] = $causeResult;
-            }
-            $maxResult = max($resultArray);
-            $indeksResult = array_search(max($resultArray),$resultArray);
+        function findKategoriPM($desc){
+            $kategoriPMConclusion = null;
+            $kategoriPM = KategoriPm::get();
             
+            if($kategoriPM->count()!=null){
+                $uniqueKategoriPM = $kategoriPM->pluck('kategori_pm')->unique();
+
+                $desc = explode(" ", $desc);
+                
+                $kategoriPMDict = array();
+                foreach ($uniqueKategoriPM as $ukKey => $ukValue) {
+                    $kategoriPMDict[$ukValue] = $kategoriPM->where('kategori_pm','=',$ukValue)->pluck('parameter')->toArray();
+                }
+                
+                $resultArray = array();
+                foreach ($kategoriPMDict as $kdKey => $kdValue) {
+                    $kResult = count(array_intersect($desc, $kdValue));
+                    $resultArray[$kdKey] = $kResult;
+                }
+                $maxResult = max($resultArray);
+                $indeksResult = array_search(max($resultArray),$resultArray);
             // Check Highest Root Cause
-            if($maxResult>0){
-                $rootCauseConclusion = $indeksResult;
-            }else if($string!=null){
-                $rootCauseConclusion = "Lain - Lain";
+                if($maxResult>0){
+                    $kategoriPMConclusion = $indeksResult;
+                }else if($desc!=null){
+                    $kategoriPMConclusion = "Lain - Lain";
+                }
             }
-            return $rootCauseConclusion;
+        return $kategoriPMConclusion;
         }
 
         function findPOP($code){
@@ -75,19 +84,22 @@ class PrevMainController extends Controller
             $getSheet = $excelObject->getActiveSheet()->toArray(null);
             $highestRow = $excelObject->setActiveSheetIndex(0)->getHighestDataRow();
         }
-        PrevMain::truncate();
         $assets = Asset::all();
         for ($i=1; $i < $highestRow; $i++) {
-            $asset = explode(" ", $getSheet[$i][6]);
-            $assetCode = $asset[0];
-            $assetCodeDesc = $asset[1]." ".$asset[2];
-            
-            $categoryPM = findDescription($getSheet[$i][4]);
-            $categoryPOP = null;
-            if($categoryPM == "PM POP"){
-                $categoryPOP = findPOP($assetCode);
-            }
-            $prevMantData = new PrevMain(); 
+            $filteredWO = PrevMain::where('wo_code',$getSheet[$i][3])->value('wo_code');
+            // seleksi untuk menyimpan daftar PM yang unik
+            if($filteredWO!=$getSheet[$i][3]){
+                // Code untuk memecah Asset menjadi asset code dan asset description
+                $asset = explode(" ", $getSheet[$i][6]);
+                $assetCode = $asset[0];
+                $assetCodeDesc = $asset[1]." ".$asset[2];
+                
+                $categoryPM = findKategoriPM($getSheet[$i][4]);
+                $categoryPOP = null;
+                if($categoryPM == "PM POP"){
+                    $categoryPOP = findPOP($assetCode);
+                }
+                $prevMantData = new PrevMain(); 
                 $prevMantData->status = $getSheet[$i][0];
                 $prevMantData->scheduled_date = $getSheet[$i][1];
                 $prevMantData->duration = $getSheet[$i][2];
@@ -106,7 +118,8 @@ class PrevMainController extends Controller
                 $prevMantData->company = $getSheet[$i][14];
                 $prevMantData->category_pm = $categoryPM;
                 $prevMantData->category_pop = $categoryPOP;
-            $prevMantData->save();
+                $prevMantData->save();
+            }
         }
         return redirect('prevMainData');
     }
@@ -114,93 +127,6 @@ class PrevMainController extends Controller
     public function data(){
         $datas = PrevMain::paginate(100);
         return view('prevMain.data', compact('datas'));
-    }
-
-    public function report(){
-        $datas = PrevMain::all();
-        $assets = Asset::all();
-        $uniqueRegion = $datas->pluck('region')->unique();
-        // return $uniqueRegion;
-        $arrayPOP = array();
-        foreach ($uniqueRegion as $urKey) {
-            switch ($urKey) {
-                case 'RINT':
-                    $region = $assets->where('sbu', 'SBU MAKASSAR');
-                    $sbu = 'SBU MAKASSAR';
-                    break;
-                case 'RSBS':
-                    $region = $assets->where('sbu', 'SBU PALEMBANG');
-                    $sbu = 'SBU PALEMBANG';
-                    break;
-                case 'RSBU':
-                    $region = $assets->where('sbu', 'SBU MEDAN');
-                    $sbu = 'SBU MEDAN';
-                    break;
-                case 'RBNT':
-                    $region = $assets->where('sbu', 'SBU DENPASAR');
-                    $sbu = 'SBU DENPASAR';
-                    break;
-                case 'RKAL':
-                    $region = $assets->where('sbu', 'SBU BALIKPAPAN');
-                    $sbu = 'SBU BALIKPAPAN';
-                    break;
-                case 'RJBR':
-                    $region = $assets->where('sbu', 'SBU BANDUNG');
-                    $sbu = 'SBU BANDUNG';
-                    break;
-                case 'RJTY':
-                    $region = $assets->where('sbu', 'SBU SEMARANG');
-                    $sbu = 'SBU SEMARANG';
-                    break;
-                case 'RSBT':
-                    $region = $assets->where('sbu', 'SBU PEKANBARU');
-                    $sbu = 'SBU PEKANBARU';
-                    break;
-                case 'ROJB':
-                    $region = $assets->where('sbu', 'SBU JAKARTA');
-                    $sbu = 'SBU JAKARTA';
-                    break;
-                case 'RJTM':
-                    $region = $assets->where('sbu', 'SBU SURABAYA');
-                    $sbu = 'SBU SURABAYA';
-                    break;
-            }
-
-            $eachRegion = $datas->where('region',$urKey);
-            $sumPOP = $eachRegion->where('category_pm', 'PM POP')->count();
-
-            $assetPOPD = $region->where('type','POP D')->count();
-            $sumPOPD = $eachRegion->where('category_pop', 'POP D')->count();
-        
-            $assetPOPB = $region->where('type','POP B')->count();
-            $sumPOPB = $eachRegion->where('category_pop', 'POP B')->count();
-
-            $assetPOPSB = $region->where('type','POP SB')->count();
-            $sumPOPSB = $eachRegion->where('category_pop', 'POP SB')->count();
-
-            $sumFOC = $eachRegion->where('category_pm', 'PM FOC')->count();
-            $sumLain = $eachRegion->where('category_pm', 'Lain - Lain')->count();
-
-            $per = round($sumPOP/$region->count(),4);
-            $arrayPOP[] = array(
-                'region' => $sbu,
-                'total_wo' => $region->count(),
-                'total_pop' => $sumPOP,
-                'percentageAll' => $per,
-                'assetPOPD' => $assetPOPD,
-                'POPD' => $sumPOPD,
-                'percentagePOPD' => round($sumPOPD/$assetPOPD,4),
-                'assetPOPB' => $assetPOPB,
-                'POPB' => $sumPOPB,
-                'percentagePOPB' => round($sumPOPB/$assetPOPB,4),
-                'assetPOPSB' => $assetPOPSB,
-                'POPSB' => $sumPOPSB,
-                'percentagePOPSB' => round($sumPOPSB/$assetPOPSB,4),
-                'pmFOC' => $sumFOC,
-                'pmLain' => $sumLain,
-            );
-        }
-        return view('prevMain.report', compact('arrayPOP'));
     }
 
     public function reportRegion($region){

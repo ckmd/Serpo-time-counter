@@ -35,7 +35,7 @@ class HomeController extends Controller
         $chartArray = null;
         $urcdArray = null;
         $ukArray = null;
-        return view('home', compact('unique','dbAvgExcel','chartArray','urcdArray','ukArray'));
+        return view('region.home', compact('unique','dbAvgExcel','chartArray','urcdArray','ukArray'));
     }
 
     public function download(Request $request){
@@ -100,11 +100,12 @@ class HomeController extends Controller
             // Total Durasi dibagi dengan jumlah WO
             $totalDurasi /= $uniqueSerpoCount;
             // Total Durasi dibagi dengan jumlah banyaknya total_durasi
-            // $totalDurasi /= $getFilteredDate->where('serpo',$key)->where('rsps', 100)->count();
+            // $totalDurasi /= $getFilteredDate->where('serpo',$key)->where('rsps', 1)->count();
             // Zero is Null
             $avgPrepTime = zeroIsNull($avgPrepTime);
             $avgTravelTime = zeroIsNull($avgTravelTime);
             $avgWorkTime = zeroIsNull($avgWorkTime);
+            $totalDurasi = zeroIsNull($totalDurasi);
             // save into database
             $avgExcel = new AvgExcel();
                 $avgExcel->basecamp = $basecamp;
@@ -129,14 +130,19 @@ class HomeController extends Controller
             // Get the total WO and Average data
             // Assign the calculated value into array
             $regionSum = $getFilteredDate->count();
+            $rsps100Sum = $getFilteredDate->where('rsps', 1)->count();
+            // Filter if found rsps 100 average is null
+            if($rsps100Sum == 0){
+                $rsps100Sum = 1;
+            }
             $cardArray = array(
                 'regionSum' => $regionSum,
-                'avgTotalDurasi'=> round($getFilteredDate->pluck('total_durasi')->sum()/$getFilteredDate->where('rsps', 100)->count(),2),
+                'avgTotalDurasi'=> round($getFilteredDate->pluck('total_durasi')->sum()/$rsps100Sum,2),
                 'avgDurasiSBU' => round($getFilteredDate->pluck('durasi_sbu')->sum()/$regionSum,2),
                 'avgPrepTime' => round($getFilteredDate->pluck('prep_time')->sum()/$regionSum,2),
                 'avgTravelTime' => round($getFilteredDate->pluck('travel_time')->sum()/$regionSum,2),
                 'avgWorkTime' => round($getFilteredDate->pluck('work_time')->sum()/$regionSum,2),
-                'avgRSPS' => round($getFilteredDate->pluck('rsps')->sum()/$regionSum,2)
+                'avgRSPS' => round($getFilteredDate->pluck('rsps')->sum()/$regionSum,4)
             );
             // Menghitung grafik performa rsps / bulan
             $rspsArray = array();
@@ -156,8 +162,8 @@ class HomeController extends Controller
                         $counter++;
                     }
                 }
-                $result = round($result/$counter,2);
-                $chartArray[] = array('label'=>$ud,'y'=>$result);
+                $result = round($result/$counter,4);
+                $chartArray[] = array('label'=>$ud,'y'=>$result*100);
             }
             // Menghitung Kendala
             $kendala = $getFilteredDate->where('kendala','<>','')->pluck('kendala');
@@ -206,6 +212,6 @@ class HomeController extends Controller
         }else{
             $dbAvgExcel = null;
         }
-        return view('home', compact ('unique','regionName','dbAvgExcel','pAwal','pAkhir', 'cardArray','chartArray','urcdArray','urcArray','ukArray'));
+        return view('region.home', compact ('unique','regionName','dbAvgExcel','pAwal','pAkhir', 'cardArray','chartArray','urcdArray','urcArray','ukArray'));
     }
 }

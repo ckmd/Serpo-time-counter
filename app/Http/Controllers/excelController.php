@@ -18,7 +18,7 @@ class excelController extends Controller
      */
     public function index()
     {
-        return view('excel');
+        return view('serpo.excel');
     }
     
     /**
@@ -29,7 +29,7 @@ class excelController extends Controller
     public function create()
     {
         $datas = Excel::all();
-        return view('download', compact('datas'));
+        return view('serpo.download', compact('datas'));
     }
     
     /**
@@ -122,23 +122,23 @@ class excelController extends Controller
                 $uniqueKendala = $kendala->pluck('kategori_kendala')->unique();
                 foreach ($uniqueKendala as $ukKey => $ukValue) {
                     $kendalaDict[$ukValue] = $kendala->where('kategori_kendala','=',$ukValue)->pluck('parameter')->toArray();
+                }
+                
+                $resultArray = array();
+                foreach ($kendalaDict as $kdKey => $kdValue) {
+                    $kResult = count(array_intersect($k, $kdValue));
+                    $resultArray[$kdKey] = $kResult;
+                }
+                $maxResult = max($resultArray);
+                $indeksResult = array_search(max($resultArray),$resultArray);
+                // Check Highest Root Cause
+                if($maxResult>0){
+                    $kendalaConclusion = $indeksResult;
+                }else if($k!=null){
+                    $kendalaConclusion = "Lain - Lain";
+                }
             }
-            
-            $resultArray = array();
-            foreach ($kendalaDict as $kdKey => $kdValue) {
-                $kResult = count(array_intersect($k, $kdValue));
-                $resultArray[$kdKey] = $kResult;
-            }
-            $maxResult = max($resultArray);
-            $indeksResult = array_search(max($resultArray),$resultArray);
-            // Check Highest Root Cause
-            if($maxResult>0){
-                $kendalaConclusion = $indeksResult;
-            }else if($k!=null){
-                $kendalaConclusion = "Lain - Lain";
-            }
-        }
-        return $kendalaConclusion;
+            return $kendalaConclusion;
         }
         
         $getSheet = null;
@@ -269,7 +269,7 @@ class excelController extends Controller
                     $data->prep_time = $prepTime;
                     $data->travel_time = $travelTime;
                     $data->work_time = $workTime;
-                    $data->rsps = $rsps;
+                    $data->rsps = $rsps/100;
                     $data->total_durasi = $total_durasi;
                     $data->root_cause = $root_cause;
                     $data->kendala = $kendala;

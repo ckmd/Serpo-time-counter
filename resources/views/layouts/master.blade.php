@@ -69,32 +69,35 @@ if(isset($_POST['SubmitButton'])){ //check if form was submitted
         <li class="treeview">
           <a href="#"><i class="fa fa-line-chart"></i><span>Serpo Performance</span> <i class="fa fa-angle-left pull-right"></i></a>
           <ul class="treeview-menu">
-            <li><a href="{{url('excel')}}"><i class="fa fa-upload"></i> <span>Upload Excel</span></a></li>
-            <li><a href="{{url('allData')}}"><i class="fa fa-table"></i> <span>All Data</span></a></li>
-            <li><a href="{{url('home')}}"><i class="fa fa-map-o"></i> <span>Filter By Region</span></a></li>
-            <li><a href="{{url('national')}}"><i class="fa fa-globe"></i> <span>Filter Nasional</span></a></li>
+            <li><a href="{{url('excel')}}"><i class="fa fa-circle-o"></i> <span>Upload Raw Data Serpo</span></a></li>
+            <li><a href="{{url('allData')}}"><i class="fa fa-circle-o"></i> <span>All Calculated Data</span></a></li>
+            <li><a href="{{url('home')}}"><i class="fa fa-circle-o"></i> <span>Performance By Region</span></a></li>
+            <li><a href="{{url('national')}}"><i class="fa fa-circle-o"></i> <span>Performance Nasional</span></a></li>
+            <li><a href="{{url('gangguan')}}"><i class="fa fa-circle-o"></i> <span>Daftar Gangguan</span></a></li>
+            <li><a href="{{url('kendala')}}"><i class="fa fa-circle-o"></i> <span>Daftar Kendala</span></a></li>
           </ul>
         </li>
-        <li class="treeview">
+        <!-- Icon Cadangan upload, table, map-o, globe, ban, spinner, circle-o -->
+        <!-- <li class="treeview">
           <a href="#"><i class="fa fa-warning"></i><span>Gangguan dan Kendala</span> <i class="fa fa-angle-left pull-right"></i></a>
           <ul class="treeview-menu">
-            <li><a href="{{url('gangguan')}}"><i class="fa fa-ban"></i> <span>Daftar Gangguan</span></a></li>
-            <li><a href="{{url('kendala')}}"><i class="fa fa-spinner"></i> <span>Daftar Kendala</span></a></li>
           </ul>
-        </li>
+        </li> -->
         <li class="treeview">
           <a href="#"><i class="fa fa-wrench"></i><span>Preventive Maintenance</span> <i class="fa fa-angle-left pull-right"></i></a>
           <ul class="treeview-menu">
-            <li><a href="{{url('prevMain')}}"><i class="fa fa-upload"></i> <span>Upload PM</span></a></li>
-            <li><a href="{{url('prevMainData')}}"><i class="fa fa-table"></i> <span>Data PM</span></a></li>
-            <li><a href="{{url('popPrevMainData')}}"><i class="fa fa-map-o"></i> <span>Report PM POP</span></a></li>
+            <li><a href="{{url('prevMain')}}"><i class="fa fa-circle-o"></i> <span>Upload Raw Data PM</span></a></li>
+            <li><a href="{{url('prevMainData')}}"><i class="fa fa-circle-o"></i> <span>Data Calculated PM</span></a></li>
+            <!-- <li><a href="{{url('popPrevMainData')}}"><i class="fa fa-circle-o"></i> <span>Report PM POP</span></a></li> -->
+            <li><a href="{{url('report')}}"><i class="fa fa-circle-o"></i> <span>Report PM POP</span></a></li>
+            <li><a href="{{url('kategoriPM')}}"><i class="fa fa-circle-o"></i> <span>Daftar Kategori PM</span></a></li>
           </ul>
         </li>
         <li class="treeview">
           <a href="#"><i class="fa fa-building"></i><span>Asset</span> <i class="fa fa-angle-left pull-right"></i></a>
           <ul class="treeview-menu">
-            <li><a href="{{url('asset')}}"><i class="fa fa-upload"></i> <span>Upload Asset</span></a></li>
-            <li><a href="{{url('assetData')}}"><i class="fa fa-table"></i> <span>Daftar Asset</span></a></li>
+            <li><a href="{{url('asset')}}"><i class="fa fa-circle-o"></i> <span>Upload Raw Data Asset</span></a></li>
+            <li><a href="{{url('assetData')}}"><i class="fa fa-circle-o"></i> <span>Daftar Asset</span></a></li>
           </ul>
         </li>
         <li>

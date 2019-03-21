@@ -76,7 +76,7 @@ class KendalaController extends Controller
             $data->prep_time = $dk->prep_time;
             $data->travel_time = $dk->travel_time;
             $data->work_time = $dk->work_time;
-            $data->rsps = $dk->rsps/100;
+            $data->rsps = $dk->rsps;
             $data->total_durasi = $dk->total_durasi;
             $data->root_cause = $dk->root_cause;
             $data->kendala = $dk->kendala;

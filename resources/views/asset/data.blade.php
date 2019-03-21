@@ -10,13 +10,15 @@
             <table class="table-bordered table-striped" width="100%" style="text-align: center;">
                 <thead>
                     <th>No</th>
-                    <th>Site ID</th>
-                    <th>Site</th>
-                    <th>Kota / Kab</th>
+                    <th>Site_ID</th>
+                    <th>Site_Name</th>
+                    <th>Kota</th>
                     <th>Propinsi</th>
                     <th>SBU</th>
                     <th>Model</th>
-                    <th>Type</th>
+                    <th>Type_POP</th>
+                    <th>Updated_At</th>
+                    <th>Updated_By</th>
                 </thead>
                 <tbody>
                 <?php $id = $datas->firstItem(); ?>
@@ -30,6 +32,8 @@
                             <td>{{$d->sbu}}</td>
                             <td>{{$d->model}}</td>
                             <td>{{$d->type}}</td>
+                            <td>{{$d->updated_time}}</td>
+                            <td>{{$d->updated_by}}</td>
                         </tr>
                         <?php $id++ ?>
                     @endforeach

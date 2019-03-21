@@ -4,7 +4,7 @@ ini_set('display_errors', 0);
 ini_set('log_errors', 1);
 error_reporting(E_ALL & ~E_NOTICE);
 
-$filename = $nameFile.".xlsx";
+$filename = "Data Nasional.xlsx";
 header('Content-disposition: attachment; filename="'.XLSXWriter::sanitize_filename($filename).'"');
 header("Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
 header('Content-Transfer-Encoding: binary');
@@ -12,28 +12,32 @@ header('Cache-Control: must-revalidate');
 header('Pragma: public');
 
 $header = array(
-    'Basecamp'=>'string',
-    'Serpo'=>'string',
+    'No' => 'number',
+    'Region'=>'string',
     'Jumlah WO'=>'number',
-    'Durasi SBU'=>'0.00',
-    'Preparation Time'=>'0.00',
-    'Travel Time'=>'0.00',
-    'Work Time'=>'0.00',
-    'RSPS'=>'0%',
+    'Total Durasi (A+B+C+D)' => '0.00',
+    'A.Durasi SBU'=>'0.00',
+    'B.Preparation Time'=>'0.00',
+    'C.Travel Time'=>'0.00',
+    'D.Work Time'=>'0.00',
+    'RSPS'=>'0.00%',
 );
 
 $rows = array();
-		foreach($dbAvgExcel as $d) {
+$i = 1;
+		foreach($datas as $d) {
             $rows[] = array(
-            "$d->basecamp",
-            "$d->serpo",
-            "$d->jumlah_wo",
-            "$d->durasi_sbu",
-            "$d->prep_time",
-            "$d->travel_time",
-            "$d->work_time",
-            "$d->rsps"
-        );
+                "$i",
+                "$d->region",
+                "$d->jumlah_wo",
+                "$d->total_durasi",
+                "$d->durasi_sbu",
+                "$d->prep_time",
+                "$d->travel_time",
+                "$d->work_time",
+                "$d->rsps"
+            );
+            $i++;
 		}
             $writer = new XLSXWriter();
 $writer->setAuthor('icon+'); 
