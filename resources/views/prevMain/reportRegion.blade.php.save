@@ -27,8 +27,9 @@
                 </thead>
                 <tbody>
                     <?php $id = 1; ?>
-                    @foreach ($arrayRegion as $d)
+                    @foreach ($arrayRegion 
                         <tr>
+>>>>>>> af0c872b98a71d04badc5e9069fddef94e4c2bbe
                             <td>{{$id}}</td>
                             <td>{{$d['site_id']}}</td>
                             <td>{{$d['site_name']}}</td>
