@@ -8,6 +8,7 @@ use App\PrevMain;
 use App\Asset;
 use App\Report;
 use App\KategoriPm;
+use Gate;
 
 class PrevMainController extends Controller
 {
@@ -18,6 +19,9 @@ class PrevMainController extends Controller
      */
     public function index()
     {
+        if(!Gate::allows('isAdmin')){
+            abort(404, "Sorry, You have no permission");
+        }
         return view('prevMain.index');
     }
 
@@ -28,8 +32,7 @@ class PrevMainController extends Controller
      */
     public function create()
     {
-        $datas = Report::all();
-        return view('prevMain.download', compact('datas'));
+
     }
 
     /**

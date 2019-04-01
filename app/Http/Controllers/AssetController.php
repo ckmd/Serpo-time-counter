@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Asset;
 use PHPExcel_IOFactory;
+use Gate;
 
 class AssetController extends Controller
 {
@@ -15,6 +16,9 @@ class AssetController extends Controller
      */
     public function index()
     {
+        if(!Gate::allows('isAdmin')){
+            abort(404, "Sorry, You have no permission");
+        }
         return view('asset.index');
     }
 

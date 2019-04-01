@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\KategoriPm;
 use App\PrevMain;
 use App\Asset;
+use Gate;
 
 class KategoriPmController extends Controller
 {
@@ -16,6 +17,9 @@ class KategoriPmController extends Controller
      */
     public function index()
     {
+        if(!Gate::allows('isAdmin')){
+            abort(404, "Sorry, You have no permission");
+        }
         $kategoriPM = KategoriPm::orderBy('kategori_pm','asc')->orderBy('parameter','asc')->paginate(10);
         return view('kategoriPM.index', compact('kategoriPM'));
     }

@@ -8,6 +8,7 @@ use DateTime;
 use App\Excel;
 use App\Gangguan;
 use App\Kendala;
+use Gate;
 
 class excelController extends Controller
 {
@@ -18,6 +19,9 @@ class excelController extends Controller
      */
     public function index()
     {
+        if(!Gate::allows('isAdmin')){
+            abort(404, "Sorry, You have no permission");
+        }
         return view('serpo.excel');
     }
     

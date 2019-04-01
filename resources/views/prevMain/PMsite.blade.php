@@ -3,6 +3,8 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-12">
+        <button class="btn btn-primary" onclick="history.go(-1)"><i class="fa fa-arrow-left"></i><span> Back</span></button>
+        <br><br>
             <div class="table table-responsive" >
             <h4>Detail Asset</h4>
                 <table style="float: left">

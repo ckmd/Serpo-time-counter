@@ -55,7 +55,13 @@
                     <p class="mb-0">Periode {{$pAwal}} s.d. {{$pAkhir}}</p>
                 @endif
             </blockquote>
-            <a href="{{route('prevMain.create')}}" class="btn btn-success"><i class="fa fa-download"></i><span> Download</span></a>
+            <form method="post" action="{{url('downloadReport')}}">
+                {{csrf_field()}}
+                <input type="hidden" name="awal" value="{{$pAwal}}">
+                <input type="hidden" name="akhir" value="{{$pAkhir}}">
+                <button type="submit" class="btn btn-success"><i class="fa fa-download"></i><span> Download</span></button>
+            </form>
+            <!-- <a href="{{route('prevMain.create')}}" class="btn btn-success"><i class="fa fa-download"></i><span> Download</span></a> -->
             <br>
             <br>
             <table class="table table-responsive table-bordered table-striped" width="100%" style="text-align: center;">

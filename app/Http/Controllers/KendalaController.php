@@ -8,6 +8,7 @@ use App\DataKendala;
 use App\Excel;
 use DateTime;
 use DateInterval;
+use Gate;
 
 class KendalaController extends Controller
 {
@@ -18,6 +19,10 @@ class KendalaController extends Controller
      */
     public function index()
     {
+        if(!Gate::allows('isAdmin')){
+            abort(404, "Sorry, You have no permission");
+        }
+
         $kendalas = Kendala::orderBy('kategori_kendala','asc')->orderBy('parameter','asc')->paginate(10);
         return view('kendala.index', compact('kendalas'));
     }

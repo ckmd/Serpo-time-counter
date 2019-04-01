@@ -8,6 +8,7 @@ use App\Excel;
 use App\DataGangguan;
 use DateTime;
 use DateInterval;
+use Gate;
 
 class GangguanController extends Controller
 {
@@ -18,6 +19,9 @@ class GangguanController extends Controller
      */
     public function index()
     {
+        if(!Gate::allows('isAdmin')){
+            abort(404, "Sorry, You have no permission");
+        }
         $gangguans = Gangguan::orderBy('kategori_gangguan','asc')->orderBy('parameter','asc')->paginate(10);
         return view('gangguan.index', compact('gangguans'));
     }
