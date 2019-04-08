@@ -26,22 +26,22 @@ $header = array(
 
 $rows = array();
 $i = 1;
-		foreach($dbAvgExcel as $d) {
-            $rows[] = array(
-                "$i",
-                "$d->basecamp",
-                "$d->serpo",
-                "$d->jumlah_wo",
-                "$d->total_durasi",
-                "$d->durasi_sbu",
-                "$d->prep_time",
-                "$d->travel_time",
-                "$d->work_time",
-                "$d->rsps"
-            );
-            $i++;
-		}
-            $writer = new XLSXWriter();
+foreach($dbAvgExcel as $d) {
+    $rows[] = array(
+        "$i",
+        "$d->basecamp",
+        "$d->serpo",
+        "$d->jumlah_wo",
+        "$d->total_durasi",
+        "$d->durasi_sbu",
+        "$d->prep_time",
+        "$d->travel_time",
+        "$d->work_time",
+        "$d->rsps"
+    );
+    $i++;
+}
+    $writer = new XLSXWriter();
 $writer->setAuthor('icon+'); 
 $writer->writeSheetHeader('Sheet1', $header);
 foreach($rows as $row)
