@@ -75,7 +75,7 @@ window.onload = function() {
         </div>
         <div class="card text-white bg-primary">
             <div class="card-body">
-                <span class="info-box-text">(A+B+C+D) Total Durasi</span>
+                <span class="info-box-text">(A+B+C) Total Durasi Serpo</span>
                 <h3>{{$cardArray['avgTotalDurasi']}}</h3>
                 <span class="info-box-text">Menit</span>
                 <!-- <p>Menit</p> -->
@@ -94,7 +94,7 @@ window.onload = function() {
         </div>
         <div class="card text-white bg-secondary">
             <div class="card-body">
-                <span class="info-box-text">A. Durasi SBU</span>
+                <span class="info-box-text">Durasi SBU</span>
                 <!-- <span class="info-box-number">{{$cardArray['avgDurasiSBU']}}</span> -->
                 <h3>{{$cardArray['avgDurasiSBU']}}</h3>
                 <span class="info-box-text">Menit</span>
@@ -104,7 +104,7 @@ window.onload = function() {
         </div>
         <div class="card text-white bg-success">
             <div class="card-body">
-                <span class="info-box-text">B. Preparation Time</span>
+                <span class="info-box-text">A. Preparation Time</span>
                 <h3>{{$cardArray['avgPrepTime']}}</h3>
                 <!-- <span class="info-box-number">{{$cardArray['avgPrepTime']}}</span> -->
                 <span class="info-box-text">Menit</span>
@@ -114,7 +114,7 @@ window.onload = function() {
         </div>
         <div class="card text-white bg-danger">
             <div class="card-body">
-                <span class="info-box-text">C. Travel Time</span>
+                <span class="info-box-text">B. Travel Time</span>
                 <h3 >{{$cardArray['avgTravelTime']}}</h3>
                 <span class="info-box-text">Menit</span>
                 <!-- <h5 class="card-title"> Menit</h5>
@@ -123,7 +123,7 @@ window.onload = function() {
         </div>
         <div class="card text-white bg-yellow">
             <div class="card-body">
-                <span class="info-box-text">D. Work Time</span>
+                <span class="info-box-text">C. Work Time</span>
                 <h3>{{$cardArray['avgWorkTime']}}</h3>
                 <span class="info-box-text">Menit</span>             
                 <!-- <h5 class="card-title">{{$cardArray['avgWorkTime']}} Menit</h5>
@@ -298,11 +298,11 @@ window.onload = function() {
                         <th colspan="6">Average (Dalam Satuan Menit)</th>
                     </tr>
                     <tr>
-                        <th>Total_Durasi_(A+B+C+D)</th>
-                        <th>A.Durasi_SBU</th>
-                        <th>B.Preparation_Time</th>
-                        <th>C.Travel_Time</th>
-                        <th>D.Working_Time</th>
+                        <th>Total_Durasi_(A+B+C)</th>
+                        <th>Durasi_SBU</th>
+                        <th>A.Preparation_Time</th>
+                        <th>B.Travel_Time</th>
+                        <th>C.Working_Time</th>
                         <th>RSPS</th>
                     </tr>
                 </thead>
