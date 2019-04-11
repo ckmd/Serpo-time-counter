@@ -18,7 +18,8 @@
                         <th>ID</th>
                         <!-- <th>AR ID</th>
                         <th>Prob ID</th> -->
-                        <th>Kode_wo</th>
+                        <th>Kode_WO</th>
+                        <th>WO_Date</th>
                         <th>Region</th>
                         <th>Basecamp</th>
                         <th>Service_Point</th>
@@ -32,15 +33,17 @@
                     </tr>
                 </thead>
                 <tbody>
+                    <?php $id = $datas->firstItem()?>
                     @foreach($datas as $cat)
                     <tr>
-                        <th>{{$cat->id}}</th>
+                        <th>{{$id}}</th>
                         <!-- <td>{{$cat->ar_id}}</td>
                         <td>{{$cat->prob_id}}</td> -->
                         <td>{{$cat->kode_wo}}</td>
+                        <td nowrap="nowrap">{{$cat->wo_date}}</td>
                         <td>{{$cat->region}}</td>
-                        <td>{{$cat->basecamp}}</td>
-                        <td>{{$cat->serpo}}</td>
+                        <td nowrap="nowrap" class="text-left">{{$cat->basecamp}}</td>
+                        <td nowrap="nowrap" class="text-left">{{$cat->serpo}}</td>
                         <td>{{$cat->durasi_sbu}}</td>
                         @if($cat->prep_time!=null)
                         <td>{{$cat->prep_time}}</td>
@@ -59,16 +62,17 @@
                         @endif
                         <td>{{$cat->rsps*100}}%</td>
                         @if($cat->root_cause!=null)
-                        <td>{{$cat->root_cause}}</td>
+                        <td nowrap="nowrap">{{$cat->root_cause}}</td>
                         @else
                         <td>n.a</td>
                         @endif
                         @if($cat->kendala!=null)
-                        <td>{{$cat->kendala}}</td>
+                        <td nowrap="nowrap">{{$cat->kendala}}</td>
                         @else
                         <td>n.a</td>
                         @endif
                     </tr>
+                    <?php $id++?>
                     @endforeach
                 </tbody>
             </table>

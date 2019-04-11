@@ -324,8 +324,8 @@ window.onload = function() {
             <th colspan="6">Average (Dalam Satuan Menit)</th>
         </tr>
         <tr>
-            <th>Total Durasi Serpo (A+B+C)</th>
             <th>Durasi SBU</th>
+            <th>Total Durasi Serpo (A+B+C)</th>
             <th>A.Preparation Time</th>
             <th>B.Travel Time</th>
             <th>C.Working Time</th>
@@ -337,8 +337,8 @@ window.onload = function() {
         <tr>
             <td>{{$data->region}}</td>
             <td>{{$data->jumlah_wo}}</td>
-            <td>{{$data->total_durasi}}</td>
             <td>{{$data->durasi_sbu}}</td>
+            <td>{{$data->total_durasi}}</td>
             <td>{{$data->prep_time}}</td>
             <td>{{$data->travel_time}}</td>
             <td>{{$data->work_time}}</td>
@@ -361,8 +361,8 @@ window.onload = function() {
             <th colspan="6">Average (Dalam Satuan Menit)</th>
         </tr>
         <tr>
-            <th>Total Durasi Serpo (A+B+C)</th>
             <th>Durasi SBU</th>
+            <th>Total Durasi Serpo (A+B+C)</th>
             <th>A.Preparation Time</th>
             <th>B.Travel Time</th>
             <th>C.Working Time</th>
@@ -374,8 +374,8 @@ window.onload = function() {
         <tr>
             <td>{{$n['region']}}</td>
             <td>{{$n['jumlah_wo']}}</td>
-            <td>{{$n['total_durasi']}}</td>
             <td>{{$n['durasi_sbu']}}</td>
+            <td>{{$n['total_durasi']}}</td>
             <td>{{$n['prep_time']}}</td>
             <td>{{$n['travel_time']}}</td>
             <td>{{$n['work_time']}}</td>

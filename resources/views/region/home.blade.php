@@ -298,8 +298,8 @@ window.onload = function() {
                         <th colspan="6">Average (Dalam Satuan Menit)</th>
                     </tr>
                     <tr>
-                        <th>Total_Durasi_(A+B+C)</th>
                         <th>Durasi_SBU</th>
+                        <th>Total_Durasi_(A+B+C)</th>
                         <th>A.Preparation_Time</th>
                         <th>B.Travel_Time</th>
                         <th>C.Working_Time</th>
@@ -311,17 +311,17 @@ window.onload = function() {
             @foreach($dbAvgExcel as $data)
                     <tr>
                         <th>{{$i}}</th>
-                        <td>{{$data->basecamp}}</td>
-                        <td>{{$data->serpo}}</td>
+                        <td nowrap="nowrap" class="text-left">{{$data->basecamp}}</td>
+                        <td nowrap="nowrap" class="text-left">{{$data->serpo}}</td>
                         <td>{{$data->jumlah_wo}}</td>
-                        @if($data->total_durasi!=null)
-                        <td>{{round($data->total_durasi,2)}}</td>
-                        @else
-                        <td>n.a</td>
-                        @endif
                         <td>{{round($data->durasi_sbu,2)}}</td>
                         @if($data->prep_time!=null)
                         <td>{{round($data->prep_time,2)}}</td>
+                        @else
+                        <td>n.a</td>
+                        @endif
+                        @if($data->total_durasi!=null)
+                        <td>{{round($data->total_durasi,2)}}</td>
                         @else
                         <td>n.a</td>
                         @endif
