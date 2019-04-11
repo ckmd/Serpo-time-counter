@@ -54,9 +54,9 @@ if(isset($_POST['SubmitButton'])){ //check if form was submitted
       <!-- Sidebar user panel (optional) -->
       <div class="user-panel">
         <div class="pull-left image">
-          <img src="{{asset('images/avatar04.png')}}" alt="User Image">
+          <img src="{{asset('images/fav.png')}}" class="img-circle elevation-2" alt="User Image">
         </div>
-        <div class="pull-left info">
+        <div class="pull-left info" style="text-transform: capitalize;">
           <p>{{Auth::user()->name}}</p>
           <!-- Status -->
           <a href="#"><i class="fa fa-circle text-success"></i> Online</a>

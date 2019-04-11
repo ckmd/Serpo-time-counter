@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>Serpo Performance Counter</title>
+        <title>Serpo Performance</title>
 
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet" type="text/css">
@@ -80,8 +80,9 @@
             @endif
 
             <div class="content">
+            <img src="{{asset('images/icon.png')}}" alt="ICON+ Logo" style="opacity: 0.8" width="50%" height="50%">
+                <h1>Serpo Performance - Preventive Maintenance Asset</h1>
                 <div class="title m-b-md">
-                    Serpo Performance
                 </div>
 
                 <!-- <div class="links">

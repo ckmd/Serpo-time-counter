@@ -95,50 +95,69 @@ window.onload = function() {
 @endsection
 
 @section('card')
-    <div class="card-deck">
-        <div class="card text-white bg-primary p-0">
+<div class="card-deck">
+        <div class="card text-white bg-primary col-2 text-center">
             <div class="card-body">
-                <h5 class="card-title">{{$cardArray['regionSum']}}</h5>
-                <p class="card-text">Work Order</p>
+                <span class="info-box-text">Work Order</span>
+                <h3>{{$cardArray['regionSum']}}</h3>
+                <!-- <p class="card-text">Work Order</p> -->
             </div>
         </div>
         <div class="card text-white bg-primary">
             <div class="card-body">
-                <h5 class="card-title">{{$cardArray['avgTotalDurasi']}} Menit</h5>
-                <p class="card-text-small">Total Durasi</p>
-            </div>
-        </div>
-        <div class="card text-white bg-info">
-            <div class="card-body">
-                <h5 class="card-title">{{$cardArray['avgRSPS']*100}} %</h5>
-                <p class="card-text">RSPS</p>
+                <span class="info-box-text">(A+B+C) Total Durasi Serpo</span>
+                <h3>{{$cardArray['avgTotalDurasi']}}</h3>
+                <span class="info-box-text">Menit</span>
+                <!-- <p>Menit</p> -->
             </div>
         </div>
     </div>
     <br>
-    <div class="card-deck">
+    <div class="card-deck text-center">
+        <div class="card text-white bg-primary col-2">
+            <div class="card-body">
+                <span class="info-box-text">Performa RSPS</span>
+                <!-- <h3 class="info-box-number">{{$cardArray['avgRSPS']*100}} %</h3> -->
+                <!-- <p class="card-text">Performa RSPS</p>-->
+                <h3>{{$cardArray['avgRSPS']*100}} %</h3> 
+            </div>
+        </div>
         <div class="card text-white bg-secondary">
             <div class="card-body">
-                <h5 class="card-title">{{$cardArray['avgDurasiSBU']}} Menit</h5>
-                <p class="card-text">Durasi SBU</p>
+                <span class="info-box-text">Durasi SBU</span>
+                <!-- <span class="info-box-number">{{$cardArray['avgDurasiSBU']}}</span> -->
+                <h3>{{$cardArray['avgDurasiSBU']}}</h3>
+                <span class="info-box-text">Menit</span>
+                <!-- <p class="card-text">A.Durasi SBU</p>
+                <p>(Menit)</p> -->
             </div>
         </div>
         <div class="card text-white bg-success">
             <div class="card-body">
-                <h5 class="card-title">{{$cardArray['avgPrepTime']}} Menit</h5>
-                <p class="card-text">Preparation Time</p>
+                <span class="info-box-text">A. Preparation Time</span>
+                <h3>{{$cardArray['avgPrepTime']}}</h3>
+                <!-- <span class="info-box-number">{{$cardArray['avgPrepTime']}}</span> -->
+                <span class="info-box-text">Menit</span>
+                <!-- <p class="card-text">B.Preparation Time</p>
+                <p class="card-text">Menit</p> -->
             </div>
         </div>
         <div class="card text-white bg-danger">
             <div class="card-body">
-                <h5 class="card-title">{{$cardArray['avgTravelTime']}} Menit</h5>
-                <p class="card-text">Travel Time</p>
+                <span class="info-box-text">B. Travel Time</span>
+                <h3 >{{$cardArray['avgTravelTime']}}</h3>
+                <span class="info-box-text">Menit</span>
+                <!-- <h5 class="card-title"> Menit</h5>
+                <p class="card-text"></p> -->
             </div>
         </div>
         <div class="card text-white bg-yellow">
             <div class="card-body">
-                <h5 class="card-title">{{$cardArray['avgWorkTime']}} Menit</h5>
-                <p class="card-text">Work Time</p>
+                <span class="info-box-text">C. Work Time</span>
+                <h3>{{$cardArray['avgWorkTime']}}</h3>
+                <span class="info-box-text">Menit</span>             
+                <!-- <h5 class="card-title">{{$cardArray['avgWorkTime']}} Menit</h5>
+                <p class="card-text">Work Time</p> -->
             </div>
         </div>
     </div>
@@ -291,7 +310,7 @@ window.onload = function() {
 @yield('pieChart')
 <br>
 <div class="text-center">
-    <h4>Rata - Rata Data Nasional Berdasarkan Regional</h4>
+    <h4>Rata - Rata Data Nasional Berdasarkan Regional (Semua WO)</h4>
 </div>
 <a href="{{route('national.create')}}" class="btn btn-success"><i class="fa fa-download"></i><span> Download</span></a>
 <br>
@@ -305,11 +324,11 @@ window.onload = function() {
             <th colspan="6">Average (Dalam Satuan Menit)</th>
         </tr>
         <tr>
-            <th>Total Durasi (A+B+C+D)</th>
-            <th>A.Durasi SBU</th>
-            <th>B.Preparation Time</th>
-            <th>C.Travel Time</th>
-            <th>D.Working Time</th>
+            <th>Total Durasi Serpo (A+B+C)</th>
+            <th>Durasi SBU</th>
+            <th>A.Preparation Time</th>
+            <th>B.Travel Time</th>
+            <th>C.Working Time</th>
             <th>RSPS</th>
         </tr>
     </thead>
@@ -328,5 +347,43 @@ window.onload = function() {
         @endforeach
     </tbody>
 </table>
+<!-- Table for RSPS 100 -->
+<br>
+<div class="text-center">
+    <h4>Rata - Rata Data Nasional Berdasarkan Regional (RSPS = 100)</h4>
+</div>
+
+<table class="table table-bordered table-striped table-hover" style="text-align: center;">
+    <thead class="thead-dark">
+        <tr valign="top" >
+            <th rowspan="2">Region</th>
+            <th rowspan="2">Jumlah WO</th>
+            <th colspan="6">Average (Dalam Satuan Menit)</th>
+        </tr>
+        <tr>
+            <th>Total Durasi Serpo (A+B+C)</th>
+            <th>Durasi SBU</th>
+            <th>A.Preparation Time</th>
+            <th>B.Travel Time</th>
+            <th>C.Working Time</th>
+            <th>RSPS</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach($nationalDataRsps1 as $n)
+        <tr>
+            <td>{{$n['region']}}</td>
+            <td>{{$n['jumlah_wo']}}</td>
+            <td>{{$n['total_durasi']}}</td>
+            <td>{{$n['durasi_sbu']}}</td>
+            <td>{{$n['prep_time']}}</td>
+            <td>{{$n['travel_time']}}</td>
+            <td>{{$n['work_time']}}</td>
+            <td>{{$n['rsps']*100}}%</td>
+        </tr>
+        @endforeach
+    </tbody>
+</table>
+
 @endif
 @endsection

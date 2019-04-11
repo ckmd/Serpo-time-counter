@@ -53,6 +53,7 @@ class NationalController extends Controller
         $pAkhir = $request->pakhir;
         $addOneDay = (new DateTime($pAkhir))->add(new DateInterval('P1D'))->format('Y-m-d');
         $datas = Excel::orderBy('wo_date','asc')->get()->where('wo_date','>=',$pAwal)->where('wo_date','<=',$addOneDay);
+        $datasRsps1 = $datas->where('rsps',1);
         // Filter apabila hasil filter data yang berjumlah nol
         if($datas->count()==null){
             return redirect('national');
@@ -90,6 +91,33 @@ class NationalController extends Controller
                 $nationalData->rsps = $avgRSPS;
             $nationalData->save();
 
+            $regionRowRsps1 = $datasRsps1->where('region',$value);
+            $regionSumRsps1 = $regionRowRsps1->pluck('region')->count();
+
+            if($regionSumRsps1 < 1){
+                $nationalDataRsps1[] = array(
+                    'region' => $value,
+                    'jumlah_wo' => $regionSumRsps1,
+                    'total_durasi' => 0,
+                    'durasi_sbu' => 0,
+                    'prep_time' => 0,
+                    'travel_time' => 0,
+                    'work_time' => 0,
+                    'rsps' => 0
+                );
+            }else{
+                // Menghitung Rata2 RSPS 100 Starts Here
+                $nationalDataRsps1[] = array(
+                    'region' => $value,
+                    'jumlah_wo' => $regionSumRsps1,
+                    'total_durasi' => round($regionRowRsps1->pluck('total_durasi')->sum()/$regionSumRsps1,2),
+                    'durasi_sbu' => round($regionRowRsps1->pluck('durasi_sbu')->sum()/$regionSumRsps1,2),
+                    'prep_time' => round($regionRowRsps1->pluck('prep_time')->sum()/$regionSumRsps1,2),
+                    'travel_time' => round($regionRowRsps1->pluck('travel_time')->sum()/$regionSumRsps1,2),
+                    'work_time' => round($regionRowRsps1->pluck('work_time')->sum()/$regionSumRsps1,2),
+                    'rsps' => round($regionRowRsps1->pluck('rsps')->sum()/$regionSumRsps1,4)
+                );
+            }    
             
             $rspsArray[] = array('y' => $avgRSPS*100, 'label'=>$value);
             $woArray[] = array('label'=>$value, 'y'=>$regionSum/$totalWO*100);
@@ -177,7 +205,7 @@ class NationalController extends Controller
         // Menghitung Kendala Secara Nasional Ends Here
      
         $nationalDataForView = NationalData::all();
-        return view('national.NationalView', compact('nationalDataForView', 'rspsArray','woArray','pAwal','pAkhir','chartArray','cardArray','urcdArray','urcArray','ukArray'));
+        return view('national.NationalView', compact('nationalDataRsps1','nationalDataForView', 'rspsArray','woArray','pAwal','pAkhir','chartArray','cardArray','urcdArray','urcArray','ukArray'));
     }
 
     /**
