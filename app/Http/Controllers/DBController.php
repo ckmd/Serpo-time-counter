@@ -18,7 +18,7 @@ class DBController extends Controller
      */
     public function index()
     {
-        $datas = Excel::paginate(50);
+        $datas = Excel::orderBy('wo_date')->paginate(50);
         return view('serpo.allData',compact('datas'));
     }
 
