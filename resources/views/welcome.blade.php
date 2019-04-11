@@ -80,7 +80,7 @@
             @endif
 
             <div class="content">
-            <img src="{{asset('images/icon.png')}}" alt="ICON+ Logo" style="opacity: 0.8" width="50%" height="50%">
+            <img src="{{asset('images/Icon.png')}}" alt="ICON+ Logo" style="opacity: 0.8" width="50%" height="50%">
                 <h1>Serpo Performance - Preventive Maintenance Asset</h1>
                 <div class="title m-b-md">
                 </div>

@@ -24,7 +24,7 @@
         <nav class="navbar navbar-expand-md navbar-light navbar-laravel">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}">
-                <img src="{{asset('images/icon.png')}}" alt="AdminLTE Logo" style="opacity: 0.8" width="7%" height="7%">
+                <img src="{{asset('images/Icon.png')}}" alt="AdminLTE Logo" style="opacity: 0.8" width="7%" height="7%">
                     <!-- {{ config('app.name', 'Laravel') }} -->
                     Serpo Performance - PM Asset
                 </a>
