@@ -66,7 +66,7 @@ window.onload = function() {
 @if($dbAvgExcel!=null)
     @section('card')
     <div class="card-deck">
-        <div class="card text-white bg-primary col-2 text-center">
+        <div class="card text-white bg-primary text-center">
             <div class="card-body">
                 <span class="info-box-text">Work Order</span>
                 <h3>{{$cardArray['regionSum']}}</h3>
@@ -75,16 +75,21 @@ window.onload = function() {
         </div>
         <div class="card text-white bg-primary">
             <div class="card-body">
-                <span class="info-box-text">(A+B+C) Total Durasi Serpo</span>
+                <span class="info-box-text">Total Durasi WO (A+B+C+D)</span>
+                <h3>{{$cardArray['totalDurasiWO']}}</h3>
+                <span class="info-box-text">Menit</span>
+                <!-- <p>Menit</p> -->
+            </div>
+        </div>
+        <div class="card text-white bg-primary">
+            <div class="card-body">
+                <span class="info-box-text">Total Durasi Serpo (B+C+D)</span>
                 <h3>{{$cardArray['avgTotalDurasi']}}</h3>
                 <span class="info-box-text">Menit</span>
                 <!-- <p>Menit</p> -->
             </div>
         </div>
-    </div>
-    <br>
-    <div class="card-deck text-center">
-        <div class="card text-white bg-primary col-2">
+        <div class="card text-white bg-primary">
             <div class="card-body">
                 <span class="info-box-text">Performa RSPS</span>
                 <!-- <h3 class="info-box-number">{{$cardArray['avgRSPS']*100}} %</h3> -->
@@ -92,9 +97,12 @@ window.onload = function() {
                 <h3>{{$cardArray['avgRSPS']*100}} %</h3> 
             </div>
         </div>
+    </div>
+    <br>
+    <div class="card-deck text-center">
         <div class="card text-white bg-secondary">
             <div class="card-body">
-                <span class="info-box-text">Durasi SBU</span>
+                <span class="info-box-text">A. Durasi SBU</span>
                 <!-- <span class="info-box-number">{{$cardArray['avgDurasiSBU']}}</span> -->
                 <h3>{{$cardArray['avgDurasiSBU']}}</h3>
                 <span class="info-box-text">Menit</span>
@@ -104,7 +112,7 @@ window.onload = function() {
         </div>
         <div class="card text-white bg-success">
             <div class="card-body">
-                <span class="info-box-text">A. Preparation Time</span>
+                <span class="info-box-text">B. Preparation Time</span>
                 <h3>{{$cardArray['avgPrepTime']}}</h3>
                 <!-- <span class="info-box-number">{{$cardArray['avgPrepTime']}}</span> -->
                 <span class="info-box-text">Menit</span>
@@ -114,7 +122,7 @@ window.onload = function() {
         </div>
         <div class="card text-white bg-danger">
             <div class="card-body">
-                <span class="info-box-text">B. Travel Time</span>
+                <span class="info-box-text">C. Travel Time</span>
                 <h3 >{{$cardArray['avgTravelTime']}}</h3>
                 <span class="info-box-text">Menit</span>
                 <!-- <h5 class="card-title"> Menit</h5>
@@ -123,7 +131,7 @@ window.onload = function() {
         </div>
         <div class="card text-white bg-yellow">
             <div class="card-body">
-                <span class="info-box-text">C. Work Time</span>
+                <span class="info-box-text">D. Work Time</span>
                 <h3>{{$cardArray['avgWorkTime']}}</h3>
                 <span class="info-box-text">Menit</span>             
                 <!-- <h5 class="card-title">{{$cardArray['avgWorkTime']}} Menit</h5>

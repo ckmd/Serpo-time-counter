@@ -137,7 +137,8 @@ class HomeController extends Controller
             }
             $cardArray = array(
                 'regionSum' => $regionSum,
-                'avgTotalDurasi'=> round($getFilteredDate->pluck('total_durasi')->sum()/$rsps100Sum,2),
+                'totalDurasiWO' => round(($getFilteredDate->pluck('total_durasi')->sum()+$getFilteredDate->pluck('durasi_sbu')->sum())/$regionSum,2),
+                'avgTotalDurasi'=> round($getFilteredDate->pluck('total_durasi')->sum()/$regionSum,2),
                 'avgDurasiSBU' => round($getFilteredDate->pluck('durasi_sbu')->sum()/$regionSum,2),
                 'avgPrepTime' => round($getFilteredDate->pluck('prep_time')->sum()/$regionSum,2),
                 'avgTravelTime' => round($getFilteredDate->pluck('travel_time')->sum()/$regionSum,2),
