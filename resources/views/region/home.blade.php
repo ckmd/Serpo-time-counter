@@ -87,7 +87,7 @@ var fotChart = new CanvasJS.Chart("fotChart", {
 
 // Chart Bukan Gangguan
     var bgChart = new CanvasJS.Chart("bgChart", {
-        theme: "light1", // "light1", "dark1", "dark2"
+        theme: "light2", // "light1", "dark1", "dark2"
         animationEnabled: true, 		
         title:{
             text: "Bukan Gangguan"
@@ -107,7 +107,7 @@ var fotChart = new CanvasJS.Chart("fotChart", {
 
 // PS Chart
     var psChart = new CanvasJS.Chart("psChart", {
-        theme: "light1", // "light1", "dark1", "dark2"
+        theme: "light2", // "light1", "dark1", "dark2"
         animationEnabled: true, 		
         title:{
             text: "PS"
@@ -127,7 +127,7 @@ var fotChart = new CanvasJS.Chart("fotChart", {
 
 // Software Chart
 var swChart = new CanvasJS.Chart("swChart", {
-        theme: "light1", // "light1", "dark1", "dark2"
+        theme: "light2", // "light1", "dark1", "dark2"
         animationEnabled: true, 		
         title:{
             text: "Software"
@@ -306,36 +306,12 @@ var swChart = new CanvasJS.Chart("swChart", {
         </table>
     </div>
     @endif
-    <!-- Chart untuk menampilkan Root cause dan Kendala -->
+    <!-- Chart untuk menampilkan Root cause Gangguan dan Kendala -->
     <div id="focChart" style="height: 300px;width: 100%;"></div><br>
     <div id="fotChart" style="height: 300px;width: 100%;"></div><br>
     <div id="psChart" style="height: 300px;width: 100%;"></div><br>
     <div id="swChart" style="height: 300px;width: 100%;"></div><br>
     <div id="bgChart" style="height: 300px;width: 100%;"></div><br>
-
-    <table style="align: center; width: 100%;">
-        <tr>
-            <td colspan="2">
-            </td>
-            <td colspan="2">
-            </td>
-            <td></td>
-            <td></td>
-        </tr>
-        <br>
-        <tr>
-            <td>
-            </td>
-            <td>
-            </td>
-            <td>
-            </td>
-            <!-- <td></td> -->
-        </tr>
-    </table>
-    <br>
-    <!-- <div id="rootCauseChart" style="height: 300px;width: 100%;"></div> -->
-    <br>
     <div id="kendalaChart" style="height: 300px;width: 100%;"></div>
     @endsection
 @endif

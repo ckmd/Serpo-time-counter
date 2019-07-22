@@ -35,6 +35,7 @@ class HomeController extends Controller
         $chartArray = null;
         $urcdArray = null;
         $ukArray = null;
+
         $arrayUrc = null;
         return view('region.home', compact('unique','dbAvgExcel','chartArray','urcdArray','ukArray','arrayUrc'));
     }
@@ -213,10 +214,17 @@ class HomeController extends Controller
             }
             array_multisort (array_column($urcArray, 'y'), SORT_DESC, $urcArray);
 
-            $uniqueCategory = $getFilteredDate->pluck('category')->unique();
-            foreach ($uniqueCategory as $key => $value) {
+            $staticUniqueCategory = Excel::pluck('category')->unique();
+            // $uniqueCategory = $getFilteredDate->pluck('category')->unique();
+            // return $uniqueCategory;
+            foreach ($staticUniqueCategory as $key => $value) {
                 if($value!=null){
+                    // filter untuk mengisi index yg tidak ada
+                    if($getFilteredDate->where('category',$value)->count() == 0){
+                        $arrayUrc[$value][] = array('label' => 'tidak ada gangguan', 'y' => 0);
+                    }
                     $uniqueRootCause = $getFilteredDate->where('category',$value)->pluck('root_cause')->unique();
+                    // return $uniqueRootCase;
                     foreach ($uniqueRootCause as $keyUrc => $valueUrc) {
                         $eachValue = $getFilteredDate->where('category',$value)->where('root_cause',$valueUrc)->count();
                         $arrayUrc[$value][] = array(
@@ -230,7 +238,14 @@ class HomeController extends Controller
             
         }else{
             $dbAvgExcel = null;
+            $arrayUrc = array();
+            $staticUniqueCategory = Excel::pluck('category')->unique();
+            foreach ($staticUniqueCategory as $key => $value) {
+                $arrayUrc[$value][] = array();
+            }
         }
+        // print_r($arrayUrc["FOC"]);
+        // return 'hiks';
         return view('region.home', compact ('unique','regionName','dbAvgExcel','pAwal','pAkhir', 'cardArray','chartArray','urcdArray','urcArray','ukArray','arrayUrc'));
     }
 }
