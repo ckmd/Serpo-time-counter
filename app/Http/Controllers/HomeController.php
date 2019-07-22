@@ -35,7 +35,8 @@ class HomeController extends Controller
         $chartArray = null;
         $urcdArray = null;
         $ukArray = null;
-        return view('region.home', compact('unique','dbAvgExcel','chartArray','urcdArray','ukArray'));
+        $arrayUrc = null;
+        return view('region.home', compact('unique','dbAvgExcel','chartArray','urcdArray','ukArray','arrayUrc'));
     }
 
     public function download(Request $request){
@@ -125,6 +126,7 @@ class HomeController extends Controller
         $urcdArray = array();
         $urcArray = array();
         $ukArray = array();
+        $arrayUrc = array();
         if($regionName!=null && $getFilteredDate->count()!=null){
             $dbAvgExcel = AvgExcel::orderBy('basecamp','asc')->get();
             // Get the total WO and Average data
@@ -210,9 +212,25 @@ class HomeController extends Controller
                 }
             }
             array_multisort (array_column($urcArray, 'y'), SORT_DESC, $urcArray);
+
+            $uniqueCategory = $getFilteredDate->pluck('category')->unique();
+            foreach ($uniqueCategory as $key => $value) {
+                if($value!=null){
+                    $uniqueRootCause = $getFilteredDate->where('category',$value)->pluck('root_cause')->unique();
+                    foreach ($uniqueRootCause as $keyUrc => $valueUrc) {
+                        $eachValue = $getFilteredDate->where('category',$value)->where('root_cause',$valueUrc)->count();
+                        $arrayUrc[$value][] = array(
+                            'label' => $valueUrc,
+                            'y' => $eachValue,
+                            'indexLabel' => $eachValue." ",
+                        );
+                    }
+                }
+            }
+            
         }else{
             $dbAvgExcel = null;
         }
-        return view('region.home', compact ('unique','regionName','dbAvgExcel','pAwal','pAkhir', 'cardArray','chartArray','urcdArray','urcArray','ukArray'));
+        return view('region.home', compact ('unique','regionName','dbAvgExcel','pAwal','pAkhir', 'cardArray','chartArray','urcdArray','urcArray','ukArray','arrayUrc'));
     }
 }

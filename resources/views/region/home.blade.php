@@ -30,20 +30,120 @@ window.onload = function() {
     });
     chart.render();
 
-    var rootCauseChart = new CanvasJS.Chart("rootCauseChart", {
+    // var rootCauseChart = new CanvasJS.Chart("rootCauseChart", {
+    //     theme: "light2", // "light1", "dark1", "dark2"
+    //     animationEnabled: true, 		
+    //     title:{
+    //         text: "Kategori Gangguan"
+    //     },
+    //     data: [{
+    //         type: "column",
+    //         yValueFormatString: "#,##0.00\"%\"",
+    //         // indexLabel: "{label} ({y})",
+    //         dataPoints: <?php echo json_encode($urcdArray, JSON_NUMERIC_CHECK); ?>
+    //     }]
+    // });
+    // rootCauseChart.render();
+
+// Chart FOC
+    var focChart = new CanvasJS.Chart("focChart", {
         theme: "light2", // "light1", "dark1", "dark2"
         animationEnabled: true, 		
         title:{
-            text: "Kategori Gangguan"
+            text: "FOC"
+        },
+        axisX:{
+            labelFontSize: 15,
+            labelAngle: 0
         },
         data: [{
-            type: "pie",
-            yValueFormatString: "#,##0.00\"%\"",
-            indexLabel: "{label} ({y})",
-            dataPoints: <?php echo json_encode($urcdArray, JSON_NUMERIC_CHECK); ?>
+            indexLabelFontSize: 15,
+            type: "column",
+            yValueFormatString: "#,##",
+            dataPoints: <?php echo json_encode($arrayUrc["FOC"], JSON_NUMERIC_CHECK); ?>
         }]
     });
-    rootCauseChart.render();
+    focChart.render();
+
+// Chart FOT
+var fotChart = new CanvasJS.Chart("fotChart", {
+        theme: "light2", // "light1", "dark1", "dark2"
+        animationEnabled: true, 		
+        title:{
+            text: "FOT / Perangkat"
+        },
+        axisX:{
+            labelFontSize: 15,
+            labelAngle: 0
+        },
+        data: [{
+            indexLabelFontSize: 15,
+            type: "column",
+            yValueFormatString: "#,##",
+            dataPoints: <?php echo json_encode($arrayUrc["FOT/Perangkat"], JSON_NUMERIC_CHECK); ?>
+        }]
+    });
+    fotChart.render();
+
+// Chart Bukan Gangguan
+    var bgChart = new CanvasJS.Chart("bgChart", {
+        theme: "light1", // "light1", "dark1", "dark2"
+        animationEnabled: true, 		
+        title:{
+            text: "Bukan Gangguan"
+        },
+        axisX:{
+            labelFontSize: 15,
+            labelAngle: 0
+        },
+        data: [{
+            indexLabelFontSize: 15,
+            type: "column",
+            yValueFormatString: "#,##",
+            dataPoints: <?php echo json_encode($arrayUrc["Bukan Gangguan"], JSON_NUMERIC_CHECK); ?>
+        }]
+    });
+    bgChart.render();
+
+// PS Chart
+    var psChart = new CanvasJS.Chart("psChart", {
+        theme: "light1", // "light1", "dark1", "dark2"
+        animationEnabled: true, 		
+        title:{
+            text: "PS"
+        },
+        axisX:{
+            labelFontSize: 15,
+            labelAngle: 0
+        },
+        data: [{
+            indexLabelFontSize: 15,
+            type: "column",
+            yValueFormatString: "#,##",
+            dataPoints: <?php echo json_encode($arrayUrc["PS"], JSON_NUMERIC_CHECK); ?>
+        }]
+    });
+    psChart.render();
+
+// Software Chart
+var swChart = new CanvasJS.Chart("swChart", {
+        theme: "light1", // "light1", "dark1", "dark2"
+        animationEnabled: true, 		
+        title:{
+            text: "Software"
+        },
+        axisX:{
+            labelFontSize: 15,
+            labelAngle: 0
+        },
+        data: [{
+            indexLabelFontSize: 15,
+            type: "column",
+            yValueFormatString: "#,##",
+            dataPoints: <?php echo json_encode($arrayUrc["Software"], JSON_NUMERIC_CHECK); ?>
+        }]
+    });
+    swChart.render();
 
     var kendalaChart = new CanvasJS.Chart("kendalaChart", {
         theme: "light2", // "light1", "dark1", "dark2"
@@ -52,9 +152,9 @@ window.onload = function() {
             text: "Kategori Kendala"
         },
         data: [{
-            type: "pie",
+            type: "column",
             yValueFormatString: "#,##0.00\"%\"",
-            indexLabel: "{label} ({y})",
+            // indexLabel: "{label} ({y})",
             dataPoints: <?php echo json_encode($ukArray, JSON_NUMERIC_CHECK); ?>
         }]
     });
@@ -206,21 +306,37 @@ window.onload = function() {
         </table>
     </div>
     @endif
+    <!-- Chart untuk menampilkan Root cause dan Kendala -->
+    <div id="focChart" style="height: 300px;width: 100%;"></div><br>
+    <div id="fotChart" style="height: 300px;width: 100%;"></div><br>
+    <div id="psChart" style="height: 300px;width: 100%;"></div><br>
+    <div id="swChart" style="height: 300px;width: 100%;"></div><br>
+    <div id="bgChart" style="height: 300px;width: 100%;"></div><br>
+
     <table style="align: center; width: 100%;">
         <tr>
-            <tbody>
-                <tr>
-                    <td>
-                    <div id="rootCauseChart" style="height: 300px;width: 100%;"></div>
-                    </td>
-                    <td>
-                    <div id="kendalaChart" style="height: 300px;width: 100%;"></div>
-                    </td>
-                </tr>
-            </tbody>
+            <td colspan="2">
+            </td>
+            <td colspan="2">
+            </td>
+            <td></td>
+            <td></td>
+        </tr>
+        <br>
+        <tr>
+            <td>
+            </td>
+            <td>
+            </td>
+            <td>
+            </td>
+            <!-- <td></td> -->
         </tr>
     </table>
-
+    <br>
+    <!-- <div id="rootCauseChart" style="height: 300px;width: 100%;"></div> -->
+    <br>
+    <div id="kendalaChart" style="height: 300px;width: 100%;"></div>
     @endsection
 @endif
 
@@ -307,8 +423,8 @@ window.onload = function() {
                     </tr>
                     <tr>
                         <th>Durasi_SBU</th>
-                        <th>Total_Durasi_(A+B+C)</th>
-                        <th>A.Preparation_Time</th>
+                        <th>Total_Durasi_Serpo (A+B+C)</th>
+                        <th>A.Prep_Time</th>
                         <th>B.Travel_Time</th>
                         <th>C.Working_Time</th>
                         <th>RSPS</th>
