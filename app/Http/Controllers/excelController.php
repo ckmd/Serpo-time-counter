@@ -9,6 +9,7 @@ use App\Excel;
 use App\Gangguan;
 use App\Kendala;
 use Gate;
+require_once '../Classes/PHPExcel/IOFactory.php';
 
 class excelController extends Controller
 {
@@ -78,76 +79,70 @@ class excelController extends Controller
         }
 
         // AI Method, untuk menemukan konklusi dari beberapa kata
-        function findRootCause($string){
-            $rootCauseConclusion = null;
-            $string = explode(" ", $string);
-            // $cause = array(
-            //     'FOC' => array('FOC','putus','core','kabel','cable','kable'),
-            //     'FOT' => array('FOT','comm'),
-            //     'PS' => array('PS'),
-            // );
-            $cause = array();
-            $gangguan = Gangguan::get();
-            if($gangguan->count()!=null){
-                $uniqueGangguan = $gangguan->pluck('kategori_gangguan')->unique();
-                foreach ($uniqueGangguan as $ugKey => $ugValue) {
-                    $cause[$ugValue] = $gangguan->where('kategori_gangguan','=',$ugValue)->pluck('parameter')->toArray();
-                }
-                $resultArray = array();
-                foreach ($cause as $causeKey => $causeValue) {
-                    $causeResult = count(array_intersect($causeValue, $string));
-                    $resultArray[$causeKey] = $causeResult;
-                }
-                $maxResult = max($resultArray);
-                $indeksResult = array_search(max($resultArray),$resultArray);
+        // function findRootCause($string){
+        //     $rootCauseConclusion = null;
+        //     $string = explode(" ", $string);
+        //     $cause = array();
+        //     $gangguan = Gangguan::get();
+        //     if($gangguan->count()!=null){
+        //         $uniqueGangguan = $gangguan->pluck('kategori_gangguan')->unique();
+        //         foreach ($uniqueGangguan as $ugKey => $ugValue) {
+        //             $cause[$ugValue] = $gangguan->where('kategori_gangguan','=',$ugValue)->pluck('parameter')->toArray();
+        //         }
+        //         $resultArray = array();
+        //         foreach ($cause as $causeKey => $causeValue) {
+        //             $causeResult = count(array_intersect($causeValue, $string));
+        //             $resultArray[$causeKey] = $causeResult;
+        //         }
+        //         $maxResult = max($resultArray);
+        //         $indeksResult = array_search(max($resultArray),$resultArray);
                 
-                // Check Highest Root Cause
-                if($maxResult>0){
-                    $rootCauseConclusion = $indeksResult;
-                }else if($string!=null){
-                    $rootCauseConclusion = "Lain - Lain";
-                }
-            }
-            return $rootCauseConclusion;
-        }
+        //         // Check Highest Root Cause
+        //         if($maxResult>0){
+        //             $rootCauseConclusion = $indeksResult;
+        //         }else if($string!=null){
+        //             $rootCauseConclusion = "Lain - Lain";
+        //         }
+        //     }
+        //     return $rootCauseConclusion;
+        // }
 
-        function findKendala($k){
-            $kendalaConclusion = null;
-            $k = explode(" ", $k);
-            // $kendalaDict = array(
-            //     'tim' => array('tim','idle'),
-            //     'cuaca' => array('cuaca','hujan','banjir'),
-            //     'user' => array('user'),
-            // );
-            $kendalaDict = array();
-            $kendala = Kendala::get();
-            if($kendala->count()!=null){
+        // function findKendala($k){
+        //     $kendalaConclusion = null;
+        //     $k = explode(" ", $k);
+        //     // $kendalaDict = array(
+        //     //     'tim' => array('tim','idle'),
+        //     //     'cuaca' => array('cuaca','hujan','banjir'),
+        //     //     'user' => array('user'),
+        //     // );
+        //     $kendalaDict = array();
+        //     $kendala = Kendala::get();
+        //     if($kendala->count()!=null){
 
-                $uniqueKendala = $kendala->pluck('kategori_kendala')->unique();
-                foreach ($uniqueKendala as $ukKey => $ukValue) {
-                    $kendalaDict[$ukValue] = $kendala->where('kategori_kendala','=',$ukValue)->pluck('parameter')->toArray();
-                }
+        //         $uniqueKendala = $kendala->pluck('kategori_kendala')->unique();
+        //         foreach ($uniqueKendala as $ukKey => $ukValue) {
+        //             $kendalaDict[$ukValue] = $kendala->where('kategori_kendala','=',$ukValue)->pluck('parameter')->toArray();
+        //         }
                 
-                $resultArray = array();
-                foreach ($kendalaDict as $kdKey => $kdValue) {
-                    $kResult = count(array_intersect($k, $kdValue));
-                    $resultArray[$kdKey] = $kResult;
-                }
-                $maxResult = max($resultArray);
-                $indeksResult = array_search(max($resultArray),$resultArray);
-                // Check Highest Root Cause
-                if($maxResult>0){
-                    $kendalaConclusion = $indeksResult;
-                }else if($k!=null){
-                    $kendalaConclusion = "Lain - Lain";
-                }
-            }
-            return $kendalaConclusion;
-        }
+        //         $resultArray = array();
+        //         foreach ($kendalaDict as $kdKey => $kdValue) {
+        //             $kResult = count(array_intersect($k, $kdValue));
+        //             $resultArray[$kdKey] = $kResult;
+        //         }
+        //         $maxResult = max($resultArray);
+        //         $indeksResult = array_search(max($resultArray),$resultArray);
+        //         // Check Highest Root Cause
+        //         if($maxResult>0){
+        //             $kendalaConclusion = $indeksResult;
+        //         }else if($k!=null){
+        //             $kendalaConclusion = "Lain - Lain";
+        //         }
+        //     }
+        //     return $kendalaConclusion;
+        // }
         
         $getSheet = null;
         $highestRow = null;
-        require_once '../Classes/PHPExcel/IOFactory.php';
         if(isset($_FILES['excelFile']) && !empty($_FILES['excelFile']['tmp_name']))
         {
             $excelObject = PHPExcel_IOFactory::load($_FILES['excelFile']['tmp_name']);
@@ -173,7 +168,6 @@ class excelController extends Controller
                     $SBU = date_diff($WO_Date, $AR_Date);
                     $SBU = filterMinute($SBU);
                     $rsps += 25;
-                    
                     // Code untuk menghitung preparation time
                     if($getSheet[$i][11]==''){
                         $prepTime = null;
@@ -249,16 +243,30 @@ class excelController extends Controller
 
                 //Menghitung Total durasi starts here
                 $total_durasi = null;
+                $category = null;
                 $root_cause = null;
                 $kendala = null;
+                $terminasi_pop = null;
                 if($rsps==100){
                     $total_durasi = $prepTime + $travelTime + $workTime;
                 }
-                if($getSheet[$i][23]!=null){
-                    $root_cause = findRootCause($getSheet[$i][23]);
+                // Category setiap root cause
+                if($getSheet[$i][24]!=null){
+                    $category = $getSheet[$i][24];
                 }
-                if($getSheet[$i][20]!=null){
-                    $kendala = findKendala($getSheet[$i][20]);
+                // Root cause diperoleh dari kolom root cause
+                if($getSheet[$i][25]!=null){
+                    $root_cause = $getSheet[$i][25];
+                    // $root_cause = findRootCause($getSheet[$i][23]);
+                }
+                // kendala diperoleh dari kolom kendala
+                if($getSheet[$i][26]!=null){
+                    $kendala = $getSheet[$i][26];
+                    // $kendala = findKendala($getSheet[$i][20]);
+                }
+                // terminasi pop diperoleh dari kolom terminasi pop
+                if($getSheet[$i][27]!=null){
+                    $terminasi_pop = $getSheet[$i][27];
                 }
                 // code untuk menyimpan ke db (tabel excel)
                 $data = new Excel();
@@ -275,8 +283,10 @@ class excelController extends Controller
                     $data->work_time = $workTime;
                     $data->rsps = $rsps/100;
                     $data->total_durasi = $total_durasi;
+                    $data->category = $category;
                     $data->root_cause = $root_cause;
                     $data->kendala = $kendala;
+                    $data->terminasi_pop = $terminasi_pop;
                     $data->root_cause_description = $getSheet[$i][23];
                     $data->kendala_description = $getSheet[$i][20];
                     $data->save();

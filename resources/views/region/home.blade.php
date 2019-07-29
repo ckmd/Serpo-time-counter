@@ -30,20 +30,142 @@ window.onload = function() {
     });
     chart.render();
 
-    var rootCauseChart = new CanvasJS.Chart("rootCauseChart", {
+    // var rootCauseChart = new CanvasJS.Chart("rootCauseChart", {
+    //     theme: "light2", // "light1", "dark1", "dark2"
+    //     animationEnabled: true, 		
+    //     title:{
+    //         text: "Kategori Gangguan"
+    //     },
+    //     data: [{
+    //         type: "column",
+    //         yValueFormatString: "#,##0.00\"%\"",
+    //         // indexLabel: "{label} ({y})",
+    //         dataPoints: <?php echo json_encode($urcdArray, JSON_NUMERIC_CHECK); ?>
+    //     }]
+    // });
+    // rootCauseChart.render();
+
+// Category
+var catChart = new CanvasJS.Chart("catChart", {
         theme: "light2", // "light1", "dark1", "dark2"
         animationEnabled: true, 		
         title:{
-            text: "Kategori Gangguan"
+            text: "Category"
+        },
+        axisX:{
+            labelFontSize: 15,
+            labelAngle: 0
         },
         data: [{
+            indexLabelFontSize: 15,
+            // showInLegend: "true",
+			// legendText: "{label}",
+            indexLabel: "{label} (#percent%)",
             type: "pie",
-            yValueFormatString: "#,##0.00\"%\"",
-            indexLabel: "{label} ({y})",
-            dataPoints: <?php echo json_encode($urcdArray, JSON_NUMERIC_CHECK); ?>
+            dataPoints: <?php echo json_encode($category, JSON_NUMERIC_CHECK); ?>
         }]
     });
-    rootCauseChart.render();
+    catChart.render();
+
+// Chart FOC
+    var focChart = new CanvasJS.Chart("focChart", {
+        theme: "light2", // "light1", "dark1", "dark2"
+        animationEnabled: true, 		
+        title:{
+            text: "FOC"
+        },
+        axisX:{
+            labelFontSize: 13,
+            labelAngle: 0
+        },
+        data: [{
+            indexLabelFontSize: 15,
+            type: "column",
+            yValueFormatString: "#,##",
+            dataPoints: <?php echo json_encode($arrayUrc["FOC"], JSON_NUMERIC_CHECK); ?>
+        }]
+    });
+    focChart.render();
+
+// Chart FOT
+var fotChart = new CanvasJS.Chart("fotChart", {
+        theme: "light2", // "light1", "dark1", "dark2"
+        animationEnabled: true, 		
+        title:{
+            text: "FOT / Perangkat"
+        },
+        axisX:{
+            labelFontSize: 13,
+            labelAngle: 0
+        },
+        data: [{
+            indexLabelFontSize: 15,
+            type: "column",
+            yValueFormatString: "#,##",
+            dataPoints: <?php echo json_encode($arrayUrc["FOT/Perangkat"], JSON_NUMERIC_CHECK); ?>
+        }]
+    });
+    fotChart.render();
+
+// Chart Bukan Gangguan
+    var bgChart = new CanvasJS.Chart("bgChart", {
+        theme: "light2", // "light1", "dark1", "dark2"
+        animationEnabled: true, 		
+        title:{
+            text: "Bukan Gangguan"
+        },
+        axisX:{
+            labelFontSize: 13,
+            labelAngle: 0
+        },
+        data: [{
+            indexLabelFontSize: 15,
+            type: "column",
+            yValueFormatString: "#,##",
+            dataPoints: <?php echo json_encode($arrayUrc["Bukan Gangguan"], JSON_NUMERIC_CHECK); ?>
+        }]
+    });
+    bgChart.render();
+
+// PS Chart
+    var psChart = new CanvasJS.Chart("psChart", {
+        theme: "light2", // "light1", "dark1", "dark2"
+        animationEnabled: true, 		
+        title:{
+            text: "PS"
+        },
+        axisX:{
+            labelFontSize: 13,
+            labelAngle: 0
+        },
+        data: [{
+            indexLabelFontSize: 15,
+            type: "column",
+            yValueFormatString: "#,##",
+            dataPoints: <?php echo json_encode($arrayUrc["PS"], JSON_NUMERIC_CHECK); ?>
+        }]
+    });
+    psChart.render();
+
+// Software Chart
+var swChart = new CanvasJS.Chart("swChart", {
+        theme: "light2", // "light1", "dark1", "dark2"
+        animationEnabled: true, 		
+        title:{
+            text: "Software"
+        },
+        axisX:{
+            labelFontSize: 13,
+            labelAngle: 0
+        },
+        data: [{
+            indexLabelFontSize: 15,
+            type: "column",
+            yValueFormatString: "#,##",
+            dataPoints: <?php echo json_encode($arrayUrc["Software"], JSON_NUMERIC_CHECK); ?>
+        }]
+    });
+    swChart.render();
 
     var kendalaChart = new CanvasJS.Chart("kendalaChart", {
         theme: "light2", // "light1", "dark1", "dark2"
@@ -51,10 +173,15 @@ window.onload = function() {
         title:{
             text: "Kategori Kendala"
         },
+        axisX:{
+            labelFontSize: 13,
+            labelAngle: 0
+        },
         data: [{
-            type: "pie",
-            yValueFormatString: "#,##0.00\"%\"",
-            indexLabel: "{label} ({y})",
+            indexLabelFontSize: 15,
+            type: "column",
+            yValueFormatString: "#,##",
+            indexLabel: "{y}",
             dataPoints: <?php echo json_encode($ukArray, JSON_NUMERIC_CHECK); ?>
         }]
     });
@@ -156,6 +283,7 @@ window.onload = function() {
         $awal = '*';
     }
     ?>
+<!-- 
     <div class="table table-responsive table-hover" >
         <table style="float: left" width="45%">
             <thead class="thead-dark">
@@ -205,22 +333,54 @@ window.onload = function() {
             @endforeach
         </table>
     </div>
-    @endif
-    <table style="align: center; width: 100%;">
-        <tr>
-            <tbody>
+    @endif  -->
+    <!-- Chart untuk persebaran category -->
+    <div class="table table-responsive table-hover" >
+        <table style="float: left" width="45%">
+            <thead class="thead-dark">
                 <tr>
-                    <td>
-                    <div id="rootCauseChart" style="height: 300px;width: 100%;"></div>
-                    </td>
-                    <td>
-                    <div id="kendalaChart" style="height: 300px;width: 100%;"></div>
-                    </td>
+                    <th>Category Name</th>
+                    <th>Total</th>
+                    <th>Total Durasi (Menit)</th>
                 </tr>
-            </tbody>
-        </tr>
+            </thead>
+                @foreach($category as $c)
+                <tr>
+                    <td>{{$c['label']}}</td>
+                    <td>{{$c['y']}}</td>
+                    <td>{{$c['durasi']}}</td>
+                </tr>
+                @endforeach
+        </table>
+        <table style="float: right" width="50%">
+            <tr><td>
+                <div id="catChart" style="height: 280px;width: 100%;"></div>
+            </td></tr>
+        </table>
+    </div>
+    <table class="table table-responsive table-hover">
+        <thead class="thead-dark">
+            <tr>
+                <th>Top 5 Terminasi POP Name</th>
+                <th>Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach($countPop as $cp)
+                <tr>
+                    <td>{{$cp['popName']}}</td>
+                    <td>{{$cp['popValue']}}</td>
+                </tr>
+            @endforeach
+        </tbody>
     </table>
-
+    <!-- Chart untuk menampilkan Root cause Gangguan dan Kendala -->
+    <div id="focChart" style="height: 300px;width: 100%;"></div><br>
+    <div id="fotChart" style="height: 300px;width: 100%;"></div><br>
+    <div id="psChart" style="height: 300px;width: 100%;"></div><br>
+    <div id="swChart" style="height: 300px;width: 100%;"></div><br>
+    <div id="bgChart" style="height: 300px;width: 100%;"></div><br>
+    <div id="kendalaChart" style="height: 300px;width: 100%;"></div>
     @endsection
 @endif
 
@@ -267,8 +427,8 @@ window.onload = function() {
 
                 <blockquote class="blockquote text-center">
                 <h3>
-                    <small class="text-muted">Filtered by </small>
-                Region {{$regionName}}
+                    <small class="text-muted">Filtered by SBU </small>
+                Region {{$regionLongName}}
                 </h3>
                 @if(($pAwal==null) && ($pAkhir==null))
                     <p class="mb-0">Data All Time</p>
@@ -286,7 +446,7 @@ window.onload = function() {
             @yield('chart')
             <br>
             <div class="text-center">
-                <h3>Data Performa Rata - Rata Serpo Berdasarkan Region {{$regionName}}</h3>
+                <h3>Data Performa Rata - Rata Serpo Berdasarkan Region {{$regionLongName}}</h3>
             </div>
             <form method="post" action="{{route('allData.store')}}">
                     {{csrf_field()}}
@@ -307,8 +467,8 @@ window.onload = function() {
                     </tr>
                     <tr>
                         <th>Durasi_SBU</th>
-                        <th>Total_Durasi_(A+B+C)</th>
-                        <th>A.Preparation_Time</th>
+                        <th>Total_Durasi_Serpo (A+B+C)</th>
+                        <th>A.Prep_Time</th>
                         <th>B.Travel_Time</th>
                         <th>C.Working_Time</th>
                         <th>RSPS</th>

@@ -28,6 +28,7 @@
                         <th>Travel_Time</th>
                         <th>Working_Time</th>
                         <th>RSPS</th>
+                        <th>Category</th>
                         <th>Root_Cause</th>
                         <th>Kendala</th>
                     </tr>
@@ -61,6 +62,11 @@
                         <td>n.a</td>
                         @endif
                         <td>{{$cat->rsps*100}}%</td>
+                        @if($cat->category!=null)
+                        <td nowrap="nowrap">{{$cat->category}}</td>
+                        @else
+                        <td>n.a</td>
+                        @endif
                         @if($cat->root_cause!=null)
                         <td nowrap="nowrap">{{$cat->root_cause}}</td>
                         @else
