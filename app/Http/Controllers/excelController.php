@@ -246,6 +246,7 @@ class excelController extends Controller
                 $category = null;
                 $root_cause = null;
                 $kendala = null;
+                $terminasi_pop = null;
                 if($rsps==100){
                     $total_durasi = $prepTime + $travelTime + $workTime;
                 }
@@ -262,6 +263,10 @@ class excelController extends Controller
                 if($getSheet[$i][26]!=null){
                     $kendala = $getSheet[$i][26];
                     // $kendala = findKendala($getSheet[$i][20]);
+                }
+                // terminasi pop diperoleh dari kolom terminasi pop
+                if($getSheet[$i][27]!=null){
+                    $terminasi_pop = $getSheet[$i][27];
                 }
                 // code untuk menyimpan ke db (tabel excel)
                 $data = new Excel();
@@ -281,6 +286,7 @@ class excelController extends Controller
                     $data->category = $category;
                     $data->root_cause = $root_cause;
                     $data->kendala = $kendala;
+                    $data->terminasi_pop = $terminasi_pop;
                     $data->root_cause_description = $getSheet[$i][23];
                     $data->kendala_description = $getSheet[$i][20];
                     $data->save();

@@ -35,9 +35,10 @@ class HomeController extends Controller
         $chartArray = null;
         $urcdArray = null;
         $ukArray = null;
+        $category = null;
 
         $arrayUrc = null;
-        return view('region.home', compact('unique','dbAvgExcel','chartArray','urcdArray','ukArray','arrayUrc'));
+        return view('region.home', compact('unique','dbAvgExcel','chartArray','urcdArray','ukArray','arrayUrc', 'category'));
     }
 
     public function download(Request $request){
@@ -127,8 +128,49 @@ class HomeController extends Controller
         $urcdArray = array();
         $urcArray = array();
         $ukArray = array();
+        $category = array();
         $arrayUrc = array();
         if($regionName!=null && $getFilteredDate->count()!=null){
+            // Code untuk rename Region
+            switch ($regionName) {
+                case 'BLI':
+                    $regionLongName = 'Denpasar';
+                    break;
+                case 'JKT':
+                    $regionLongName = 'Jakarta';
+                    break;
+                case 'IBT':
+                    $regionLongName = 'Makassar';
+                    break;
+                case 'JBR':
+                    $regionLongName = 'Bandung';
+                    break;
+                case 'JTG':
+                    $regionLongName = 'Semarang';
+                    break;
+                case 'JTM':
+                    $regionLongName = 'Surabaya';
+                    break;
+                case 'KAL':
+                    $regionLongName = 'Balikpapan';
+                    break;
+                case 'OA':
+                    $regionLongName = 'Open Access';
+                    break;
+                case 'SMSLT':
+                    $regionLongName = 'Palembang';
+                    break;
+                case 'SMT':
+                    $regionLongName = 'Pekanbaru';
+                    break;
+                case 'SMU':
+                    $regionLongName = 'Medan';
+                    break;                
+                default:
+                    $regionLongName = null;
+                    break;
+            }
+
             $dbAvgExcel = AvgExcel::orderBy('basecamp','asc')->get();
             // Get the total WO and Average data
             // Assign the calculated value into array
@@ -177,7 +219,7 @@ class HomeController extends Controller
                 if($ukName!=""){
                     $ukArray[] = array( 
                         'label' =>$ukName,
-                        'y'=>$ukValue/$kendala->count()*100,
+                        'y'=>$ukValue,
                         'total'=>$ukValue,
                     );
                 }
@@ -214,9 +256,36 @@ class HomeController extends Controller
             }
             array_multisort (array_column($urcArray, 'y'), SORT_DESC, $urcArray);
 
+            // Menghitung persebaran category
+            $uniqueCategory = $getFilteredDate->pluck('category')->unique();
+            foreach ($uniqueCategory as $key => $value) {
+                if($value != null){
+                    $durasi = $getFilteredDate->where('category',$value)->avg('total_durasi')  + $getFilteredDate->where('category',$value)->avg('durasi_sbu');
+                    $category[] = array(
+                        'label' => $value,
+                        'y' => $getFilteredDate->where('category', $value)->count(),
+                        'durasi' => round($durasi,2)
+                    );
+                }
+            }
+            // return $category;
+
+            // Menghitung Top 5 Terminasi POP
+            $countPop = array();
+            $uniquePop = $getFilteredDate->pluck('terminasi_pop')->unique();
+            foreach ($uniquePop as $key => $value) {
+                if($value!=null){
+                    $valuePop = $getFilteredDate->where('terminasi_pop',$value)->count();
+                    $countPop[] = array(
+                        'popName' => $value,
+                        'popValue' => $valuePop
+                    );
+                }
+            }
+            array_multisort (array_column($countPop, 'popValue'), SORT_DESC, $countPop);
+            $countPop = array_slice($countPop, 0, 5);
+
             $staticUniqueCategory = Excel::pluck('category')->unique();
-            // $uniqueCategory = $getFilteredDate->pluck('category')->unique();
-            // return $uniqueCategory;
             foreach ($staticUniqueCategory as $key => $value) {
                 if($value!=null){
                     // filter untuk mengisi index yg tidak ada
@@ -244,8 +313,6 @@ class HomeController extends Controller
                 $arrayUrc[$value][] = array();
             }
         }
-        // print_r($arrayUrc["FOC"]);
-        // return 'hiks';
-        return view('region.home', compact ('unique','regionName','dbAvgExcel','pAwal','pAkhir', 'cardArray','chartArray','urcdArray','urcArray','ukArray','arrayUrc'));
+        return view('region.home', compact ('unique','regionName','regionLongName','dbAvgExcel','pAwal','pAkhir', 'cardArray','chartArray','urcdArray','urcArray','ukArray','arrayUrc','category','countPop'));
     }
 }
