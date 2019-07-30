@@ -25,7 +25,9 @@ class NationalController extends Controller
         $urcdArray = null;
         $urcArray = null;
         $ukArray = null;
-        return view('national.NationalView', compact('nationalDataForView', 'rspsArray','woArray','chartArray','cardArray','urcdArray','urcArray','ukArray'));
+        $category = null;
+        $woArray = null;
+        return view('national.NationalView', compact('nationalDataForView', 'rspsArray','woArray','chartArray','cardArray','urcdArray','urcArray','ukArray','category','woArray'));
     }
 
     /**
@@ -120,8 +122,14 @@ class NationalController extends Controller
             }    
             
             $rspsArray[] = array('y' => $avgRSPS*100, 'label'=>$value);
-            $woArray[] = array('label'=>$value, 'y'=>$regionSum/$totalWO*100);
+            $woArray[] = array(
+                'label'=>$value, 
+                'y'=>$regionSum/$totalWO*100,
+                'value'=>$regionSum
+            );
         }
+        array_multisort (array_column($woArray, 'value'), SORT_DESC, $woArray);
+        // return $woArray;
         // Kalkulasi data pada card starts here
         $cardArray = array(
             'regionSum' => $totalWO,
@@ -197,16 +205,32 @@ class NationalController extends Controller
             if($ukName!=""){
                 $ukArray[] = array( 
                     'label' =>$ukName,
-                    'y'=>$ukValue/$kendala->count()*100,
-                    'total'=>$ukValue,
+                    'presentase'=>$ukValue/$kendala->count()*100,
+                    'y'=>$ukValue,
                 );
             }
         }
         array_multisort (array_column($ukArray, 'y'), SORT_DESC, $ukArray);
         // Menghitung Kendala Secara Nasional Ends Here
+
+        // Menghitung Category secara nasional
+        $uniqueCategory = $datas->pluck('category')->unique();
+        $categorySum = $datas->where('category','<>','')->pluck('category');
+        foreach ($uniqueCategory as $key => $value) {
+            if($value != null){
+                $durasi = $datas->where('category',$value)->avg('total_durasi')  + $datas->where('category',$value)->avg('durasi_sbu');
+                $eachValue = $datas->where('category', $value)->count();
+                $category[] = array(
+                    'label' => $value,
+                    'value' => $eachValue,
+                    'y' => $eachValue / $categorySum->count()*100,
+                    'durasi' => round($durasi,2)
+                );
+            }
+        }
      
         $nationalDataForView = NationalData::all();
-        return view('national.NationalView', compact('nationalDataRsps1','nationalDataForView', 'rspsArray','woArray','pAwal','pAkhir','chartArray','cardArray','urcdArray','urcArray','ukArray'));
+        return view('national.NationalView', compact('nationalDataRsps1','nationalDataForView', 'rspsArray','woArray','pAwal','pAkhir','chartArray','cardArray','urcdArray','urcArray','ukArray','category'));
     }
 
     /**

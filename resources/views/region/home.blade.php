@@ -54,6 +54,7 @@ var catChart = new CanvasJS.Chart("catChart", {
         },
         axisX:{
             labelFontSize: 15,
+            interval: 1,
             labelAngle: 0
         },
         data: [{
@@ -76,6 +77,7 @@ var catChart = new CanvasJS.Chart("catChart", {
         },
         axisX:{
             labelFontSize: 13,
+            interval: 1,
             labelAngle: 0
         },
         data: [{
@@ -96,6 +98,7 @@ var fotChart = new CanvasJS.Chart("fotChart", {
         },
         axisX:{
             labelFontSize: 13,
+            interval: 1,
             labelAngle: 0
         },
         data: [{
@@ -116,6 +119,7 @@ var fotChart = new CanvasJS.Chart("fotChart", {
         },
         axisX:{
             labelFontSize: 13,
+            interval: 1,
             labelAngle: 0
         },
         data: [{
@@ -136,6 +140,7 @@ var fotChart = new CanvasJS.Chart("fotChart", {
         },
         axisX:{
             labelFontSize: 13,
+            interval: 1,
             labelAngle: 0
         },
         data: [{
@@ -156,6 +161,7 @@ var swChart = new CanvasJS.Chart("swChart", {
         },
         axisX:{
             labelFontSize: 13,
+            interval: 1,
             labelAngle: 0
         },
         data: [{
@@ -175,6 +181,7 @@ var swChart = new CanvasJS.Chart("swChart", {
         },
         axisX:{
             labelFontSize: 13,
+            interval: 1,
             labelAngle: 0
         },
         data: [{

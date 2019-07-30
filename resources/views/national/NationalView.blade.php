@@ -61,7 +61,7 @@ window.onload = function() {
     });
     trendChart.render();
 
-    var rootCauseChart = new CanvasJS.Chart("rootCauseChart", {
+    var categoryChart = new CanvasJS.Chart("categoryChart", {
         theme: "light2", // "light1", "dark1", "dark2"
         animationEnabled: true, 		
         title:{
@@ -71,10 +71,10 @@ window.onload = function() {
             type: "pie",
             yValueFormatString: "#,##0.00\"%\"",
             indexLabel: "{label} ({y})",
-            dataPoints: <?php echo json_encode($urcdArray, JSON_NUMERIC_CHECK); ?>
+            dataPoints: <?php echo json_encode($category, JSON_NUMERIC_CHECK); ?>
         }]
     });
-    rootCauseChart.render();
+    categoryChart.render();
 
     var kendalaChart = new CanvasJS.Chart("kendalaChart", {
         theme: "light2", // "light1", "dark1", "dark2"
@@ -82,10 +82,17 @@ window.onload = function() {
         title:{
             text: "Kategori Kendala"
         },
+        axisX:{
+            labelAutoFit: true,
+            labelFontSize: 13,
+            labelAngle: 0,
+            interval: 1,
+        },
         data: [{
-            type: "pie",
-            yValueFormatString: "#,##0.00\"%\"",
-            indexLabel: "{label} ({y})",
+            indexLabelFontSize: 15,
+            type: "column",
+            yValueFormatString: "#",
+            indexLabel: "{y}",
             dataPoints: <?php echo json_encode($ukArray, JSON_NUMERIC_CHECK); ?>
         }]
     });
@@ -172,101 +179,89 @@ window.onload = function() {
     <br>
 @endsection
 
-@section('chart')
-<table style="align: center; width: 100%;">
-    <tr>
-        <tbody>
+@section('wochart')
+@if($woArray!=null)
+<div class="table table-responsive table-hover" >
+    <table style="float: right" width="50%">
+        <tr>
+            <td>
+            <div id="woChart" style="height: 300px; width: 100%;"></div>
+            </td>
+        </tr>
+    </table>
+    <table style="float: left" width="50%">
+        <thead class="thead-dark">
             <tr>
-                <td>
-                <div id="woChart" style="height: 300px; width: 100%;"></div>
-                </td>
-                <td>
-                <div id="rspsChart" style="height: 300px; width: 100%;"></div>
-                </td>
+                <th>Region WO</th>
+                <th>Total</th>
             </tr>
+        </thead>
+        <tbody>
+            @foreach($woArray as $w)
+                <tr>
+                    <td>{{$w['label']}}</td>
+                    <td>{{$w['value']}}</td>
+                </tr>
+            @endforeach
         </tbody>
-    </tr>
-</table>
-<br>
-<div id="chartContainer" style="height: 300px; width: 100%;"></div>
-<br>
+    </table>
+</div>
+@endif
 @endsection
 
-@section('pieChart')
+@section('category')
+@if($category!=null)
 <div class="table table-responsive table-hover" >
-    @if($urcdArray!=null)
-    <?php
-    $awal = $pAwal;
-    $akhir = $pAkhir;
-    if($pAkhir==null && $pAwal==null){
-        $awal = '*';
-        $akhir = '*';
-    }else if($pAkhir==null){
-        $akhir = '*';
-    }else if($pAwal==null){
-        $awal = '*';
-    }
-    ?>
     <table style="float: left" width="45%">
         <thead class="thead-dark">
             <tr>
-                <th>Kategori Gangguan (RSPS = 100)</th>
+                <th>Category Name</th>
                 <th>Total</th>
-                <th>Rataan Durasi (Menit)</th>
+                <th>Total Durasi (Menit)</th>
             </tr>
         </thead>
-        @foreach($urcdArray as $urcda)
-        <tr class='clickable-row' data-gangguanhref="gangguan-data/{{$urcda['label']}}/national/{{$awal}}/{{$akhir}}">
-            <td>{{$urcda['label']}}</td>
-            <td>{{$urcda['total']}}</td>
-            <td>{{$urcda['durasi']}}</td>
-        </tr>
-        @endforeach
-    </table>
-    @endif
-    @if($ukArray!=null)
-    <table style="float: right" width="45%">
-        <thead class="thead-dark">
+            @foreach($category as $c)
             <tr>
-            <th>Kategori Kendala</th>
-            <th>Total</th>
+                <td>{{$c['label']}}</td>
+                <td>{{$c['value']}}</td>
+                <td>{{$c['durasi']}}</td>
             </tr>
-        </thead>
-        @foreach($ukArray as $uka)
-        <tr class='kendala-row' data-kendalahref="kendala-data/{{$uka['label']}}/national/{{$awal}}/{{$akhir}}">
-            <td>{{$uka['label']}}</td>
-            <td>{{$uka['total']}}</td>
-        </tr>
-        @endforeach
+            @endforeach
     </table>
-    @endif
-</div>
-<div class="table table-responsive table-hover" >
-@if($urcArray!=null)
-    <table style="float: left" width="45%">
-        <thead class="thead-dark">
-            <tr>
-                <th>Kategori Gangguan (RSPS < 100)</th>
-                <th>Total</th>
-                <th>Durasi</th>
-            </tr>
-        </thead>
-        @foreach($urcArray as $urca)
+    <table style="float: right" width="50%">
         <tr>
-            <td>{{$urca['label']}}</td>
-            <td>{{$urca['y']}}</td>
-            <td>n.a</td>
+            <td>
+            <div id="categoryChart" style="height: 300px;width: 100%;"></div>
+            </td>
         </tr>
-        @endforeach
     </table>
-@endif
 </div>
+@endif
+@endsection
+
+@section('keaktifanchart')
+<div class="table table-responsive table-hover" >
+    <table style="float: left" width="50%">
+        <tr>
+            <td>
+            <div id="rspsChart" style="height: 300px; width: 100%;"></div>
+            </td>
+        </tr>
+    </table>
+    <table style="float: right" width="50%">
+        <tr>
+            <td>
+            <div id="chartContainer" style="height: 300px; width: 100%;"></div>
+            </td>
+        </tr>
+    </table>
+</div>
+@endsection
+
+@section('categoryAndKendalaChart')
 <table style="align: center; width: 100%;">
         <tbody>
             <tr>
-                <td>
-                <div id="rootCauseChart" style="height: 300px;width: 100%;"></div>
-                </td>
                 <td>
                 <div id="kendalaChart" style="height: 300px;width: 100%;"></div>
                 </td>
@@ -274,6 +269,7 @@ window.onload = function() {
         </tbody>
 </table>
 @endsection
+
 @section('content')
 <blockquote class="blockquote text-center">
     <h3>
@@ -314,8 +310,10 @@ window.onload = function() {
     @endif
 </blockquote>
 @yield('card')
-@yield('chart')
-@yield('pieChart')
+@yield('keaktifanchart')
+@yield('wochart')
+@yield('category')
+@yield('categoryAndKendalaChart')
 <br>
 <div class="text-center">
     <h4>Rata - Rata Data Nasional Berdasarkan Regional (Semua WO)</h4>
