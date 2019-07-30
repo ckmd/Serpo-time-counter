@@ -84,15 +84,15 @@ window.onload = function() {
         },
         axisX:{
             labelAutoFit: true,
-            labelFontSize: 13,
+            labelFontSize: 11,
             labelAngle: 0,
             interval: 1,
         },
         data: [{
-            indexLabelFontSize: 15,
+            indexLabelFontSize: 11,
             type: "column",
             yValueFormatString: "#",
-            indexLabel: "{y}",
+            indexLabel: "{y}/{presentase}%",
             dataPoints: <?php echo json_encode($ukArray, JSON_NUMERIC_CHECK); ?>
         }]
     });

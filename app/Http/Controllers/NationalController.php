@@ -205,7 +205,7 @@ class NationalController extends Controller
             if($ukName!=""){
                 $ukArray[] = array( 
                     'label' =>$ukName,
-                    'presentase'=>$ukValue/$kendala->count()*100,
+                    'presentase'=>round($ukValue/$kendala->count()*100,1),
                     'y'=>$ukValue,
                 );
             }
