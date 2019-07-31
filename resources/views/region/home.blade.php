@@ -53,12 +53,12 @@ var catChart = new CanvasJS.Chart("catChart", {
             text: "Category"
         },
         axisX:{
-            labelFontSize: 11,
+            labelFontSize: 12,
             interval: 1,
             labelAngle: 0
         },
         data: [{
-            indexLabelFontSize: 11,
+            indexLabelFontSize: 12,
             // showInLegend: "true",
 			// legendText: "{label}",
             indexLabel: "{label} (#percent%)",
@@ -73,15 +73,16 @@ var catChart = new CanvasJS.Chart("catChart", {
         theme: "light2", // "light1", "dark1", "dark2"
         animationEnabled: true, 		
         title:{
-            text: "FOC"
+            text: "Root Cause Category FOC"
         },
         axisX:{
-            labelFontSize: 11,
+            labelFontSize: 12,
             interval: 1,
             labelAngle: 0
         },
         data: [{
-            indexLabelFontSize: 11,
+			indexLabelPlacement: "outside",
+            indexLabelFontSize: 12,
             type: "column",
             dataPoints: <?php echo json_encode($arrayUrc["FOC"], JSON_NUMERIC_CHECK); ?>
         }]
@@ -93,15 +94,16 @@ var fotChart = new CanvasJS.Chart("fotChart", {
         theme: "light2", // "light1", "dark1", "dark2"
         animationEnabled: true, 		
         title:{
-            text: "FOT / Perangkat"
+            text: "Root Cause Category FOT / Perangkat"
         },
         axisX:{
-            labelFontSize: 11,
+            labelFontSize: 12,
             interval: 1,
             labelAngle: 0
         },
         data: [{
-            indexLabelFontSize: 11,
+			indexLabelPlacement: "outside",
+            indexLabelFontSize: 12,
             type: "column",
             yValueFormatString: "#",
             dataPoints: <?php echo json_encode($arrayUrc["FOT/Perangkat"], JSON_NUMERIC_CHECK); ?>
@@ -114,15 +116,16 @@ var fotChart = new CanvasJS.Chart("fotChart", {
         theme: "light2", // "light1", "dark1", "dark2"
         animationEnabled: true, 		
         title:{
-            text: "Bukan Gangguan"
+            text: "Kategori Bukan Gangguan"
         },
         axisX:{
-            labelFontSize: 11,
+            labelFontSize: 12,
             interval: 1,
             labelAngle: 0
         },
         data: [{
-            indexLabelFontSize: 11,
+			indexLabelPlacement: "outside",
+            indexLabelFontSize: 12,
             type: "column",
             yValueFormatString: "#",
             dataPoints: <?php echo json_encode($arrayUrc["Bukan Gangguan"], JSON_NUMERIC_CHECK); ?>
@@ -135,15 +138,16 @@ var fotChart = new CanvasJS.Chart("fotChart", {
         theme: "light2", // "light1", "dark1", "dark2"
         animationEnabled: true, 		
         title:{
-            text: "PS"
+            text: "Root Cause Category PS"
         },
         axisX:{
-            labelFontSize: 11,
+            labelFontSize: 12,
             interval: 1,
             labelAngle: 0
         },
         data: [{
-            indexLabelFontSize: 11,
+			indexLabelPlacement: "outside",
+            indexLabelFontSize: 12,
             type: "column",
             yValueFormatString: "#",
             dataPoints: <?php echo json_encode($arrayUrc["PS"], JSON_NUMERIC_CHECK); ?>
@@ -156,15 +160,16 @@ var swChart = new CanvasJS.Chart("swChart", {
         theme: "light2", // "light1", "dark1", "dark2"
         animationEnabled: true, 		
         title:{
-            text: "Software"
+            text: "Root Cause Category Software"
         },
         axisX:{
-            labelFontSize: 11,
+            labelFontSize: 12,
             interval: 1,
             labelAngle: 0
         },
         data: [{
-            indexLabelFontSize: 11,
+			indexLabelPlacement: "outside",
+            indexLabelFontSize: 12,
             type: "column",
             yValueFormatString: "#",
             dataPoints: <?php echo json_encode($arrayUrc["Software"], JSON_NUMERIC_CHECK); ?>
@@ -180,15 +185,15 @@ var terminasiChart = new CanvasJS.Chart("terminasiChart", {
             text: "Top 10 Terminasi POP"
         },
         axisX:{
-            labelFontSize: 11,
+            labelFontSize: 12,
             interval: 1,
             labelAngle: 0
         },
         data: [{
-            indexLabelFontSize: 11,
+            indexLabelFontSize: 12,
             type: "column",
             yValueFormatString: "#,##",
-            indexLabel: "{y}/{presentase}%",
+            indexLabel: "{y} [{presentase}%]",
             dataPoints: <?php echo json_encode($countPop, JSON_NUMERIC_CHECK); ?>
         }]
     });
@@ -199,15 +204,15 @@ var terminasiChart = new CanvasJS.Chart("terminasiChart", {
         theme: "light2", // "light1", "dark1", "dark2"
         animationEnabled: true, 		
         title:{
-            text: "Kategori Kendala"
+            text: "List Kendala WO"
         },
         axisX:{
-            labelFontSize: 11,
+            labelFontSize: 12,
             interval: 1,
             labelAngle: 0
         },
         data: [{
-            indexLabelFontSize: 11,
+            indexLabelFontSize: 12,
             type: "column",
             dataPoints: <?php echo json_encode($ukArray, JSON_NUMERIC_CHECK); ?>
         }]
@@ -412,8 +417,18 @@ var terminasiChart = new CanvasJS.Chart("terminasiChart", {
     <div id="focChart" style="height: 300px;width: 100%;"></div><br>
     <div id="fotChart" style="height: 300px;width: 100%;"></div><br>
     <div id="psChart" style="height: 300px;width: 100%;"></div><br>
-    <div id="swChart" style="height: 300px;width: 100%;"></div><br>
-    <div id="bgChart" style="height: 300px;width: 100%;"></div><br>
+    <div class="table table-responsive table-hover" >
+        <table style="float: left" width="45%">
+            <tr><td>
+                <div id="swChart" style="height: 300px;width: 100%;"></div>
+            </td></tr>
+        </table>
+        <table style="float: right" width="45%">
+            <tr><td>
+                <div id="bgChart" style="height: 300px;width: 100%;"></div>
+            </td></tr>
+        </table>
+    </div><br>
     <div id="kendalaChart" style="height: 400px;width: 100%;"></div>
     @endsection
 @endif

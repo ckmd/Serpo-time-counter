@@ -19,7 +19,6 @@ class NationalController extends Controller
     {
         $nationalDataForView = null;
         $rspsArray = null;
-        $woArray = null;
         $chartArray = null;
         $cardArray = null;
         $urcdArray = null;
@@ -27,7 +26,7 @@ class NationalController extends Controller
         $ukArray = null;
         $category = null;
         $woArray = null;
-        return view('national.NationalView', compact('nationalDataForView', 'rspsArray','woArray','chartArray','cardArray','urcdArray','urcArray','ukArray','category','woArray'));
+        return view('national.NationalView', compact('nationalDataForView', 'rspsArray','chartArray','cardArray','urcdArray','urcArray','ukArray','category','woArray'));
     }
 
     /**
@@ -120,10 +119,49 @@ class NationalController extends Controller
                     'rsps' => round($regionRowRsps1->pluck('rsps')->sum()/$regionSumRsps1,4)
                 );
             }    
-            
+            // Code untuk menghitung nama panjang
+            switch ($value) {
+                case 'BLI':
+                    $regionLongName = 'Denpasar';
+                    break;
+                case 'JKT':
+                    $regionLongName = 'Jakarta';
+                    break;
+                case 'IBT':
+                    $regionLongName = 'Makassar';
+                    break;
+                case 'JBR':
+                    $regionLongName = 'Bandung';
+                    break;
+                case 'JTG':
+                    $regionLongName = 'Semarang';
+                    break;
+                case 'JTM':
+                    $regionLongName = 'Surabaya';
+                    break;
+                case 'KAL':
+                    $regionLongName = 'Balikpapan';
+                    break;
+                case 'OA':
+                    $regionLongName = 'Open Access';
+                    break;
+                case 'SMSLT':
+                    $regionLongName = 'Palembang';
+                    break;
+                case 'SMT':
+                    $regionLongName = 'Pekanbaru';
+                    break;
+                case 'SMU':
+                    $regionLongName = 'Medan';
+                    break;                
+                default:
+                    $regionLongName = null;
+                    break;
+            }
             $rspsArray[] = array('y' => $avgRSPS*100, 'label'=>$value);
             $woArray[] = array(
-                'label'=>$value, 
+                'label'=>$value,
+                'longLabel'=>$regionLongName,
                 'y'=>$regionSum/$totalWO*100,
                 'value'=>$regionSum
             );

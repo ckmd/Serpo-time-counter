@@ -223,7 +223,7 @@ class HomeController extends Controller
                     $ukArray[] = array( 
                         'label' =>$ukName,
                         'y'=>$ukValue,
-                        'indexLabel'=>$ukValue."/".round($ukValue/$kendala->count()*100,1)."%",
+                        'indexLabel'=>$ukValue." [".round($ukValue/$kendala->count()*100,1)."%]",
                     );
                 }
             }
@@ -305,9 +305,10 @@ class HomeController extends Controller
                         $arrayUrc[$value][] = array(
                             'label' => $valueUrc,
                             'y' => $eachValue,
-                            'indexLabel' => $eachValue."/".round($eachValue/$totalCategory*100,1)."%",
+                            'indexLabel' => $eachValue." [".round($eachValue/$totalCategory*100,1)."%]",
                         );
                     }
+                    array_multisort (array_column($arrayUrc[$value], 'y'), SORT_DESC, $arrayUrc[$value]);
                 }
             }
             

@@ -39,8 +39,10 @@ window.onload = function() {
             text: "Keaktifan Serpo Menggunakan Aplikasi FSM"
         },
         data: [{
+			indexLabelPlacement: "outside",
             type: "column",
             yValueFormatString: "#,##0.00\"%\"",
+            indexLabel: "{y}",
             dataPoints: <?php echo json_encode($rspsArray, JSON_NUMERIC_CHECK); ?>
         }]
     });
@@ -84,15 +86,16 @@ window.onload = function() {
         },
         axisX:{
             labelAutoFit: true,
-            labelFontSize: 11,
+            labelFontSize: 12,
             labelAngle: 0,
             interval: 1,
         },
         data: [{
-            indexLabelFontSize: 11,
+			indexLabelPlacement: "outside",
+            indexLabelFontSize: 12,
             type: "column",
             yValueFormatString: "#",
-            indexLabel: "{y}/{presentase}%",
+            indexLabel: "{y} [{presentase}%]",
             dataPoints: <?php echo json_encode($ukArray, JSON_NUMERIC_CHECK); ?>
         }]
     });
@@ -192,14 +195,14 @@ window.onload = function() {
     <table style="float: left" width="50%">
         <thead class="thead-dark">
             <tr>
-                <th>Region WO</th>
-                <th>Total</th>
+                <th>SBU Regional</th>
+                <th>Total WO</th>
             </tr>
         </thead>
         <tbody>
             @foreach($woArray as $w)
                 <tr>
-                    <td>{{$w['label']}}</td>
+                    <td>{{$w['longLabel']}}</td>
                     <td>{{$w['value']}}</td>
                 </tr>
             @endforeach
