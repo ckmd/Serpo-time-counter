@@ -340,4 +340,12 @@ class excelController extends Controller
     {
         //
     }
+
+    public function delete()
+    {
+        // return 'wkwk';
+        Excel::truncate();
+        return redirect('allData');
+        //
+    }
 }

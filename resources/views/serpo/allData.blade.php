@@ -10,6 +10,7 @@
                 <footer class="blockquote-footer">*Durasi dalam satuan menit</footer>
             </div>
             <a href="{{route('excel.create')}}" class="btn btn-success"><i class="fa fa-download"></i><span> Download</span></a>
+            <a href="deleteExcel" class="btn btn-danger"><i class="fa fa-trash"></i><span> Hapus Data</span></a>
             <br>
             <br>
             <table class="table table-responsive table-hover table-bordered table-striped" style="text-align: center;">

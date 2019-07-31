@@ -38,7 +38,8 @@ class HomeController extends Controller
         $category = null;
 
         $arrayUrc = null;
-        return view('region.home', compact('unique','dbAvgExcel','chartArray','urcdArray','ukArray','arrayUrc', 'category'));
+        $countPop = null;
+        return view('region.home', compact('unique','dbAvgExcel','chartArray','urcdArray','ukArray','arrayUrc', 'category','countPop'));
     }
 
     public function download(Request $request){
@@ -220,7 +221,7 @@ class HomeController extends Controller
                     $ukArray[] = array( 
                         'label' =>$ukName,
                         'y'=>$ukValue,
-                        'total'=>$ukValue,
+                        'indexLabel'=>$ukValue."/".round($ukValue/$kendala->count()*100,1)."%",
                     );
                 }
             }
@@ -273,23 +274,26 @@ class HomeController extends Controller
             // Menghitung Top 5 Terminasi POP
             $countPop = array();
             $uniquePop = $getFilteredDate->pluck('terminasi_pop')->unique();
+            $totalPop = $getFilteredDate->where('terminasi_pop','<>','')->count();
             foreach ($uniquePop as $key => $value) {
                 if($value!=null){
                     $valuePop = $getFilteredDate->where('terminasi_pop',$value)->count();
                     $countPop[] = array(
-                        'popName' => $value,
-                        'popValue' => $valuePop
+                        'label' => $value,
+                        'y' => $valuePop,
+                        'presentase' => round($valuePop/$totalPop*100,1)
                     );
                 }
             }
-            array_multisort (array_column($countPop, 'popValue'), SORT_DESC, $countPop);
-            $countPop = array_slice($countPop, 0, 5);
+            array_multisort (array_column($countPop, 'y'), SORT_DESC, $countPop);
+            $countPop = array_slice($countPop, 0, 10);
 
             $staticUniqueCategory = Excel::pluck('category')->unique();
             foreach ($staticUniqueCategory as $key => $value) {
                 if($value!=null){
+                    $totalCategory = $getFilteredDate->where('category',$value)->count();
                     // filter untuk mengisi index yg tidak ada
-                    if($getFilteredDate->where('category',$value)->count() == 0){
+                    if($totalCategory == 0){
                         $arrayUrc[$value][] = array('label' => 'tidak ada gangguan', 'y' => 0);
                     }
                     $uniqueRootCause = $getFilteredDate->where('category',$value)->pluck('root_cause')->unique();
@@ -299,7 +303,7 @@ class HomeController extends Controller
                         $arrayUrc[$value][] = array(
                             'label' => $valueUrc,
                             'y' => $eachValue,
-                            'indexLabel' => $eachValue." ",
+                            'indexLabel' => $eachValue."/".round($eachValue/$totalCategory*100,1)."%",
                         );
                     }
                 }
