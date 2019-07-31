@@ -148,7 +148,7 @@ class NationalController extends Controller
         $dateTemp = null;
         // Merubah Menjadi array untuk menghemat database
         foreach ($datas as $key => $data) {
-            $month = date_format(new DateTime($data->wo_date),"Y-m");
+            $month = date_format(new DateTime($data->wo_complete),"Y-m");
             $rsps = $data->rsps;
             // echo $data->wo_date.' : '.$rsps.'<br>';
             $trendArray[] = array('month' => $month, 'rsps'=>$rsps*100);
@@ -166,6 +166,7 @@ class NationalController extends Controller
             $result = round($result/$counter,2);
             $chartArray[] = array('label'=>$um,'y'=>$result);
         }
+        array_multisort (array_column($chartArray, 'label'), SORT_ASC, $chartArray);
         // Menghitung performa / bulan ends here   
         // Menghitung Root Cause dengan durasi Secara Nasional Starts Here
         $rootCaseDuration = $datas->where('total_durasi','<>','')->where('root_cause','<>','')->pluck('root_cause');

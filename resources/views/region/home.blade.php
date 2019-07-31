@@ -414,7 +414,7 @@ var terminasiChart = new CanvasJS.Chart("terminasiChart", {
     <div id="psChart" style="height: 300px;width: 100%;"></div><br>
     <div id="swChart" style="height: 300px;width: 100%;"></div><br>
     <div id="bgChart" style="height: 300px;width: 100%;"></div><br>
-    <div id="kendalaChart" style="height: 300px;width: 100%;"></div>
+    <div id="kendalaChart" style="height: 400px;width: 100%;"></div>
     @endsection
 @endif
 

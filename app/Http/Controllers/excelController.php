@@ -193,6 +193,7 @@ class excelController extends Controller
                     }
 
                     // Code untuk menghitung Working time
+                    $stringComplete = str_replace(array( '(', ')' ), '', $getSheet[$i][16]);
                     if($getSheet[$i][16]=='' || $getSheet[$i][12]==''){
                         $workTime = null;
                     }else{
@@ -200,18 +201,19 @@ class excelController extends Controller
                         $arrayStartWork = getDateTime('sw', $stringStartWork);
                         $startWork = new DateTime($arrayStartWork['sw0']);
 
-                        $stringComplete = str_replace(array( '(', ')' ), '', $getSheet[$i][16]);
                         $arrayComplete = getDateTime('cp',$stringComplete);
                         $complete = new DateTime($arrayComplete['cp0']);
                         $workTime = date_diff($startWork, $complete);
                         $workTime = round(filterMinute($workTime),2);
                         $rsps += 25;
                     }
+                    // versi singkat baris 203 s.d. 205
+                    $completeArr = getDateTime('complete',$stringComplete);
+                    $wo_complete = new DateTime(end($completeArr));
 
                     // stop clock starts here
                     $stringStopClock = str_replace(array( '(', ')' ), '', $getSheet[$i][14]);
                     $arrayStopClock = getDateTime('sc',$stringStopClock);
-                    
                     if($arrayStartTravel != null && $arrayStartWork != null && $arrayComplete != null){
                         $arrayMerge = array_merge($arrayStartTravel, $arrayStartWork, $arrayComplete);
                         foreach ($arrayStopClock as $key => $value) {
@@ -277,6 +279,7 @@ class excelController extends Controller
                     $data->basecamp = $getSheet[$i][6];
                     $data->serpo = $getSheet[$i][7];
                     $data->wo_date = $WO_Date;
+                    $data->wo_complete = $wo_complete;
                     $data->durasi_sbu = $SBU;
                     $data->prep_time = $prepTime;
                     $data->travel_time = $travelTime;

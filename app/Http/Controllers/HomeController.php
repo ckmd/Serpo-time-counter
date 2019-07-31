@@ -195,7 +195,7 @@ class HomeController extends Controller
             $rspsArray = array();
             $dateTemp = null;
             foreach ($getFilteredDate as $key => $value) {
-                $date = date_format(new DateTime($value->wo_date),"Y-m");
+                $date = date_format(new DateTime($value->wo_complete),"Y-m");
                 $rsps = $value->rsps;
                 $rspsArray[] = array('date' => $date, 'rsps'=>$rsps);
             }
@@ -212,6 +212,8 @@ class HomeController extends Controller
                 $result = round($result/$counter,4);
                 $chartArray[] = array('label'=>$ud,'y'=>$result*100);
             }
+            array_multisort (array_column($chartArray, 'label'), SORT_ASC, $chartArray);
+
             // Menghitung Kendala
             $kendala = $getFilteredDate->where('kendala','<>','')->pluck('kendala');
             $uniqueKendala = $kendala->unique();
