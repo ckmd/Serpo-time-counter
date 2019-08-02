@@ -51,7 +51,6 @@ class NationalController extends Controller
     {
         NationalData::truncate();
         ini_set('memory_limit', '-1');
-        // ini_set('max_execution_time', 900);
         $pAwal = $request->pawal;
         $pAkhir = $request->pakhir;
         $addOneDay = (new DateTime($pAkhir))->add(new DateInterval('P1D'))->format('Y-m-d');
@@ -166,7 +165,7 @@ class NationalController extends Controller
             $rspsArray[] = array('y' => $avgRSPS*100, 'label'=>$value);
             $woArray[] = array(
                 'label'=>$value,
-                'longLabel'=>$regionLongName,
+                'longLabel'=>$regionLongName.' ('.$value.')',
                 'y'=>$regionSum/$totalWO*100,
                 'value'=>$regionSum
             );

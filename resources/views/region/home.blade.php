@@ -373,8 +373,8 @@ var terminasiChart = new CanvasJS.Chart("terminasiChart", {
             <thead class="thead-dark">
                 <tr>
                     <th>Category Name</th>
-                    <th>Total</th>
-                    <th>Rata-rata Durasi Work Order</th>
+                    <th>Work Order</th>
+                    <th>Rata-rata Durasi (menit)</th>
                 </tr>
             </thead>
                 @foreach($category as $c)
