@@ -66,6 +66,8 @@ class NationalController extends Controller
         $urcdArray = array();//Unique Root Cause Duration Array
         $urcArray = array();//Unique Root Cause Array
         $ukArray = array();//Unique Kendala Array
+        $currentDate = date('Y-m-d H:i:s');
+        $currentDate = (new DateTime($currentDate))->add(new DateInterval('PT7H'))->format('Y-m-d H:i:s');
         foreach ($region as $key => $value) {
             $regionRow = $datas->where('region',$value);
             
@@ -269,7 +271,7 @@ class NationalController extends Controller
         }
      
         $nationalDataForView = NationalData::all();
-        return view('national.NationalView', compact('nationalDataRsps1','nationalDataForView', 'rspsArray','woArray','pAwal','pAkhir','chartArray','cardArray','urcdArray','urcArray','ukArray','category'));
+        return view('national.NationalView', compact('nationalDataRsps1','nationalDataForView', 'rspsArray','woArray','pAwal','pAkhir','chartArray','cardArray','urcdArray','urcArray','ukArray','category','currentDate'));
     }
 
     /**

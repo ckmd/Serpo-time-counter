@@ -105,8 +105,8 @@ window.onload = function() {
 @endsection
 
 @section('card')
-<div class="card-deck">
-        <div class="card text-white bg-primary text-center">
+<div class="card-deck text-center">
+        <div class="card text-white bg-primary">
             <div class="card-body">
                 <span class="info-box-text">Work Order</span>
                 <h3>{{$cardArray['regionSum']}}</h3>
@@ -311,6 +311,7 @@ window.onload = function() {
     @else
         <p class="mb-0">Periode {{$pAwal}} s.d. {{$pAkhir}}</p>
     @endif
+    <p style="color:blue">Berdasarkan Data FSM oleh Divisi Quality Performance Cetak {{$currentDate}}</p>
 </blockquote>
 @yield('card')
 @yield('keaktifanchart')

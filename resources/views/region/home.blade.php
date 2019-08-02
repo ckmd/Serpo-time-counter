@@ -224,8 +224,8 @@ var terminasiChart = new CanvasJS.Chart("terminasiChart", {
 
 @if($dbAvgExcel!=null)
     @section('card')
-    <div class="card-deck">
-        <div class="card text-white bg-primary text-center">
+    <div class="card-deck text-center">
+        <div class="card text-white bg-primary">
             <div class="card-body">
                 <span class="info-box-text">Work Order</span>
                 <h3>{{$cardArray['regionSum']}}</h3>
@@ -390,28 +390,37 @@ var terminasiChart = new CanvasJS.Chart("terminasiChart", {
             </td></tr>
         </table>
     </div>
-    <div class="table table-responsive table-hover" >
-        <table style="float: left" width="35%">
-            <thead class="thead-dark">
+    <div id="terminasiChart" style="height: 300px;width: 100%;"></div><br>
+    <div>
+    <table class="table table-center table-hover table-bordered" style="text-align:center;">
+        <thead class="thead-dark">
+            <tr>
+                <th rowspan="2">Top 10 Terminasi POP Name</th>
+                <th rowspan="2">Total WO</th>
+                <th colspan="5">Kategori Gangguan</th>
+            </tr>
+            <tr>
+                <th>Bukan Gangguan</th>
+                <th>FOC</th>
+                <th>FOT / Perangkat</th>
+                <th>PS</th>
+                <th>Software</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach($countPop as $cp)
                 <tr>
-                    <th>Top 10 Terminasi POP Name</th>
-                    <th>Total</th>
+                    <td>{{$cp['label']}}</td>
+                    <td>{{$cp['y']}}</td>
+                    <td>{{$cp['bukangg']}}</td>
+                    <td>{{$cp['foc']}}</td>
+                    <td>{{$cp['fot']}}</td>
+                    <td>{{$cp['ps']}}</td>
+                    <td>{{$cp['software']}}</td>
                 </tr>
-            </thead>
-            <tbody>
-                @foreach($countPop as $cp)
-                    <tr>
-                        <td>{{$cp['label']}}</td>
-                        <td>{{$cp['y']}}</td>
-                    </tr>
-                @endforeach
-            </tbody>
-        </table>
-        <table style="float: right" width="65%">
-            <tr><td>
-                <div id="terminasiChart" style="height: 280px;width: 100%;"></div>
-            </td></tr>
-        </table>
+            @endforeach
+        </tbody>
+    </table>
     </div>
     <!-- Chart untuk menampilkan Root cause Gangguan dan Kendala -->
     <div id="focChart" style="height: 300px;width: 100%;"></div><br>
@@ -489,13 +498,14 @@ var terminasiChart = new CanvasJS.Chart("terminasiChart", {
                     <p class="mb-0">Periode {{$pAwal}} s.d. {{$pAkhir}}</p>
                 @endif
                 <!-- <footer class="blockquote-footer">avg (rata rata) waktu dalam satuan menit</footer> -->
+                <p style="color:blue">Berdasarkan Data FSM oleh Divisi Quality Performance Cetak {{$currentDate}}</p>
             </blockquote>
             <br>
             @yield('card')
             @yield('chart')
             <br>
             <div class="text-center">
-                <h3>Data Performa Rata - Rata Serpo Berdasarkan Region {{$regionLongName}}</h3>
+                <h3>Data Performa Rata - Rata Serpo Region {{$regionLongName}}</h3>
             </div>
             <form method="post" action="{{route('allData.store')}}">
                     {{csrf_field()}}
