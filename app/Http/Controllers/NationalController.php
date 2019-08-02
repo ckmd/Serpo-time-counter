@@ -50,12 +50,7 @@ class NationalController extends Controller
     public function store(Request $request)
     {
         NationalData::truncate();
-<<<<<<< HEAD
 	ini_set('memory_limit', '-1');
-=======
-        ini_set('memory_limit', '-1');
-        // ini_set('max_execution_time', 900);
->>>>>>> 56557b175c89f1e07a7e220d3843690257ba7674
         $pAwal = $request->pawal;
         $pAkhir = $request->pakhir;
         $addOneDay = (new DateTime($pAkhir))->add(new DateInterval('P1D'))->format('Y-m-d');
