@@ -19,7 +19,6 @@ class NationalController extends Controller
     {
         $nationalDataForView = null;
         $rspsArray = null;
-        $woArray = null;
         $chartArray = null;
         $cardArray = null;
         $urcdArray = null;
@@ -27,7 +26,8 @@ class NationalController extends Controller
         $ukArray = null;
         $category = null;
         $woArray = null;
-        return view('national.NationalView', compact('nationalDataForView', 'rspsArray','woArray','chartArray','cardArray','urcdArray','urcArray','ukArray','category','woArray'));
+        $arrayUrc = null;
+        return view('national.NationalView', compact('nationalDataForView', 'rspsArray','chartArray','cardArray','urcdArray','urcArray','ukArray','category','woArray','arrayUrc'));
     }
 
     /**
@@ -50,7 +50,12 @@ class NationalController extends Controller
     public function store(Request $request)
     {
         NationalData::truncate();
+<<<<<<< HEAD
 	ini_set('memory_limit', '-1');
+=======
+        ini_set('memory_limit', '-1');
+        // ini_set('max_execution_time', 900);
+>>>>>>> 56557b175c89f1e07a7e220d3843690257ba7674
         $pAwal = $request->pawal;
         $pAkhir = $request->pakhir;
         $addOneDay = (new DateTime($pAkhir))->add(new DateInterval('P1D'))->format('Y-m-d');
@@ -67,6 +72,9 @@ class NationalController extends Controller
         $urcdArray = array();//Unique Root Cause Duration Array
         $urcArray = array();//Unique Root Cause Array
         $ukArray = array();//Unique Kendala Array
+        $arrayUrc = array();
+        $currentDate = date('Y-m-d H:i:s');
+        $currentDate = (new DateTime($currentDate))->add(new DateInterval('PT7H'))->format('Y-m-d H:i:s');
         foreach ($region as $key => $value) {
             $regionRow = $datas->where('region',$value);
             
@@ -120,10 +128,49 @@ class NationalController extends Controller
                     'rsps' => round($regionRowRsps1->pluck('rsps')->sum()/$regionSumRsps1,4)
                 );
             }    
-            
+            // Code untuk menghitung nama panjang
+            switch ($value) {
+                case 'BLI':
+                    $regionLongName = 'Denpasar';
+                    break;
+                case 'JKT':
+                    $regionLongName = 'Jakarta';
+                    break;
+                case 'IBT':
+                    $regionLongName = 'Makassar';
+                    break;
+                case 'JBR':
+                    $regionLongName = 'Bandung';
+                    break;
+                case 'JTG':
+                    $regionLongName = 'Semarang';
+                    break;
+                case 'JTM':
+                    $regionLongName = 'Surabaya';
+                    break;
+                case 'KAL':
+                    $regionLongName = 'Balikpapan';
+                    break;
+                case 'OA':
+                    $regionLongName = 'Open Access';
+                    break;
+                case 'SMSLT':
+                    $regionLongName = 'Palembang';
+                    break;
+                case 'SMT':
+                    $regionLongName = 'Pekanbaru';
+                    break;
+                case 'SMU':
+                    $regionLongName = 'Medan';
+                    break;                
+                default:
+                    $regionLongName = null;
+                    break;
+            }
             $rspsArray[] = array('y' => $avgRSPS*100, 'label'=>$value);
             $woArray[] = array(
-                'label'=>$value, 
+                'label'=>$value,
+                'longLabel'=>$regionLongName,
                 'y'=>$regionSum/$totalWO*100,
                 'value'=>$regionSum
             );
@@ -148,7 +195,7 @@ class NationalController extends Controller
         $dateTemp = null;
         // Merubah Menjadi array untuk menghemat database
         foreach ($datas as $key => $data) {
-            $month = date_format(new DateTime($data->wo_date),"Y-m");
+            $month = date_format(new DateTime($data->wo_complete),"Y-m");
             $rsps = $data->rsps;
             // echo $data->wo_date.' : '.$rsps.'<br>';
             $trendArray[] = array('month' => $month, 'rsps'=>$rsps*100);
@@ -166,6 +213,7 @@ class NationalController extends Controller
             $result = round($result/$counter,2);
             $chartArray[] = array('label'=>$um,'y'=>$result);
         }
+        array_multisort (array_column($chartArray, 'label'), SORT_ASC, $chartArray);
         // Menghitung performa / bulan ends here   
         // Menghitung Root Cause dengan durasi Secara Nasional Starts Here
         $rootCaseDuration = $datas->where('total_durasi','<>','')->where('root_cause','<>','')->pluck('root_cause');
@@ -228,9 +276,31 @@ class NationalController extends Controller
                 );
             }
         }
-     
+
+        $staticUniqueCategory = Excel::pluck('category')->unique();
+        foreach ($staticUniqueCategory as $key => $value) {
+            if($value!=null){
+                $totalCategory = $datas->where('category',$value)->count();
+                // filter untuk mengisi index yg tidak ada
+                if($totalCategory == 0){
+                    $arrayUrc[$value][] = array('label' => 'tidak ada gangguan', 'y' => 0);
+                }
+                $uniqueRootCause = $datas->where('category',$value)->pluck('root_cause')->unique();
+                // return $uniqueRootCase;
+                foreach ($uniqueRootCause as $keyUrc => $valueUrc) {
+                    $eachValue = $datas->where('category',$value)->where('root_cause',$valueUrc)->count();
+                    $arrayUrc[$value][] = array(
+                        'label' => $valueUrc,
+                        'y' => $eachValue,
+                        'indexLabel' => $eachValue." [".round($eachValue/$totalCategory*100,1)."%]",
+                    );
+                }
+                array_multisort (array_column($arrayUrc[$value], 'y'), SORT_DESC, $arrayUrc[$value]);
+            }
+        }
+        
         $nationalDataForView = NationalData::all();
-        return view('national.NationalView', compact('nationalDataRsps1','nationalDataForView', 'rspsArray','woArray','pAwal','pAkhir','chartArray','cardArray','urcdArray','urcArray','ukArray','category'));
+        return view('national.NationalView', compact('nationalDataRsps1','nationalDataForView', 'rspsArray','woArray','pAwal','pAkhir','chartArray','cardArray','urcdArray','urcArray','ukArray','category','currentDate','arrayUrc'));
     }
 
     /**

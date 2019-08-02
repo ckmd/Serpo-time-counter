@@ -131,6 +131,10 @@ class HomeController extends Controller
         $ukArray = array();
         $category = array();
         $arrayUrc = array();
+        $regionLongName = null;
+        $countPop = array();
+        $currentDate = date('Y-m-d H:i:s');
+        $currentDate = (new DateTime($currentDate))->add(new DateInterval('PT7H'))->format('Y-m-d H:i:s');
         if($regionName!=null && $getFilteredDate->count()!=null){
             // Code untuk rename Region
             switch ($regionName) {
@@ -195,7 +199,7 @@ class HomeController extends Controller
             $rspsArray = array();
             $dateTemp = null;
             foreach ($getFilteredDate as $key => $value) {
-                $date = date_format(new DateTime($value->wo_date),"Y-m");
+                $date = date_format(new DateTime($value->wo_complete),"Y-m");
                 $rsps = $value->rsps;
                 $rspsArray[] = array('date' => $date, 'rsps'=>$rsps);
             }
@@ -212,6 +216,8 @@ class HomeController extends Controller
                 $result = round($result/$counter,4);
                 $chartArray[] = array('label'=>$ud,'y'=>$result*100);
             }
+            array_multisort (array_column($chartArray, 'label'), SORT_ASC, $chartArray);
+
             // Menghitung Kendala
             $kendala = $getFilteredDate->where('kendala','<>','')->pluck('kendala');
             $uniqueKendala = $kendala->unique();
@@ -221,7 +227,7 @@ class HomeController extends Controller
                     $ukArray[] = array( 
                         'label' =>$ukName,
                         'y'=>$ukValue,
-                        'indexLabel'=>$ukValue."/".round($ukValue/$kendala->count()*100,1)."%",
+                        'indexLabel'=>$ukValue." [".round($ukValue/$kendala->count()*100,1)."%]",
                     );
                 }
             }
@@ -271,8 +277,7 @@ class HomeController extends Controller
             }
             // return $category;
 
-            // Menghitung Top 5 Terminasi POP
-            $countPop = array();
+            // Menghitung Top 10 Terminasi POP
             $uniquePop = $getFilteredDate->pluck('terminasi_pop')->unique();
             $totalPop = $getFilteredDate->where('terminasi_pop','<>','')->count();
             foreach ($uniquePop as $key => $value) {
@@ -281,13 +286,19 @@ class HomeController extends Controller
                     $countPop[] = array(
                         'label' => $value,
                         'y' => $valuePop,
-                        'presentase' => round($valuePop/$totalPop*100,1)
+                        'presentase' => round($valuePop/$totalPop*100,1),
+                        'foc' => $getFilteredDate->where('terminasi_pop',$value)->where('category','FOC')->count(),
+                        'fot' => $getFilteredDate->where('terminasi_pop',$value)->where('category','FOT/Perangkat')->count(),
+                        'software' => $getFilteredDate->where('terminasi_pop',$value)->where('category','Software')->count(),
+                        'bukangg' => $getFilteredDate->where('terminasi_pop',$value)->where('category','Bukan Gangguan')->count(),
+                        'ps' => $getFilteredDate->where('terminasi_pop',$value)->where('category','PS')->count()
                     );
                 }
             }
             array_multisort (array_column($countPop, 'y'), SORT_DESC, $countPop);
             $countPop = array_slice($countPop, 0, 10);
-
+            
+            // Proses menghitung Kategori beserta isinya
             $staticUniqueCategory = Excel::pluck('category')->unique();
             foreach ($staticUniqueCategory as $key => $value) {
                 if($value!=null){
@@ -303,9 +314,10 @@ class HomeController extends Controller
                         $arrayUrc[$value][] = array(
                             'label' => $valueUrc,
                             'y' => $eachValue,
-                            'indexLabel' => $eachValue."/".round($eachValue/$totalCategory*100,1)."%",
+                            'indexLabel' => $eachValue." [".round($eachValue/$totalCategory*100,1)."%]",
                         );
                     }
+                    array_multisort (array_column($arrayUrc[$value], 'y'), SORT_DESC, $arrayUrc[$value]);
                 }
             }
             
@@ -317,6 +329,6 @@ class HomeController extends Controller
                 $arrayUrc[$value][] = array();
             }
         }
-        return view('region.home', compact ('unique','regionName','regionLongName','dbAvgExcel','pAwal','pAkhir', 'cardArray','chartArray','urcdArray','urcArray','ukArray','arrayUrc','category','countPop'));
+        return view('region.home', compact ('unique','regionName','regionLongName','dbAvgExcel','pAwal','pAkhir', 'cardArray','chartArray','urcdArray','urcArray','ukArray','arrayUrc','category','countPop','currentDate'));
     }
 }

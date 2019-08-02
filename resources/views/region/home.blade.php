@@ -53,12 +53,12 @@ var catChart = new CanvasJS.Chart("catChart", {
             text: "Category"
         },
         axisX:{
-            labelFontSize: 11,
+            labelFontSize: 12,
             interval: 1,
             labelAngle: 0
         },
         data: [{
-            indexLabelFontSize: 11,
+            indexLabelFontSize: 12,
             // showInLegend: "true",
 			// legendText: "{label}",
             indexLabel: "{label} (#percent%)",
@@ -73,15 +73,16 @@ var catChart = new CanvasJS.Chart("catChart", {
         theme: "light2", // "light1", "dark1", "dark2"
         animationEnabled: true, 		
         title:{
-            text: "FOC"
+            text: "Root Cause Category FOC"
         },
         axisX:{
-            labelFontSize: 11,
+            labelFontSize: 12,
             interval: 1,
             labelAngle: 0
         },
         data: [{
-            indexLabelFontSize: 11,
+			indexLabelPlacement: "outside",
+            indexLabelFontSize: 12,
             type: "column",
             dataPoints: <?php echo json_encode($arrayUrc["FOC"], JSON_NUMERIC_CHECK); ?>
         }]
@@ -93,15 +94,16 @@ var fotChart = new CanvasJS.Chart("fotChart", {
         theme: "light2", // "light1", "dark1", "dark2"
         animationEnabled: true, 		
         title:{
-            text: "FOT / Perangkat"
+            text: "Root Cause Category FOT / Perangkat"
         },
         axisX:{
-            labelFontSize: 11,
+            labelFontSize: 12,
             interval: 1,
             labelAngle: 0
         },
         data: [{
-            indexLabelFontSize: 11,
+			indexLabelPlacement: "outside",
+            indexLabelFontSize: 12,
             type: "column",
             yValueFormatString: "#",
             dataPoints: <?php echo json_encode($arrayUrc["FOT/Perangkat"], JSON_NUMERIC_CHECK); ?>
@@ -114,15 +116,16 @@ var fotChart = new CanvasJS.Chart("fotChart", {
         theme: "light2", // "light1", "dark1", "dark2"
         animationEnabled: true, 		
         title:{
-            text: "Bukan Gangguan"
+            text: "Kategori Bukan Gangguan"
         },
         axisX:{
-            labelFontSize: 11,
+            labelFontSize: 12,
             interval: 1,
             labelAngle: 0
         },
         data: [{
-            indexLabelFontSize: 11,
+			indexLabelPlacement: "outside",
+            indexLabelFontSize: 12,
             type: "column",
             yValueFormatString: "#",
             dataPoints: <?php echo json_encode($arrayUrc["Bukan Gangguan"], JSON_NUMERIC_CHECK); ?>
@@ -135,15 +138,16 @@ var fotChart = new CanvasJS.Chart("fotChart", {
         theme: "light2", // "light1", "dark1", "dark2"
         animationEnabled: true, 		
         title:{
-            text: "PS"
+            text: "Root Cause Category Power Supply"
         },
         axisX:{
-            labelFontSize: 11,
+            labelFontSize: 12,
             interval: 1,
             labelAngle: 0
         },
         data: [{
-            indexLabelFontSize: 11,
+			indexLabelPlacement: "outside",
+            indexLabelFontSize: 12,
             type: "column",
             yValueFormatString: "#",
             dataPoints: <?php echo json_encode($arrayUrc["PS"], JSON_NUMERIC_CHECK); ?>
@@ -156,15 +160,16 @@ var swChart = new CanvasJS.Chart("swChart", {
         theme: "light2", // "light1", "dark1", "dark2"
         animationEnabled: true, 		
         title:{
-            text: "Software"
+            text: "Root Cause Category Software"
         },
         axisX:{
-            labelFontSize: 11,
+            labelFontSize: 12,
             interval: 1,
             labelAngle: 0
         },
         data: [{
-            indexLabelFontSize: 11,
+			indexLabelPlacement: "outside",
+            indexLabelFontSize: 12,
             type: "column",
             yValueFormatString: "#",
             dataPoints: <?php echo json_encode($arrayUrc["Software"], JSON_NUMERIC_CHECK); ?>
@@ -177,18 +182,18 @@ var terminasiChart = new CanvasJS.Chart("terminasiChart", {
         theme: "light2", // "light1", "dark1", "dark2"
         animationEnabled: true, 		
         title:{
-            text: "Top 10 Terminasi POP"
+            text: "Top 10 POP Terminasi Work Order"
         },
         axisX:{
-            labelFontSize: 11,
+            labelFontSize: 12,
             interval: 1,
             labelAngle: 0
         },
         data: [{
-            indexLabelFontSize: 11,
+            indexLabelFontSize: 12,
             type: "column",
             yValueFormatString: "#,##",
-            indexLabel: "{y}/{presentase}%",
+            indexLabel: "{y} [{presentase}%]",
             dataPoints: <?php echo json_encode($countPop, JSON_NUMERIC_CHECK); ?>
         }]
     });
@@ -199,15 +204,15 @@ var terminasiChart = new CanvasJS.Chart("terminasiChart", {
         theme: "light2", // "light1", "dark1", "dark2"
         animationEnabled: true, 		
         title:{
-            text: "Kategori Kendala"
+            text: "List Kendala Work Order"
         },
         axisX:{
-            labelFontSize: 11,
+            labelFontSize: 12,
             interval: 1,
             labelAngle: 0
         },
         data: [{
-            indexLabelFontSize: 11,
+            indexLabelFontSize: 12,
             type: "column",
             dataPoints: <?php echo json_encode($ukArray, JSON_NUMERIC_CHECK); ?>
         }]
@@ -219,8 +224,8 @@ var terminasiChart = new CanvasJS.Chart("terminasiChart", {
 
 @if($dbAvgExcel!=null)
     @section('card')
-    <div class="card-deck">
-        <div class="card text-white bg-primary text-center">
+    <div class="card-deck text-center">
+        <div class="card text-white bg-primary">
             <div class="card-body">
                 <span class="info-box-text">Work Order</span>
                 <h3>{{$cardArray['regionSum']}}</h3>
@@ -229,7 +234,7 @@ var terminasiChart = new CanvasJS.Chart("terminasiChart", {
         </div>
         <div class="card text-white bg-primary">
             <div class="card-body">
-                <span class="info-box-text">Total Durasi WO (A+B+C+D)</span>
+                <span class="info-box-text">Total Durasi Work Order <br/> (A+B+C+D)</span>
                 <h3>{{$cardArray['totalDurasiWO']}}</h3>
                 <span class="info-box-text">Menit</span>
                 <!-- <p>Menit</p> -->
@@ -363,12 +368,12 @@ var terminasiChart = new CanvasJS.Chart("terminasiChart", {
     @endif  -->
     <!-- Chart untuk persebaran category -->
     <div class="table table-responsive table-hover" >
-        <table style="float: left" width="45%">
+        <table style="float: left" width="47%">
             <thead class="thead-dark">
                 <tr>
                     <th>Category Name</th>
                     <th>Total</th>
-                    <th>Total Durasi (Menit)</th>
+                    <th>Rata-rata Durasi Work Order</th>
                 </tr>
             </thead>
                 @foreach($category as $c)
@@ -379,42 +384,61 @@ var terminasiChart = new CanvasJS.Chart("terminasiChart", {
                 </tr>
                 @endforeach
         </table>
-        <table style="float: right" width="50%">
+        <table style="float: right" width="47%">
             <tr><td>
                 <div id="catChart" style="height: 280px;width: 100%;"></div>
             </td></tr>
         </table>
     </div>
-    <div class="table table-responsive table-hover" >
-        <table style="float: left" width="35%">
-            <thead class="thead-dark">
+    <div id="terminasiChart" style="height: 300px;width: 100%;"></div><br>
+    <div>
+    <table class="table table-center table-hover table-bordered" style="text-align:center;">
+        <thead class="thead-dark">
+            <tr>
+                <th rowspan="2">Top 10 POP Terminasi Work Order</th>
+                <th rowspan="2">Total Work Order</th>
+                <th colspan="5">Kategori Gangguan</th>
+            </tr>
+            <tr>
+                <th>Bukan Gangguan</th>
+                <th>FOC</th>
+                <th>FOT / Perangkat</th>
+                <th>Power Supply</th>
+                <th>Software</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach($countPop as $cp)
                 <tr>
-                    <th>Top 10 Terminasi POP Name</th>
-                    <th>Total</th>
+                    <td>{{$cp['label']}}</td>
+                    <td>{{$cp['y']}}</td>
+                    <td>{{$cp['bukangg']}}</td>
+                    <td>{{$cp['foc']}}</td>
+                    <td>{{$cp['fot']}}</td>
+                    <td>{{$cp['ps']}}</td>
+                    <td>{{$cp['software']}}</td>
                 </tr>
-            </thead>
-            <tbody>
-                @foreach($countPop as $cp)
-                    <tr>
-                        <td>{{$cp['label']}}</td>
-                        <td>{{$cp['y']}}</td>
-                    </tr>
-                @endforeach
-            </tbody>
-        </table>
-        <table style="float: right" width="65%">
-            <tr><td>
-                <div id="terminasiChart" style="height: 280px;width: 100%;"></div>
-            </td></tr>
-        </table>
+            @endforeach
+        </tbody>
+    </table>
     </div>
     <!-- Chart untuk menampilkan Root cause Gangguan dan Kendala -->
     <div id="focChart" style="height: 300px;width: 100%;"></div><br>
     <div id="fotChart" style="height: 300px;width: 100%;"></div><br>
     <div id="psChart" style="height: 300px;width: 100%;"></div><br>
-    <div id="swChart" style="height: 300px;width: 100%;"></div><br>
-    <div id="bgChart" style="height: 300px;width: 100%;"></div><br>
-    <div id="kendalaChart" style="height: 300px;width: 100%;"></div>
+    <div class="table table-responsive table-hover" >
+        <table style="float: left" width="47%">
+            <tr><td>
+                <div id="swChart" style="height: 300px;width: 100%;"></div>
+            </td></tr>
+        </table>
+        <table style="float: right" width="47%">
+            <tr><td>
+                <div id="bgChart" style="height: 300px;width: 100%;"></div>
+            </td></tr>
+        </table>
+    </div><br>
+    <div id="kendalaChart" style="height: 400px;width: 100%;"></div>
     @endsection
 @endif
 
@@ -423,7 +447,7 @@ var terminasiChart = new CanvasJS.Chart("terminasiChart", {
     <div class="row justify-content-center">
         <div class="col-md-12">
             <div class="text-center">
-                <h1 class="display-6">Performa Rata - Rata Serpo Filtered By Region</h1>
+                <h1 class="display-6">Performa Serpo Regional</h1>
             </div>
             <form method="post" action="{{route('home')}}">
             {{csrf_field()}}
@@ -474,13 +498,14 @@ var terminasiChart = new CanvasJS.Chart("terminasiChart", {
                     <p class="mb-0">Periode {{$pAwal}} s.d. {{$pAkhir}}</p>
                 @endif
                 <!-- <footer class="blockquote-footer">avg (rata rata) waktu dalam satuan menit</footer> -->
+                <p style="color:blue">Berdasarkan Data FSM oleh Divisi Quality Performance <br/> Cetak {{$currentDate}}</p>
             </blockquote>
             <br>
             @yield('card')
             @yield('chart')
             <br>
             <div class="text-center">
-                <h3>Data Performa Rata - Rata Serpo Berdasarkan Region {{$regionLongName}}</h3>
+                <h3>Data Performa Rata - Rata Serpo Region {{$regionLongName}}</h3>
             </div>
             <form method="post" action="{{route('allData.store')}}">
                     {{csrf_field()}}
@@ -496,7 +521,7 @@ var terminasiChart = new CanvasJS.Chart("terminasiChart", {
                         <th rowspan="2">No</th>
                         <th rowspan="2">Basecamp</th>
                         <th rowspan="2">Service_Point</th>
-                        <th rowspan="2">Jumlah_WO</th>
+                        <th rowspan="2">Jumlah_Work_Order</th>
                         <th colspan="6">Average (Dalam Satuan Menit)</th>
                     </tr>
                     <tr>

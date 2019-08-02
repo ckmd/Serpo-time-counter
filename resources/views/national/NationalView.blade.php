@@ -21,7 +21,7 @@ window.onload = function() {
         theme: "light2",
         animationEnabled: true,
         title: {
-            text: "Total WO"
+            text: "Total Work Order"
         },
         data: [{
             type: "pie",
@@ -39,8 +39,10 @@ window.onload = function() {
             text: "Keaktifan Serpo Menggunakan Aplikasi FSM"
         },
         data: [{
+			indexLabelPlacement: "outside",
             type: "column",
             yValueFormatString: "#,##0.00\"%\"",
+            indexLabel: "{y}",
             dataPoints: <?php echo json_encode($rspsArray, JSON_NUMERIC_CHECK); ?>
         }]
     });
@@ -76,6 +78,115 @@ window.onload = function() {
     });
     categoryChart.render();
 
+// Chart FOC
+var focChart = new CanvasJS.Chart("focChart", {
+        theme: "light2", // "light1", "dark1", "dark2"
+        animationEnabled: true, 		
+        title:{
+            text: "Root Cause Category FOC"
+        },
+        axisX:{
+            labelFontSize: 12,
+            interval: 1,
+            labelAngle: 0
+        },
+        data: [{
+			indexLabelPlacement: "outside",
+            indexLabelFontSize: 12,
+            type: "column",
+            dataPoints: <?php echo json_encode($arrayUrc["FOC"], JSON_NUMERIC_CHECK); ?>
+        }]
+    });
+    focChart.render();
+
+// Chart FOT
+var fotChart = new CanvasJS.Chart("fotChart", {
+        theme: "light2", // "light1", "dark1", "dark2"
+        animationEnabled: true, 		
+        title:{
+            text: "Root Cause Category FOT / Perangkat"
+        },
+        axisX:{
+            labelFontSize: 12,
+            interval: 1,
+            labelAngle: 0
+        },
+        data: [{
+			indexLabelPlacement: "outside",
+            indexLabelFontSize: 12,
+            type: "column",
+            yValueFormatString: "#",
+            dataPoints: <?php echo json_encode($arrayUrc["FOT/Perangkat"], JSON_NUMERIC_CHECK); ?>
+        }]
+    });
+    fotChart.render();
+
+// Chart Bukan Gangguan
+    var bgChart = new CanvasJS.Chart("bgChart", {
+        theme: "light2", // "light1", "dark1", "dark2"
+        animationEnabled: true, 		
+        title:{
+            text: "Kategori Bukan Gangguan"
+        },
+        axisX:{
+            labelFontSize: 12,
+            interval: 1,
+            labelAngle: 0
+        },
+        data: [{
+			indexLabelPlacement: "outside",
+            indexLabelFontSize: 12,
+            type: "column",
+            yValueFormatString: "#",
+            dataPoints: <?php echo json_encode($arrayUrc["Bukan Gangguan"], JSON_NUMERIC_CHECK); ?>
+        }]
+    });
+    bgChart.render();
+
+// PS Chart
+    var psChart = new CanvasJS.Chart("psChart", {
+        theme: "light2", // "light1", "dark1", "dark2"
+        animationEnabled: true, 		
+        title:{
+            text: "Root Cause Category Power Supply"
+        },
+        axisX:{
+            labelFontSize: 12,
+            interval: 1,
+            labelAngle: 0
+        },
+        data: [{
+			indexLabelPlacement: "outside",
+            indexLabelFontSize: 12,
+            type: "column",
+            yValueFormatString: "#",
+            dataPoints: <?php echo json_encode($arrayUrc["PS"], JSON_NUMERIC_CHECK); ?>
+        }]
+    });
+    psChart.render();
+
+// Software Chart
+var swChart = new CanvasJS.Chart("swChart", {
+        theme: "light2", // "light1", "dark1", "dark2"
+        animationEnabled: true, 		
+        title:{
+            text: "Root Cause Category Software"
+        },
+        axisX:{
+            labelFontSize: 12,
+            interval: 1,
+            labelAngle: 0
+        },
+        data: [{
+			indexLabelPlacement: "outside",
+            indexLabelFontSize: 12,
+            type: "column",
+            yValueFormatString: "#",
+            dataPoints: <?php echo json_encode($arrayUrc["Software"], JSON_NUMERIC_CHECK); ?>
+        }]
+    });
+    swChart.render();
+
     var kendalaChart = new CanvasJS.Chart("kendalaChart", {
         theme: "light2", // "light1", "dark1", "dark2"
         animationEnabled: true, 		
@@ -84,15 +195,16 @@ window.onload = function() {
         },
         axisX:{
             labelAutoFit: true,
-            labelFontSize: 11,
+            labelFontSize: 12,
             labelAngle: 0,
             interval: 1,
         },
         data: [{
-            indexLabelFontSize: 11,
+			indexLabelPlacement: "outside",
+            indexLabelFontSize: 12,
             type: "column",
             yValueFormatString: "#",
-            indexLabel: "{y}/{presentase}%",
+            indexLabel: "{y} [{presentase}%]",
             dataPoints: <?php echo json_encode($ukArray, JSON_NUMERIC_CHECK); ?>
         }]
     });
@@ -102,8 +214,8 @@ window.onload = function() {
 @endsection
 
 @section('card')
-<div class="card-deck">
-        <div class="card text-white bg-primary text-center">
+<div class="card-deck text-center">
+        <div class="card text-white bg-primary">
             <div class="card-body">
                 <span class="info-box-text">Work Order</span>
                 <h3>{{$cardArray['regionSum']}}</h3>
@@ -112,7 +224,7 @@ window.onload = function() {
         </div>
         <div class="card text-white bg-primary">
             <div class="card-body">
-                <span class="info-box-text">Total Durasi WO (A+B+C+D)</span>
+                <span class="info-box-text">Total Durasi Work Order <br/> (A+B+C+D)</span>
                 <h3>{{$cardArray['totalDurasiWO']}}</h3>
                 <span class="info-box-text">Menit</span>
                 <!-- <p>Menit</p> -->
@@ -181,25 +293,25 @@ window.onload = function() {
 
 @section('wochart')
 @if($woArray!=null)
-<div class="table table-responsive table-hover" >
-    <table style="float: right" width="50%">
+<div class="table table-responsive table-hover table-bordered" >
+    <table style="float: right" width="47%">
         <tr>
             <td>
             <div id="woChart" style="height: 300px; width: 100%;"></div>
             </td>
         </tr>
     </table>
-    <table style="float: left" width="50%">
+    <table style="float: left" width="47%">
         <thead class="thead-dark">
             <tr>
-                <th>Region WO</th>
-                <th>Total</th>
+                <th>SBU Regional</th>
+                <th>Total Work Order</th>
             </tr>
         </thead>
         <tbody>
             @foreach($woArray as $w)
                 <tr>
-                    <td>{{$w['label']}}</td>
+                    <td>{{$w['longLabel']}}</td>
                     <td>{{$w['value']}}</td>
                 </tr>
             @endforeach
@@ -212,12 +324,12 @@ window.onload = function() {
 @section('category')
 @if($category!=null)
 <div class="table table-responsive table-hover" >
-    <table style="float: left" width="45%">
+    <table style="float: left" width="47%">
         <thead class="thead-dark">
             <tr>
                 <th>Category Name</th>
                 <th>Total</th>
-                <th>Total Durasi (Menit)</th>
+                <th>Rata-rata Durasi (Menit)</th>
             </tr>
         </thead>
             @foreach($category as $c)
@@ -228,7 +340,7 @@ window.onload = function() {
             </tr>
             @endforeach
     </table>
-    <table style="float: right" width="50%">
+    <table style="float: right" width="47%">
         <tr>
             <td>
             <div id="categoryChart" style="height: 300px;width: 100%;"></div>
@@ -241,14 +353,14 @@ window.onload = function() {
 
 @section('keaktifanchart')
 <div class="table table-responsive table-hover" >
-    <table style="float: left" width="50%">
+    <table style="float: left" width="47%">
         <tr>
             <td>
             <div id="rspsChart" style="height: 300px; width: 100%;"></div>
             </td>
         </tr>
     </table>
-    <table style="float: right" width="50%">
+    <table style="float: right" width="47%">
         <tr>
             <td>
             <div id="chartContainer" style="height: 300px; width: 100%;"></div>
@@ -257,13 +369,28 @@ window.onload = function() {
     </table>
 </div>
 @endsection
-
 @section('categoryAndKendalaChart')
+<!-- Chart untuk menampilkan Root cause Gangguan dan Kendala -->
+<div id="focChart" style="height: 300px;width: 100%;"></div><br>
+<div id="fotChart" style="height: 300px;width: 100%;"></div><br>
+<div id="psChart" style="height: 300px;width: 100%;"></div><br>
+<div class="table table-responsive table-hover" >
+    <table style="float: left" width="47%">
+        <tr><td>
+            <div id="swChart" style="height: 300px;width: 100%;"></div>
+        </td></tr>
+    </table>
+    <table style="float: right" width="47%">
+        <tr><td>
+            <div id="bgChart" style="height: 300px;width: 100%;"></div>
+        </td></tr>
+    </table>
+</div><br>
 <table style="align: center; width: 100%;">
         <tbody>
             <tr>
                 <td>
-                <div id="kendalaChart" style="height: 300px;width: 100%;"></div>
+                <div id="kendalaChart" style="height: 400px;width: 100%;"></div>
                 </td>
             </tr>
         </tbody>
@@ -272,10 +399,11 @@ window.onload = function() {
 
 @section('content')
 <blockquote class="blockquote text-center">
-    <h3>
+    <h1 class="display-6">Performa Serpo Nasional</h1>
+    <!-- <h3>
         <small class="text-muted">Filtered </small>
     Nasional
-    </h3>
+    </h3> -->
 </blockquote>
 <form method="post" action="{{route('national.store')}}">
     {{csrf_field()}}
@@ -308,6 +436,7 @@ window.onload = function() {
     @else
         <p class="mb-0">Periode {{$pAwal}} s.d. {{$pAkhir}}</p>
     @endif
+    <p style="color:blue">Berdasarkan Data FSM oleh Divisi Quality Performance <br/> Cetak {{$currentDate}}</p>
 </blockquote>
 @yield('card')
 @yield('keaktifanchart')
@@ -316,7 +445,7 @@ window.onload = function() {
 @yield('categoryAndKendalaChart')
 <br>
 <div class="text-center">
-    <h4>Rata - Rata Data Nasional Berdasarkan Regional (Semua WO)</h4>
+    <h4>Rata - Rata Data Nasional Berdasarkan Regional (Semua Work Order)</h4>
 </div>
 <a href="{{route('national.create')}}" class="btn btn-success"><i class="fa fa-download"></i><span> Download</span></a>
 <br>
@@ -326,7 +455,7 @@ window.onload = function() {
     <thead class="thead-dark">
         <tr valign="top" >
             <th rowspan="2">Region</th>
-            <th rowspan="2">Jumlah WO</th>
+            <th rowspan="2">Jumlah Work Order</th>
             <th colspan="6">Average (Dalam Satuan Menit)</th>
         </tr>
         <tr>
@@ -363,7 +492,7 @@ window.onload = function() {
     <thead class="thead-dark">
         <tr valign="top" >
             <th rowspan="2">Region</th>
-            <th rowspan="2">Jumlah WO</th>
+            <th rowspan="2">Jumlah Work Order</th>
             <th colspan="6">Average (Dalam Satuan Menit)</th>
         </tr>
         <tr>

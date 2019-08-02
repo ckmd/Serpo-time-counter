@@ -71,8 +71,8 @@ if(isset($_POST['SubmitButton'])){ //check if form was submitted
           <ul class="treeview-menu">
             @can('isAdmin')
             <li><a href="{{url('excel')}}"><i class="fa fa-circle-o"></i> <span>Upload Raw Data Serpo</span></a></li>
-            <li><a href="{{url('gangguan')}}"><i class="fa fa-circle-o"></i> <span>Daftar Gangguan</span></a></li>
-            <li><a href="{{url('kendala')}}"><i class="fa fa-circle-o"></i> <span>Daftar Kendala</span></a></li>
+            <!-- <li><a href="{{url('gangguan')}}"><i class="fa fa-circle-o"></i> <span>Daftar Gangguan</span></a></li>
+            <li><a href="{{url('kendala')}}"><i class="fa fa-circle-o"></i> <span>Daftar Kendala</span></a></li> -->
             @endcan
             <li><a href="{{url('allData')}}"><i class="fa fa-circle-o"></i> <span>All Calculated Data</span></a></li>
             <li><a href="{{url('home')}}"><i class="fa fa-circle-o"></i> <span>Performance By Region</span></a></li>
