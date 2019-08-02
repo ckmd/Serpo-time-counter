@@ -20,7 +20,7 @@ window.onload = function() {
         theme: "light2", // "light1", "dark1", "dark2"
         animationEnabled: true, 		
         title:{
-            text: "Trend Keaktifan Serpo Menggunakan Aplikasi FSM"
+            text: "Trend Performa RSPS Regional"
         },
         data: [{
             type: "line",
@@ -227,14 +227,14 @@ var terminasiChart = new CanvasJS.Chart("terminasiChart", {
     <div class="card-deck text-center">
         <div class="card text-white bg-primary">
             <div class="card-body">
-                <span class="info-box-text">Work Order</span>
+                <span class="info-box-text">Jumlah Work Order</span>
                 <h3>{{$cardArray['regionSum']}}</h3>
                 <!-- <p class="card-text">Work Order</p> -->
             </div>
         </div>
         <div class="card text-white bg-primary">
             <div class="card-body">
-                <span class="info-box-text">Total Durasi Work Order <br/> (A+B+C+D)</span>
+                <span class="info-box-text">Durasi Work Order <br/> (A+B+C+D)</span>
                 <h3>{{$cardArray['totalDurasiWO']}}</h3>
                 <span class="info-box-text">Menit</span>
                 <!-- <p>Menit</p> -->
@@ -242,7 +242,7 @@ var terminasiChart = new CanvasJS.Chart("terminasiChart", {
         </div>
         <div class="card text-white bg-primary">
             <div class="card-body">
-                <span class="info-box-text">Total Durasi Serpo (B+C+D)</span>
+                <span class="info-box-text">Durasi Serpo <br/> (B+C+D)</span>
                 <h3>{{$cardArray['avgTotalDurasi']}}</h3>
                 <span class="info-box-text">Menit</span>
                 <!-- <p>Menit</p> -->
@@ -299,6 +299,7 @@ var terminasiChart = new CanvasJS.Chart("terminasiChart", {
         </div>
     </div>
     <br>
+    <p style="color:red">Keterangan :<br/> a. Durasi : Waktu rata-rata per Work Order <br/> b. RSPS : Rata-rata Skor Pemakaian SBU Aplikasi FSM</p>
     @endsection
     @section('chart')
     <div id="chartContainer" style="height: 300px; width: 100%;"></div>
