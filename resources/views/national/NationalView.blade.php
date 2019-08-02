@@ -329,7 +329,7 @@ var swChart = new CanvasJS.Chart("swChart", {
         <thead class="thead-dark">
             <tr>
                 <th>Category Name</th>
-                <th>Total</th>
+                <th>Total Work Order</th>
                 <th>Rata-rata Durasi (Menit)</th>
             </tr>
         </thead>

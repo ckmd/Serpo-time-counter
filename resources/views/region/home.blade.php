@@ -373,7 +373,7 @@ var terminasiChart = new CanvasJS.Chart("terminasiChart", {
             <thead class="thead-dark">
                 <tr>
                     <th>Category Name</th>
-                    <th>Work Order</th>
+                    <th>Total Work Order</th>
                     <th>Rata-rata Durasi (menit)</th>
                 </tr>
             </thead>
@@ -516,21 +516,21 @@ var terminasiChart = new CanvasJS.Chart("terminasiChart", {
                         <button type="submit" class="btn btn-success"><i class="fa fa-download"></i><span> Download</span></button>
             </form>
             <br>
-            <table class="table table-responsive table-striped table-hover table-bordered" >
-                <thead class="thead-light" style="text-align: center;">
-                    <tr valign="top" >
+            <table class="table table-striped table-hover table-bordered" >
+                <thead valign="middle" class="thead-light" style="text-align: center;">
+                    <tr>
                         <th rowspan="2">No</th>
                         <th rowspan="2">Basecamp</th>
-                        <th rowspan="2">Service_Point</th>
-                        <th rowspan="2">Jumlah_Work_Order</th>
+                        <th rowspan="2">Service Point</th>
+                        <th rowspan="2">Jumlah Work Order</th>
                         <th colspan="6">Average (Dalam Satuan Menit)</th>
                     </tr>
                     <tr>
-                        <th>Durasi_SBU</th>
-                        <th>Total_Durasi_Serpo (A+B+C)</th>
-                        <th>A.Prep_Time</th>
-                        <th>B.Travel_Time</th>
-                        <th>C.Working_Time</th>
+                        <th>Durasi SBU</th>
+                        <th>Total Durasi Serpo (A+B+C)</th>
+                        <th>A.Prep Time</th>
+                        <th>B.Travel Time</th>
+                        <th>C.Working Time</th>
                         <th>RSPS</th>
                     </tr>
                 </thead>
@@ -539,8 +539,8 @@ var terminasiChart = new CanvasJS.Chart("terminasiChart", {
             @foreach($dbAvgExcel as $data)
                     <tr>
                         <th>{{$i}}</th>
-                        <td nowrap="nowrap" class="text-left">{{$data->basecamp}}</td>
-                        <td nowrap="nowrap" class="text-left">{{$data->serpo}}</td>
+                        <td class="text-left">{{$data->basecamp}}</td>
+                        <td class="text-left">{{$data->serpo}}</td>
                         <td>{{$data->jumlah_wo}}</td>
                         <td>{{round($data->durasi_sbu,2)}}</td>
                         @if($data->prep_time!=null)

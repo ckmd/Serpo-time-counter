@@ -77,69 +77,6 @@ class excelController extends Controller
             }    
             return $value;
         }
-
-        // AI Method, untuk menemukan konklusi dari beberapa kata
-        // function findRootCause($string){
-        //     $rootCauseConclusion = null;
-        //     $string = explode(" ", $string);
-        //     $cause = array();
-        //     $gangguan = Gangguan::get();
-        //     if($gangguan->count()!=null){
-        //         $uniqueGangguan = $gangguan->pluck('kategori_gangguan')->unique();
-        //         foreach ($uniqueGangguan as $ugKey => $ugValue) {
-        //             $cause[$ugValue] = $gangguan->where('kategori_gangguan','=',$ugValue)->pluck('parameter')->toArray();
-        //         }
-        //         $resultArray = array();
-        //         foreach ($cause as $causeKey => $causeValue) {
-        //             $causeResult = count(array_intersect($causeValue, $string));
-        //             $resultArray[$causeKey] = $causeResult;
-        //         }
-        //         $maxResult = max($resultArray);
-        //         $indeksResult = array_search(max($resultArray),$resultArray);
-                
-        //         // Check Highest Root Cause
-        //         if($maxResult>0){
-        //             $rootCauseConclusion = $indeksResult;
-        //         }else if($string!=null){
-        //             $rootCauseConclusion = "Lain - Lain";
-        //         }
-        //     }
-        //     return $rootCauseConclusion;
-        // }
-
-        // function findKendala($k){
-        //     $kendalaConclusion = null;
-        //     $k = explode(" ", $k);
-        //     // $kendalaDict = array(
-        //     //     'tim' => array('tim','idle'),
-        //     //     'cuaca' => array('cuaca','hujan','banjir'),
-        //     //     'user' => array('user'),
-        //     // );
-        //     $kendalaDict = array();
-        //     $kendala = Kendala::get();
-        //     if($kendala->count()!=null){
-
-        //         $uniqueKendala = $kendala->pluck('kategori_kendala')->unique();
-        //         foreach ($uniqueKendala as $ukKey => $ukValue) {
-        //             $kendalaDict[$ukValue] = $kendala->where('kategori_kendala','=',$ukValue)->pluck('parameter')->toArray();
-        //         }
-                
-        //         $resultArray = array();
-        //         foreach ($kendalaDict as $kdKey => $kdValue) {
-        //             $kResult = count(array_intersect($k, $kdValue));
-        //             $resultArray[$kdKey] = $kResult;
-        //         }
-        //         $maxResult = max($resultArray);
-        //         $indeksResult = array_search(max($resultArray),$resultArray);
-        //         // Check Highest Root Cause
-        //         if($maxResult>0){
-        //             $kendalaConclusion = $indeksResult;
-        //         }else if($k!=null){
-        //             $kendalaConclusion = "Lain - Lain";
-        //         }
-        //     }
-        //     return $kendalaConclusion;
-        // }
         
         $getSheet = null;
         $highestRow = null;
@@ -156,6 +93,7 @@ class excelController extends Controller
                 $arrayStartWork = null;
                 $arrayComplete = null;
                 $rsps = 0;
+                $wo_complete = null;
                 // <!-- Menghitung Durasi SBU -->
                 // <!-- Selisih Antara AR_Date dengan WO Date -->
                 $SBU = null;
@@ -207,10 +145,11 @@ class excelController extends Controller
                         $workTime = round(filterMinute($workTime),2);
                         $rsps += 25;
                     }
-                    // versi singkat baris 203 s.d. 205
-                    $completeArr = getDateTime('complete',$stringComplete);
-                    $wo_complete = new DateTime(end($completeArr));
-
+                    // Menghitung wo complete
+                    if($getSheet[$i][16]!=null){
+                        $completeArr = getDateTime('complete',$stringComplete);
+                        $wo_complete = new DateTime(end($completeArr));
+                    }
                     // stop clock starts here
                     $stringStopClock = str_replace(array( '(', ')' ), '', $getSheet[$i][14]);
                     $arrayStopClock = getDateTime('sc',$stringStopClock);

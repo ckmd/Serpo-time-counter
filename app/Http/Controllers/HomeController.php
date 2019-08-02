@@ -135,6 +135,7 @@ class HomeController extends Controller
         $countPop = array();
         $currentDate = date('Y-m-d H:i:s');
         $currentDate = (new DateTime($currentDate))->add(new DateInterval('PT7H'))->format('Y-m-d H:i:s');
+        $staticUniqueCategory = array("FOC", "FOT/Perangkat","Bukan Gangguan","PS","Software");
         if($regionName!=null && $getFilteredDate->count()!=null){
             // Code untuk rename Region
             switch ($regionName) {
@@ -195,13 +196,15 @@ class HomeController extends Controller
                 'avgWorkTime' => round($getFilteredDate->pluck('work_time')->sum()/$regionSum,2),
                 'avgRSPS' => round($getFilteredDate->pluck('rsps')->sum()/$regionSum,4)
             );
-            // Menghitung grafik performa rsps / bulan
+            // Menghitung trend performa rsps / bulan
             $rspsArray = array();
             $dateTemp = null;
             foreach ($getFilteredDate as $key => $value) {
-                $date = date_format(new DateTime($value->wo_complete),"Y-m");
-                $rsps = $value->rsps;
-                $rspsArray[] = array('date' => $date, 'rsps'=>$rsps);
+                if($value->wo_complete!=null){
+                    $date = date_format(new DateTime($value->wo_complete),"Y-m");
+                    $rsps = $value->rsps;
+                    $rspsArray[] = array('date' => $date, 'rsps'=>$rsps);
+                }
             }
             $uniqueDate = array_unique(array_column($rspsArray, 'date'));
             foreach ($uniqueDate as $ud) {
@@ -299,7 +302,6 @@ class HomeController extends Controller
             $countPop = array_slice($countPop, 0, 10);
             
             // Proses menghitung Kategori beserta isinya
-            $staticUniqueCategory = Excel::pluck('category')->unique();
             foreach ($staticUniqueCategory as $key => $value) {
                 if($value!=null){
                     $totalCategory = $getFilteredDate->where('category',$value)->count();
@@ -324,7 +326,6 @@ class HomeController extends Controller
         }else{
             $dbAvgExcel = null;
             $arrayUrc = array();
-            $staticUniqueCategory = Excel::pluck('category')->unique();
             foreach ($staticUniqueCategory as $key => $value) {
                 $arrayUrc[$value][] = array();
             }
