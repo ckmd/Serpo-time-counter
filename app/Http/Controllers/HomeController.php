@@ -277,7 +277,7 @@ class HomeController extends Controller
             }
             // return $category;
 
-            // Menghitung Top 5 Terminasi POP
+            // Menghitung Top 10 Terminasi POP
             $uniquePop = $getFilteredDate->pluck('terminasi_pop')->unique();
             $totalPop = $getFilteredDate->where('terminasi_pop','<>','')->count();
             foreach ($uniquePop as $key => $value) {
@@ -298,6 +298,7 @@ class HomeController extends Controller
             array_multisort (array_column($countPop, 'y'), SORT_DESC, $countPop);
             $countPop = array_slice($countPop, 0, 10);
             
+            // Proses menghitung Kategori beserta isinya
             $staticUniqueCategory = Excel::pluck('category')->unique();
             foreach ($staticUniqueCategory as $key => $value) {
                 if($value!=null){

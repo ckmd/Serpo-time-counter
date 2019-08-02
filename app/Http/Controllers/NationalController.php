@@ -26,7 +26,8 @@ class NationalController extends Controller
         $ukArray = null;
         $category = null;
         $woArray = null;
-        return view('national.NationalView', compact('nationalDataForView', 'rspsArray','chartArray','cardArray','urcdArray','urcArray','ukArray','category','woArray'));
+        $arrayUrc = null;
+        return view('national.NationalView', compact('nationalDataForView', 'rspsArray','chartArray','cardArray','urcdArray','urcArray','ukArray','category','woArray','arrayUrc'));
     }
 
     /**
@@ -50,6 +51,7 @@ class NationalController extends Controller
     {
         NationalData::truncate();
         ini_set('memory_limit', '-1');
+        // ini_set('max_execution_time', 900);
         $pAwal = $request->pawal;
         $pAkhir = $request->pakhir;
         $addOneDay = (new DateTime($pAkhir))->add(new DateInterval('P1D'))->format('Y-m-d');
@@ -66,6 +68,7 @@ class NationalController extends Controller
         $urcdArray = array();//Unique Root Cause Duration Array
         $urcArray = array();//Unique Root Cause Array
         $ukArray = array();//Unique Kendala Array
+        $arrayUrc = array();
         $currentDate = date('Y-m-d H:i:s');
         $currentDate = (new DateTime($currentDate))->add(new DateInterval('PT7H'))->format('Y-m-d H:i:s');
         foreach ($region as $key => $value) {
@@ -269,9 +272,31 @@ class NationalController extends Controller
                 );
             }
         }
-     
+
+        $staticUniqueCategory = Excel::pluck('category')->unique();
+        foreach ($staticUniqueCategory as $key => $value) {
+            if($value!=null){
+                $totalCategory = $datas->where('category',$value)->count();
+                // filter untuk mengisi index yg tidak ada
+                if($totalCategory == 0){
+                    $arrayUrc[$value][] = array('label' => 'tidak ada gangguan', 'y' => 0);
+                }
+                $uniqueRootCause = $datas->where('category',$value)->pluck('root_cause')->unique();
+                // return $uniqueRootCase;
+                foreach ($uniqueRootCause as $keyUrc => $valueUrc) {
+                    $eachValue = $datas->where('category',$value)->where('root_cause',$valueUrc)->count();
+                    $arrayUrc[$value][] = array(
+                        'label' => $valueUrc,
+                        'y' => $eachValue,
+                        'indexLabel' => $eachValue." [".round($eachValue/$totalCategory*100,1)."%]",
+                    );
+                }
+                array_multisort (array_column($arrayUrc[$value], 'y'), SORT_DESC, $arrayUrc[$value]);
+            }
+        }
+        
         $nationalDataForView = NationalData::all();
-        return view('national.NationalView', compact('nationalDataRsps1','nationalDataForView', 'rspsArray','woArray','pAwal','pAkhir','chartArray','cardArray','urcdArray','urcArray','ukArray','category','currentDate'));
+        return view('national.NationalView', compact('nationalDataRsps1','nationalDataForView', 'rspsArray','woArray','pAwal','pAkhir','chartArray','cardArray','urcdArray','urcArray','ukArray','category','currentDate','arrayUrc'));
     }
 
     /**

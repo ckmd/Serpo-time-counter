@@ -138,7 +138,7 @@ var fotChart = new CanvasJS.Chart("fotChart", {
         theme: "light2", // "light1", "dark1", "dark2"
         animationEnabled: true, 		
         title:{
-            text: "Root Cause Category PS"
+            text: "Root Cause Category Power Supply"
         },
         axisX:{
             labelFontSize: 12,
@@ -182,7 +182,7 @@ var terminasiChart = new CanvasJS.Chart("terminasiChart", {
         theme: "light2", // "light1", "dark1", "dark2"
         animationEnabled: true, 		
         title:{
-            text: "Top 10 Terminasi POP"
+            text: "Top 10 POP Terminasi Work Order"
         },
         axisX:{
             labelFontSize: 12,
@@ -204,7 +204,7 @@ var terminasiChart = new CanvasJS.Chart("terminasiChart", {
         theme: "light2", // "light1", "dark1", "dark2"
         animationEnabled: true, 		
         title:{
-            text: "List Kendala WO"
+            text: "List Kendala Work Order"
         },
         axisX:{
             labelFontSize: 12,
@@ -234,7 +234,7 @@ var terminasiChart = new CanvasJS.Chart("terminasiChart", {
         </div>
         <div class="card text-white bg-primary">
             <div class="card-body">
-                <span class="info-box-text">Total Durasi WO (A+B+C+D)</span>
+                <span class="info-box-text">Total Durasi Work Order <br/> (A+B+C+D)</span>
                 <h3>{{$cardArray['totalDurasiWO']}}</h3>
                 <span class="info-box-text">Menit</span>
                 <!-- <p>Menit</p> -->
@@ -368,12 +368,12 @@ var terminasiChart = new CanvasJS.Chart("terminasiChart", {
     @endif  -->
     <!-- Chart untuk persebaran category -->
     <div class="table table-responsive table-hover" >
-        <table style="float: left" width="45%">
+        <table style="float: left" width="47%">
             <thead class="thead-dark">
                 <tr>
                     <th>Category Name</th>
                     <th>Total</th>
-                    <th>Total Durasi (Menit)</th>
+                    <th>Rata-rata Durasi Work Order</th>
                 </tr>
             </thead>
                 @foreach($category as $c)
@@ -384,7 +384,7 @@ var terminasiChart = new CanvasJS.Chart("terminasiChart", {
                 </tr>
                 @endforeach
         </table>
-        <table style="float: right" width="50%">
+        <table style="float: right" width="47%">
             <tr><td>
                 <div id="catChart" style="height: 280px;width: 100%;"></div>
             </td></tr>
@@ -395,15 +395,15 @@ var terminasiChart = new CanvasJS.Chart("terminasiChart", {
     <table class="table table-center table-hover table-bordered" style="text-align:center;">
         <thead class="thead-dark">
             <tr>
-                <th rowspan="2">Top 10 Terminasi POP Name</th>
-                <th rowspan="2">Total WO</th>
+                <th rowspan="2">Top 10 POP Terminasi Work Order</th>
+                <th rowspan="2">Total Work Order</th>
                 <th colspan="5">Kategori Gangguan</th>
             </tr>
             <tr>
                 <th>Bukan Gangguan</th>
                 <th>FOC</th>
                 <th>FOT / Perangkat</th>
-                <th>PS</th>
+                <th>Power Supply</th>
                 <th>Software</th>
             </tr>
         </thead>
@@ -427,12 +427,12 @@ var terminasiChart = new CanvasJS.Chart("terminasiChart", {
     <div id="fotChart" style="height: 300px;width: 100%;"></div><br>
     <div id="psChart" style="height: 300px;width: 100%;"></div><br>
     <div class="table table-responsive table-hover" >
-        <table style="float: left" width="45%">
+        <table style="float: left" width="47%">
             <tr><td>
                 <div id="swChart" style="height: 300px;width: 100%;"></div>
             </td></tr>
         </table>
-        <table style="float: right" width="45%">
+        <table style="float: right" width="47%">
             <tr><td>
                 <div id="bgChart" style="height: 300px;width: 100%;"></div>
             </td></tr>
@@ -447,7 +447,7 @@ var terminasiChart = new CanvasJS.Chart("terminasiChart", {
     <div class="row justify-content-center">
         <div class="col-md-12">
             <div class="text-center">
-                <h1 class="display-6">Performa Rata - Rata Serpo Filtered By Region</h1>
+                <h1 class="display-6">Performa Serpo Regional</h1>
             </div>
             <form method="post" action="{{route('home')}}">
             {{csrf_field()}}
@@ -498,7 +498,7 @@ var terminasiChart = new CanvasJS.Chart("terminasiChart", {
                     <p class="mb-0">Periode {{$pAwal}} s.d. {{$pAkhir}}</p>
                 @endif
                 <!-- <footer class="blockquote-footer">avg (rata rata) waktu dalam satuan menit</footer> -->
-                <p style="color:blue">Berdasarkan Data FSM oleh Divisi Quality Performance Cetak {{$currentDate}}</p>
+                <p style="color:blue">Berdasarkan Data FSM oleh Divisi Quality Performance <br/> Cetak {{$currentDate}}</p>
             </blockquote>
             <br>
             @yield('card')
@@ -521,7 +521,7 @@ var terminasiChart = new CanvasJS.Chart("terminasiChart", {
                         <th rowspan="2">No</th>
                         <th rowspan="2">Basecamp</th>
                         <th rowspan="2">Service_Point</th>
-                        <th rowspan="2">Jumlah_WO</th>
+                        <th rowspan="2">Jumlah_Work_Order</th>
                         <th colspan="6">Average (Dalam Satuan Menit)</th>
                     </tr>
                     <tr>
