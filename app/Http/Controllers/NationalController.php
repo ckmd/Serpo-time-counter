@@ -177,12 +177,12 @@ class NationalController extends Controller
         $cardArray = array(
             'regionSum' => $totalWO,
             'totalDurasiWO' => round(($datas->pluck('total_durasi')->sum()+$datas->pluck('durasi_sbu')->sum())/$totalWO,2),
-            'avgTotalDurasi'=> round($datas->pluck('total_durasi')->sum()/$totalWO,2),
-            'avgDurasiSBU' => round($datas->pluck('durasi_sbu')->sum()/$totalWO,2),
-            'avgPrepTime' => round($datas->pluck('prep_time')->sum()/$totalWO,2),
-            'avgTravelTime' => round($datas->pluck('travel_time')->sum()/$totalWO,2),
-            'avgWorkTime' => round($datas->pluck('work_time')->sum()/$totalWO,2),
-            'avgRSPS' => round($datas->pluck('rsps')->sum()/$totalWO,4)
+            'avgTotalDurasi'=> round($datas->pluck('total_durasi')->sum()/$totalWO,0),
+            'avgDurasiSBU' => round($datas->pluck('durasi_sbu')->sum()/$totalWO,0),
+            'avgPrepTime' => round($datas->pluck('prep_time')->sum()/$totalWO,0),
+            'avgTravelTime' => round($datas->pluck('travel_time')->sum()/$totalWO,0),
+            'avgWorkTime' => round($datas->pluck('work_time')->sum()/$totalWO,0),
+            'avgRSPS' => round($datas->pluck('rsps')->sum()/$totalWO,2)
         );
         // Kalkulasi data pada cart ends here
         // Menghitung Trend Performa / Bulan starts here

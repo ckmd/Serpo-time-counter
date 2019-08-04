@@ -188,13 +188,13 @@ class HomeController extends Controller
             }
             $cardArray = array(
                 'regionSum' => $regionSum,
-                'totalDurasiWO' => round(($getFilteredDate->pluck('total_durasi')->sum()+$getFilteredDate->pluck('durasi_sbu')->sum())/$regionSum,2),
-                'avgTotalDurasi'=> round($getFilteredDate->pluck('total_durasi')->sum()/$regionSum,2),
-                'avgDurasiSBU' => round($getFilteredDate->pluck('durasi_sbu')->sum()/$regionSum,2),
-                'avgPrepTime' => round($getFilteredDate->pluck('prep_time')->sum()/$regionSum,2),
-                'avgTravelTime' => round($getFilteredDate->pluck('travel_time')->sum()/$regionSum,2),
-                'avgWorkTime' => round($getFilteredDate->pluck('work_time')->sum()/$regionSum,2),
-                'avgRSPS' => round($getFilteredDate->pluck('rsps')->sum()/$regionSum,4)
+                'totalDurasiWO' => round(($getFilteredDate->pluck('total_durasi')->sum()+$getFilteredDate->pluck('durasi_sbu')->sum())/$regionSum,0),
+                'avgTotalDurasi'=> round($getFilteredDate->pluck('total_durasi')->sum()/$regionSum,0),
+                'avgDurasiSBU' => round($getFilteredDate->pluck('durasi_sbu')->sum()/$regionSum,0),
+                'avgPrepTime' => round($getFilteredDate->pluck('prep_time')->sum()/$regionSum,0),
+                'avgTravelTime' => round($getFilteredDate->pluck('travel_time')->sum()/$regionSum,0),
+                'avgWorkTime' => round($getFilteredDate->pluck('work_time')->sum()/$regionSum,0),
+                'avgRSPS' => round($getFilteredDate->pluck('rsps')->sum()/$regionSum,2)
             );
             // Menghitung trend performa rsps / bulan
             $rspsArray = array();
