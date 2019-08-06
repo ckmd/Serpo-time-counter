@@ -20,7 +20,7 @@ window.onload = function() {
         theme: "light2", // "light1", "dark1", "dark2"
         animationEnabled: true, 		
         title:{
-            text: "Trend Keaktifan Serpo Menggunakan Aplikasi FSM"
+            text: "Trend Performa RSPS Regional"
         },
         data: [{
             type: "line",
@@ -227,14 +227,14 @@ var terminasiChart = new CanvasJS.Chart("terminasiChart", {
     <div class="card-deck text-center">
         <div class="card text-white bg-primary">
             <div class="card-body">
-                <span class="info-box-text">Work Order</span>
+                <span class="info-box-text">Jumlah Work Order</span>
                 <h3>{{$cardArray['regionSum']}}</h3>
                 <!-- <p class="card-text">Work Order</p> -->
             </div>
         </div>
         <div class="card text-white bg-primary">
             <div class="card-body">
-                <span class="info-box-text">Total Durasi Work Order <br/> (A+B+C+D)</span>
+                <span class="info-box-text">Durasi Work Order <br/> (A+B+C+D)</span>
                 <h3>{{$cardArray['totalDurasiWO']}}</h3>
                 <span class="info-box-text">Menit</span>
                 <!-- <p>Menit</p> -->
@@ -242,7 +242,7 @@ var terminasiChart = new CanvasJS.Chart("terminasiChart", {
         </div>
         <div class="card text-white bg-primary">
             <div class="card-body">
-                <span class="info-box-text">Total Durasi Serpo (B+C+D)</span>
+                <span class="info-box-text">Durasi Serpo <br/> (B+C+D)</span>
                 <h3>{{$cardArray['avgTotalDurasi']}}</h3>
                 <span class="info-box-text">Menit</span>
                 <!-- <p>Menit</p> -->
@@ -299,6 +299,7 @@ var terminasiChart = new CanvasJS.Chart("terminasiChart", {
         </div>
     </div>
     <br>
+    <p style="color:red">Keterangan :<br/> a. Durasi : Waktu rata-rata per Work Order <br/> b. RSPS : Rata-rata Skor Pemakaian SBU Aplikasi FSM</p>
     @endsection
     @section('chart')
     <div id="chartContainer" style="height: 300px; width: 100%;"></div>
@@ -372,8 +373,8 @@ var terminasiChart = new CanvasJS.Chart("terminasiChart", {
             <thead class="thead-dark">
                 <tr>
                     <th>Category Name</th>
-                    <th>Total</th>
-                    <th>Rata-rata Durasi Work Order</th>
+                    <th>Total Work Order</th>
+                    <th>Rata-rata Durasi (menit)</th>
                 </tr>
             </thead>
                 @foreach($category as $c)
@@ -515,21 +516,21 @@ var terminasiChart = new CanvasJS.Chart("terminasiChart", {
                         <button type="submit" class="btn btn-success"><i class="fa fa-download"></i><span> Download</span></button>
             </form>
             <br>
-            <table class="table table-responsive table-striped table-hover table-bordered" >
-                <thead class="thead-light" style="text-align: center;">
-                    <tr valign="top" >
+            <table class="table table-striped table-hover table-bordered" >
+                <thead valign="middle" class="thead-light" style="text-align: center;">
+                    <tr>
                         <th rowspan="2">No</th>
                         <th rowspan="2">Basecamp</th>
-                        <th rowspan="2">Service_Point</th>
-                        <th rowspan="2">Jumlah_Work_Order</th>
+                        <th rowspan="2">Service Point</th>
+                        <th rowspan="2">Jumlah Work Order</th>
                         <th colspan="6">Average (Dalam Satuan Menit)</th>
                     </tr>
                     <tr>
-                        <th>Durasi_SBU</th>
-                        <th>Total_Durasi_Serpo (A+B+C)</th>
-                        <th>A.Prep_Time</th>
-                        <th>B.Travel_Time</th>
-                        <th>C.Working_Time</th>
+                        <th>Durasi SBU</th>
+                        <th>Total Durasi Serpo (A+B+C)</th>
+                        <th>A.Prep Time</th>
+                        <th>B.Travel Time</th>
+                        <th>C.Working Time</th>
                         <th>RSPS</th>
                     </tr>
                 </thead>
@@ -538,8 +539,8 @@ var terminasiChart = new CanvasJS.Chart("terminasiChart", {
             @foreach($dbAvgExcel as $data)
                     <tr>
                         <th>{{$i}}</th>
-                        <td nowrap="nowrap" class="text-left">{{$data->basecamp}}</td>
-                        <td nowrap="nowrap" class="text-left">{{$data->serpo}}</td>
+                        <td class="text-left">{{$data->basecamp}}</td>
+                        <td class="text-left">{{$data->serpo}}</td>
                         <td>{{$data->jumlah_wo}}</td>
                         <td>{{round($data->durasi_sbu,2)}}</td>
                         @if($data->prep_time!=null)

@@ -68,6 +68,7 @@ class NationalController extends Controller
         $urcArray = array();//Unique Root Cause Array
         $ukArray = array();//Unique Kendala Array
         $arrayUrc = array();
+        $category = array();
         $currentDate = date('Y-m-d H:i:s');
         $currentDate = (new DateTime($currentDate))->add(new DateInterval('PT7H'))->format('Y-m-d H:i:s');
         foreach ($region as $key => $value) {
@@ -165,7 +166,7 @@ class NationalController extends Controller
             $rspsArray[] = array('y' => $avgRSPS*100, 'label'=>$value);
             $woArray[] = array(
                 'label'=>$value,
-                'longLabel'=>$regionLongName,
+                'longLabel'=>$regionLongName.' ('.$value.')',
                 'y'=>$regionSum/$totalWO*100,
                 'value'=>$regionSum
             );
@@ -176,12 +177,12 @@ class NationalController extends Controller
         $cardArray = array(
             'regionSum' => $totalWO,
             'totalDurasiWO' => round(($datas->pluck('total_durasi')->sum()+$datas->pluck('durasi_sbu')->sum())/$totalWO,2),
-            'avgTotalDurasi'=> round($datas->pluck('total_durasi')->sum()/$totalWO,2),
-            'avgDurasiSBU' => round($datas->pluck('durasi_sbu')->sum()/$totalWO,2),
-            'avgPrepTime' => round($datas->pluck('prep_time')->sum()/$totalWO,2),
-            'avgTravelTime' => round($datas->pluck('travel_time')->sum()/$totalWO,2),
-            'avgWorkTime' => round($datas->pluck('work_time')->sum()/$totalWO,2),
-            'avgRSPS' => round($datas->pluck('rsps')->sum()/$totalWO,4)
+            'avgTotalDurasi'=> round($datas->pluck('total_durasi')->sum()/$totalWO,0),
+            'avgDurasiSBU' => round($datas->pluck('durasi_sbu')->sum()/$totalWO,0),
+            'avgPrepTime' => round($datas->pluck('prep_time')->sum()/$totalWO,0),
+            'avgTravelTime' => round($datas->pluck('travel_time')->sum()/$totalWO,0),
+            'avgWorkTime' => round($datas->pluck('work_time')->sum()/$totalWO,0),
+            'avgRSPS' => round($datas->pluck('rsps')->sum()/$totalWO,2)
         );
         // Kalkulasi data pada cart ends here
         // Menghitung Trend Performa / Bulan starts here
@@ -190,10 +191,12 @@ class NationalController extends Controller
         $dateTemp = null;
         // Merubah Menjadi array untuk menghemat database
         foreach ($datas as $key => $data) {
-            $month = date_format(new DateTime($data->wo_complete),"Y-m");
-            $rsps = $data->rsps;
-            // echo $data->wo_date.' : '.$rsps.'<br>';
-            $trendArray[] = array('month' => $month, 'rsps'=>$rsps*100);
+            if($data->wo_complete!=null){
+                $month = date_format(new DateTime($data->wo_complete),"Y-m");
+                $rsps = $data->rsps;
+                // echo $data->wo_date.' : '.$rsps.'<br>';
+                $trendArray[] = array('month' => $month, 'rsps'=>$rsps*100);
+            }
         }
         $uniqueMonth = array_unique(array_column($trendArray, 'month'));
         foreach ($uniqueMonth as $um) {
@@ -257,9 +260,10 @@ class NationalController extends Controller
         // Menghitung Kendala Secara Nasional Ends Here
 
         // Menghitung Category secara nasional
-        $uniqueCategory = $datas->pluck('category')->unique();
+        $staticUniqueCategory = array("FOC", "FOT/Perangkat","PS","Software","Bukan Gangguan");
+        // $uniqueCategory = $datas->pluck('category')->unique();
         $categorySum = $datas->where('category','<>','')->pluck('category');
-        foreach ($uniqueCategory as $key => $value) {
+        foreach ($staticUniqueCategory as $key => $value) {
             if($value != null){
                 $durasi = $datas->where('category',$value)->avg('total_durasi')  + $datas->where('category',$value)->avg('durasi_sbu');
                 $eachValue = $datas->where('category', $value)->count();
@@ -272,7 +276,6 @@ class NationalController extends Controller
             }
         }
 
-        $staticUniqueCategory = Excel::pluck('category')->unique();
         foreach ($staticUniqueCategory as $key => $value) {
             if($value!=null){
                 $totalCategory = $datas->where('category',$value)->count();

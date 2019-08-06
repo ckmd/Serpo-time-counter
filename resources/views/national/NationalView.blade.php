@@ -36,7 +36,7 @@ window.onload = function() {
         theme: "light2",
     	animationEnabled: true,
         title: {
-            text: "Keaktifan Serpo Menggunakan Aplikasi FSM"
+            text: "Performa RSPS per SBU"
         },
         data: [{
 			indexLabelPlacement: "outside",
@@ -52,7 +52,7 @@ window.onload = function() {
         theme: "light2", // "light1", "dark1", "dark2"
         animationEnabled: true, 		
         title:{
-            text: "Trend Keaktifan Serpo Menggunakan Aplikasi FSM"
+            text: "Trend Performa RSPS Nasional"
         },
         data: [{
             type: "line",
@@ -217,14 +217,14 @@ var swChart = new CanvasJS.Chart("swChart", {
 <div class="card-deck text-center">
         <div class="card text-white bg-primary">
             <div class="card-body">
-                <span class="info-box-text">Work Order</span>
+                <span class="info-box-text">Jumlah Work Order</span>
                 <h3>{{$cardArray['regionSum']}}</h3>
                 <!-- <p class="card-text">Work Order</p> -->
             </div>
         </div>
         <div class="card text-white bg-primary">
             <div class="card-body">
-                <span class="info-box-text">Total Durasi Work Order <br/> (A+B+C+D)</span>
+                <span class="info-box-text">Durasi Work Order <br/> (A+B+C+D)</span>
                 <h3>{{$cardArray['totalDurasiWO']}}</h3>
                 <span class="info-box-text">Menit</span>
                 <!-- <p>Menit</p> -->
@@ -232,7 +232,7 @@ var swChart = new CanvasJS.Chart("swChart", {
         </div>
         <div class="card text-white bg-primary">
             <div class="card-body">
-                <span class="info-box-text">Total Durasi Serpo (B+C+D)</span>
+                <span class="info-box-text">Durasi Serpo <br/> (B+C+D)</span>
                 <h3>{{$cardArray['avgTotalDurasi']}}</h3>
                 <span class="info-box-text">Menit</span>
                 <!-- <p>Menit</p> -->
@@ -289,6 +289,7 @@ var swChart = new CanvasJS.Chart("swChart", {
         </div>
     </div>
     <br>
+    <p style="color:red">Keterangan :<br/> a. Durasi : Waktu rata-rata per Work Order <br/> b. RSPS : Rata-rata Skor Pemakaian SBU Aplikasi FSM</p>
 @endsection
 
 @section('wochart')
@@ -328,7 +329,7 @@ var swChart = new CanvasJS.Chart("swChart", {
         <thead class="thead-dark">
             <tr>
                 <th>Category Name</th>
-                <th>Total</th>
+                <th>Total Work Order</th>
                 <th>Rata-rata Durasi (Menit)</th>
             </tr>
         </thead>

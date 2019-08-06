@@ -29,10 +29,10 @@ class CreateExcelsTable extends Migration
             $table->decimal('work_time',10,2)->nullable()->default(NULL);
             $table->decimal('rsps',10,4);
             $table->decimal('total_durasi',10,2)->nullable()->default(NULL);
-            $table->string('category')->nullable()->default(NULL);
-            $table->string('root_cause')->nullable()->default(NULL);
-            $table->string('kendala')->nullable()->default(NULL);
-            $table->string('terminasi_pop')->nullable()->default(NULL);
+            $table->longtext('category')->nullable()->default(NULL);
+            $table->longtext('root_cause')->nullable()->default(NULL);
+            $table->longtext('kendala')->nullable()->default(NULL);
+            $table->longtext('terminasi_pop')->nullable()->default(NULL);
             $table->longtext('root_cause_description')->nullable()->default(NULL);
             $table->longtext('kendala_description')->nullable()->default(NULL);
             $table->timestamps();
