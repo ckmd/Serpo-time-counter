@@ -271,7 +271,7 @@ class NationalController extends Controller
                     'label' => $value,
                     'value' => $eachValue,
                     'y' => $eachValue / $categorySum->count()*100,
-                    'durasi' => round($durasi,2)
+                    'durasi' => round($durasi,0)
                 );
             }
         }

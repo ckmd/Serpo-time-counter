@@ -289,7 +289,7 @@ var swChart = new CanvasJS.Chart("swChart", {
         </div>
     </div>
     <br>
-    <p style="color:red">Keterangan :<br/> a. Durasi : Waktu rata-rata per Work Order <br/> b. RSPS : Rata-rata Skor Pemakaian SBU Aplikasi FSM</p>
+    <p style="color:blue">Keterangan :<br/> a. Durasi : Waktu rata-rata per Work Order <br/> b. RSPS : Rata-rata Skor Pemakaian SBU Aplikasi FSM</p>
 @endsection
 
 @section('wochart')

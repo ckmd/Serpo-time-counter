@@ -192,7 +192,7 @@ var terminasiChart = new CanvasJS.Chart("terminasiChart", {
         data: [{
             indexLabelFontSize: 12,
             type: "column",
-            yValueFormatString: "#,##",
+            yValueFormatString: "#",
             indexLabel: "{y} [{presentase}%]",
             dataPoints: <?php echo json_encode($countPop, JSON_NUMERIC_CHECK); ?>
         }]
@@ -299,7 +299,7 @@ var terminasiChart = new CanvasJS.Chart("terminasiChart", {
         </div>
     </div>
     <br>
-    <p style="color:red">Keterangan :<br/> a. Durasi : Waktu rata-rata per Work Order <br/> b. RSPS : Rata-rata Skor Pemakaian SBU Aplikasi FSM</p>
+    <p style="color:blue">Keterangan :<br/> a. Durasi : Waktu rata-rata per Work Order <br/> b. RSPS : Rata-rata Skor Pemakaian SBU Aplikasi FSM</p>
     @endsection
     @section('chart')
     <div id="chartContainer" style="height: 300px; width: 100%;"></div>
@@ -397,6 +397,7 @@ var terminasiChart = new CanvasJS.Chart("terminasiChart", {
         <thead class="thead-dark">
             <tr>
                 <th rowspan="2">Top 10 POP Terminasi Work Order</th>
+                <th rowspan="2">Deskripsi</th>
                 <th rowspan="2">Total Work Order</th>
                 <th colspan="5">Kategori Gangguan</th>
             </tr>
@@ -412,6 +413,7 @@ var terminasiChart = new CanvasJS.Chart("terminasiChart", {
             @foreach($countPop as $cp)
                 <tr>
                     <td>{{$cp['label']}}</td>
+                    <td>{{$cp['desc']}}</td>
                     <td>{{$cp['y']}}</td>
                     <td>{{$cp['bukangg']}}</td>
                     <td>{{$cp['foc']}}</td>

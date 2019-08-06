@@ -29,6 +29,7 @@ Route::resource('national','NationalController')->middleware('auth');
 Route::resource('asset','AssetController')->middleware('auth');
 Route::resource('kategoriPM','KategoriPmController')->middleware('auth');
 Route::resource('report','ReportController')->middleware('auth');
+Route::resource('pop','PopController')->middleware('auth');
 
 Route::get('refresh','DBController@refresh')->middleware('auth');
 Route::get('refreshPM','KategoriPmController@refreshPM')->middleware('auth');
