@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Excel;
+use App\Pop;
 use App\AvgExcel;
 use DateTime;
 use DateInterval;
@@ -274,13 +275,14 @@ class HomeController extends Controller
                     $category[] = array(
                         'label' => $value,
                         'y' => $getFilteredDate->where('category', $value)->count(),
-                        'durasi' => round($durasi,2)
+                        'durasi' => round($durasi,0)
                     );
                 }
             }
             // return $category;
 
             // Menghitung Top 10 Terminasi POP
+            $pop = Pop::all();
             $uniquePop = $getFilteredDate->pluck('terminasi_pop')->unique();
             $totalPop = $getFilteredDate->where('terminasi_pop','<>','')->count();
             foreach ($uniquePop as $key => $value) {
@@ -289,6 +291,7 @@ class HomeController extends Controller
                     $countPop[] = array(
                         'label' => $value,
                         'y' => $valuePop,
+                        'desc' => $pop->where('pop_id',$value)->pluck('pop_name')->first(),
                         'presentase' => round($valuePop/$totalPop*100,1),
                         'foc' => $getFilteredDate->where('terminasi_pop',$value)->where('category','FOC')->count(),
                         'fot' => $getFilteredDate->where('terminasi_pop',$value)->where('category','FOT/Perangkat')->count(),
