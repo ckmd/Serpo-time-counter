@@ -80,7 +80,7 @@ class GangguanController extends Controller
             $data->travel_time = $dg->travel_time;
             $data->work_time = $dg->work_time;
             $data->rsps = $dg->rsps;
-            $data->total_durasi = $dg->total_durasi;
+            $data->total_durasi = $dg->total_durasi_wo;
             $data->root_cause = $dg->root_cause;
             $data->kendala = $dg->kendala;
             $data->root_cause_description = $dg->root_cause_description;

@@ -108,7 +108,16 @@ class excelController extends Controller
                     $rsps += 25;
                     // Code untuk menghitung preparation time
                     if($getSheet[$i][11]==''){
-                        $prepTime = null;
+                        if($getSheet[$i][12]==''){
+                            if($getSheet[$i][16]==''){
+                                $prepTime = null; // filter jika complete time kosong
+                            }else{
+                                $stringStartTravel = str_replace(array( '(', ')' ), '', $getSheet[$i][16]); //ambil selisih dari WO date s.d. complete
+                                $arrayStartTravel = getDateTime('st', $stringStartTravel);
+                                $startTravel = new DateTime($arrayStartTravel['st0']);
+                                $prepTime = round(filterMinute(date_diff($WO_Date, $startTravel)),2);
+                            }
+                        }
                     }else{
                         $stringStartTravel = str_replace(array( '(', ')' ), '', $getSheet[$i][11]);
                         $arrayStartTravel = getDateTime('st', $stringStartTravel);
@@ -120,7 +129,15 @@ class excelController extends Controller
                     // Code untuk Menghitung Travel Time
                     $startWork = null;
                     if($getSheet[$i][12]=='' || $getSheet[$i][11]==''){
-                        $travelTime = null;
+                        if($getSheet[$i][16]==''){
+                            $travelTime = null;
+                        }else{
+                            $stringStartWork = str_replace(array( '(', ')' ), '', $getSheet[$i][16]);
+                            $arrayStartWork = getDateTime('sw', $stringStartWork);
+                            $startWork = new DateTime($arrayStartWork['sw0']);
+                            $travelTime = date_diff($startTravel, $startWork);
+                            $travelTime = round(filterMinute($travelTime),2);                                
+                        }
                     }else{
                         $stringStartWork = str_replace(array( '(', ')' ), '', $getSheet[$i][12]);
                         $arrayStartWork = getDateTime('sw', $stringStartWork);
@@ -183,14 +200,12 @@ class excelController extends Controller
                     }
 
                 //Menghitung Total durasi starts here
-                $total_durasi = null;
+                $total_durasi_serpo = null;
                 $category = null;
                 $root_cause = null;
                 $kendala = null;
                 $terminasi_pop = null;
-                if($rsps==100){
-                    $total_durasi = $prepTime + $travelTime + $workTime;
-                }
+                $total_durasi_serpo = $prepTime + $travelTime + $workTime;
                 // Category setiap root cause
                 if($getSheet[$i][24]!=null){
                     $category = $getSheet[$i][24];
@@ -224,7 +239,8 @@ class excelController extends Controller
                     $data->travel_time = $travelTime;
                     $data->work_time = $workTime;
                     $data->rsps = $rsps/100;
-                    $data->total_durasi = $total_durasi;
+                    $data->total_durasi_serpo = $total_durasi_serpo;
+                    $data->total_durasi_wo = $total_durasi_serpo + $SBU;
                     $data->category = $category;
                     $data->root_cause = $root_cause;
                     $data->kendala = $kendala;

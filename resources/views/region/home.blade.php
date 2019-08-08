@@ -545,13 +545,13 @@ var terminasiChart = new CanvasJS.Chart("terminasiChart", {
                         <td class="text-left">{{$data->serpo}}</td>
                         <td>{{$data->jumlah_wo}}</td>
                         <td>{{round($data->durasi_sbu,2)}}</td>
-                        @if($data->prep_time!=null)
-                        <td>{{round($data->prep_time,2)}}</td>
+                        @if($data->total_durasi!=null)
+                        <td>{{round($data->total_durasi,2)}}</td>
                         @else
                         <td>n.a</td>
                         @endif
-                        @if($data->total_durasi!=null)
-                        <td>{{round($data->total_durasi,2)}}</td>
+                        @if($data->prep_time!=null)
+                        <td>{{round($data->prep_time,2)}}</td>
                         @else
                         <td>n.a</td>
                         @endif

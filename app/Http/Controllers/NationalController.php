@@ -78,8 +78,8 @@ class NationalController extends Controller
             $regionSum = $regionRow->pluck('region')->count();
 
             // Digunakan untuk pembagi sesuai banyaknya total_durasi
-            // $avgTotalDurasi = round($regionRow->pluck('total_durasi')->sum()/$regionRow->where('rsps',100)->pluck('region')->count(),2);
-            $avgTotalDurasi = round($regionRow->pluck('total_durasi')->sum()/$regionSum,2);
+            // $avgTotalDurasi = round($regionRow->pluck('total_durasi_serpo')->sum()/$regionRow->where('rsps',100)->pluck('region')->count(),2);
+            $avgTotalDurasi = round($regionRow->pluck('total_durasi_serpo')->sum()/$regionSum,2);
             $avgDurasiSBU = round($regionRow->pluck('durasi_sbu')->sum()/$regionSum,2);
             $avgPrepTime = round($regionRow->pluck('prep_time')->sum()/$regionSum,2);
             $avgtravelTime = round($regionRow->pluck('travel_time')->sum()/$regionSum,2);
@@ -116,7 +116,7 @@ class NationalController extends Controller
                 $nationalDataRsps1[] = array(
                     'region' => $value,
                     'jumlah_wo' => $regionSumRsps1,
-                    'total_durasi' => round($regionRowRsps1->pluck('total_durasi')->sum()/$regionSumRsps1,2),
+                    'total_durasi' => round($regionRowRsps1->pluck('total_durasi_serpo')->sum()/$regionSumRsps1,2),
                     'durasi_sbu' => round($regionRowRsps1->pluck('durasi_sbu')->sum()/$regionSumRsps1,2),
                     'prep_time' => round($regionRowRsps1->pluck('prep_time')->sum()/$regionSumRsps1,2),
                     'travel_time' => round($regionRowRsps1->pluck('travel_time')->sum()/$regionSumRsps1,2),
@@ -176,8 +176,8 @@ class NationalController extends Controller
         // Kalkulasi data pada card starts here
         $cardArray = array(
             'regionSum' => $totalWO,
-            'totalDurasiWO' => round(($datas->pluck('total_durasi')->sum()+$datas->pluck('durasi_sbu')->sum())/$totalWO,0),
-            'avgTotalDurasi'=> round($datas->pluck('total_durasi')->sum()/$totalWO,0),
+            'totalDurasiWO' => round($datas->pluck('total_durasi_wo')->sum()/$totalWO,0),
+            'avgTotalDurasi'=> round($datas->pluck('total_durasi_serpo')->sum()/$totalWO,0),
             'avgDurasiSBU' => round($datas->pluck('durasi_sbu')->sum()/$totalWO,0),
             'avgPrepTime' => round($datas->pluck('prep_time')->sum()/$totalWO,0),
             'avgTravelTime' => round($datas->pluck('travel_time')->sum()/$totalWO,0),
@@ -214,11 +214,11 @@ class NationalController extends Controller
         array_multisort (array_column($chartArray, 'label'), SORT_ASC, $chartArray);
         // Menghitung performa / bulan ends here   
         // Menghitung Root Cause dengan durasi Secara Nasional Starts Here
-        $rootCaseDuration = $datas->where('total_durasi','<>','')->where('root_cause','<>','')->pluck('root_cause');
+        $rootCaseDuration = $datas->where('total_durasi_wo','<>','')->where('root_cause','<>','')->pluck('root_cause');
         $uniqueRootCaseDuration = $rootCaseDuration->unique();
         foreach ($uniqueRootCaseDuration as $urcd => $urcdName) {
-            $urcdValue = $datas->where('total_durasi','<>','')->where('root_cause',$urcdName)->count();
-            $urcdDuration = round($datas->where('total_durasi','<>','')->where('root_cause',$urcdName)->pluck('total_durasi')->sum()/$urcdValue,2);
+            $urcdValue = $datas->where('total_durasi_wo','<>','')->where('root_cause',$urcdName)->count();
+            $urcdDuration = round($datas->where('total_durasi_wo','<>','')->where('root_cause',$urcdName)->pluck('total_durasi_wo')->sum()/$urcdValue,2);
             if($urcdName!=""){
                 $urcdArray[] = array( 
                     'label' =>$urcdName,
@@ -231,9 +231,9 @@ class NationalController extends Controller
         array_multisort (array_column($urcdArray, 'y'), SORT_DESC, $urcdArray);
         // Menghitung Root Cause dengan durasi Secara Nasional Ends Here
         // Menghitung Root Cause tanpa durasi starts here
-        $uniqueRootCase = $datas->where('total_durasi','=','')->pluck('root_cause')->unique();
+        $uniqueRootCase = $datas->where('total_durasi_wo','=','')->pluck('root_cause')->unique();
         foreach ($uniqueRootCase as $urc => $urcName) {
-            $urcValue = $datas->where('total_durasi','=','')->where('root_cause',$urcName)->count();
+            $urcValue = $datas->where('total_durasi_wo','=','')->where('root_cause',$urcName)->count();
             if($urcName!=""){
                 $urcArray[] = array( 
                     'label' =>$urcName,
@@ -265,7 +265,7 @@ class NationalController extends Controller
         $categorySum = $datas->where('category','<>','')->pluck('category');
         foreach ($staticUniqueCategory as $key => $value) {
             if($value != null){
-                $durasi = $datas->where('category',$value)->avg('total_durasi')  + $datas->where('category',$value)->avg('durasi_sbu');
+                $durasi = $datas->where('category',$value)->avg('total_durasi_wo');
                 $eachValue = $datas->where('category', $value)->count();
                 $category[] = array(
                     'label' => $value,

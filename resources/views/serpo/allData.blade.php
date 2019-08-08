@@ -28,6 +28,7 @@
                         <th>Preparation_Time</th>
                         <th>Travel_Time</th>
                         <th>Working_Time</th>
+                        <th>Total_Durasi_WO</th>
                         <th>RSPS</th>
                         <th>Category</th>
                         <th>Root_Cause</th>
@@ -59,6 +60,11 @@
                         @endif
                         @if($cat->work_time!=null)
                         <td>{{$cat->work_time}}</td>
+                        @else
+                        <td>n.a</td>
+                        @endif
+                        @if($cat->total_durasi_wo!=0)
+                        <td>{{$cat->total_durasi_wo}}</td>
                         @else
                         <td>n.a</td>
                         @endif

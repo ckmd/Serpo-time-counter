@@ -122,7 +122,7 @@ class DBController extends Controller
                 $data->travel_time = $e->travel_time;
                 $data->work_time = $e->work_time;
                 $data->rsps = $e->rsps;
-                $data->total_durasi = $e->total_durasi;
+                $data->total_durasi = $e->total_durasi_wo;
                 if($e->root_cause_description!=null){
                     $data->root_cause = findRootCause($e->root_cause_description,$gangguan,$uniqueGangguan);
                 }else{

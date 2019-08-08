@@ -43,5 +43,6 @@ Route::get('report-data/report-data-site/{asset_code}','PrevMainController@repor
 Route::get('report-pm-foc/{region}','PrevMainController@pmFOC')->middleware('auth');
 Route::get('report-pm-lain/{region}','PrevMainController@pmLain')->middleware('auth');
 Route::get('deleteExcel','excelController@delete')->middleware('auth');
+Route::get('deletePop','PopController@delete')->middleware('auth');
 
 Route::post('/downloadReport', 'ReportController@download');
