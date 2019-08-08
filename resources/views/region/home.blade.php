@@ -396,8 +396,8 @@ var terminasiChart = new CanvasJS.Chart("terminasiChart", {
     <table class="table table-center table-hover table-bordered" style="text-align:center;">
         <thead class="thead-dark">
             <tr>
-                <th rowspan="2">Top 10 POP Terminasi Work Order</th>
-                <th rowspan="2">Deskripsi</th>
+                <th rowspan="2">Kode POP</th>
+                <th rowspan="2">Nama POP</th>
                 <th rowspan="2">Total Work Order</th>
                 <th colspan="5">Kategori Gangguan</th>
             </tr>
@@ -413,7 +413,7 @@ var terminasiChart = new CanvasJS.Chart("terminasiChart", {
             @foreach($countPop as $cp)
                 <tr>
                     <td>{{$cp['label']}}</td>
-                    <td>{{$cp['desc']}}</td>
+                    <td style="text-align:left;">{{$cp['desc']}}</td>
                     <td>{{$cp['y']}}</td>
                     <td>{{$cp['bukangg']}}</td>
                     <td>{{$cp['foc']}}</td>
