@@ -125,4 +125,12 @@ class PopController extends Controller
     {
         //
     }
+
+    public function delete()
+    {
+        // return 'wkwk';
+        Pop::truncate();
+        return redirect('pop');
+        //
+    }
 }

@@ -85,9 +85,8 @@ class HomeController extends Controller
             
             $uniqueSerpoCount = $getFilteredDate->where('serpo',$key)->count();
             $uniqueSerpoRow = $getFilteredDate->where('serpo',$key);
-            
             foreach ($uniqueSerpoRow as $ubc) {
-                $totalDurasi += $ubc->total_durasi;
+                $totalDurasi += $ubc->total_durasi_serpo;
                 $avgDurasiSBU += $ubc->durasi_sbu;
                 $avgPrepTime += $ubc->prep_time;
                 $avgTravelTime += $ubc->travel_time;
@@ -189,8 +188,8 @@ class HomeController extends Controller
             }
             $cardArray = array(
                 'regionSum' => $regionSum,
-                'totalDurasiWO' => round(($getFilteredDate->pluck('total_durasi')->sum()+$getFilteredDate->pluck('durasi_sbu')->sum())/$regionSum,0),
-                'avgTotalDurasi'=> round($getFilteredDate->pluck('total_durasi')->sum()/$regionSum,0),
+                'totalDurasiWO' => round($getFilteredDate->pluck('total_durasi_wo')->sum()/$regionSum,0),
+                'avgTotalDurasi'=> round($getFilteredDate->pluck('total_durasi_serpo')->sum()/$regionSum,0),
                 'avgDurasiSBU' => round($getFilteredDate->pluck('durasi_sbu')->sum()/$regionSum,0),
                 'avgPrepTime' => round($getFilteredDate->pluck('prep_time')->sum()/$regionSum,0),
                 'avgTravelTime' => round($getFilteredDate->pluck('travel_time')->sum()/$regionSum,0),
@@ -237,11 +236,11 @@ class HomeController extends Controller
             }
             array_multisort (array_column($ukArray, 'y'), SORT_DESC, $ukArray);        
             // Menghitung Root Cause dengan durasi
-            $rootCaseDuration = $getFilteredDate->where('total_durasi','<>','')->where('root_cause','<>','')->pluck('root_cause');
+            $rootCaseDuration = $getFilteredDate->where('total_durasi_wo','<>','')->where('root_cause','<>','')->pluck('root_cause');
             $uniqueRootCaseDuration = $rootCaseDuration->unique();
             foreach ($uniqueRootCaseDuration as $urcd => $urcdName) {
-                $urcdValue = $getFilteredDate->where('total_durasi','<>','')->where('root_cause',$urcdName)->count();
-                $urcdDuration = round($getFilteredDate->where('total_durasi','<>','')->where('root_cause',$urcdName)->pluck('total_durasi')->sum()/$urcdValue,2);
+                $urcdValue = $getFilteredDate->where('total_durasi_wo','<>','')->where('root_cause',$urcdName)->count();
+                $urcdDuration = round($getFilteredDate->where('total_durasi_wo','<>','')->where('root_cause',$urcdName)->pluck('total_durasi_wo')->sum()/$urcdValue,2);
                 if($urcdName!=""){
                     $urcdArray[] = array( 
                         'label' =>$urcdName,
@@ -252,12 +251,11 @@ class HomeController extends Controller
                 }
             }
             array_multisort (array_column($urcdArray, 'y'), SORT_DESC, $urcdArray);
-            // return $getFilteredDate->where('total_durasi','<>','');
 
             // Menghitung Root Cause tanpa durasi
-            $uniqueRootCase = $getFilteredDate->where('total_durasi','=','')->pluck('root_cause')->unique();
+            $uniqueRootCase = $getFilteredDate->where('total_durasi_wo','=','')->pluck('root_cause')->unique();
             foreach ($uniqueRootCase as $urc => $urcName) {
-                $urcValue = $getFilteredDate->where('total_durasi','=','')->where('root_cause',$urcName)->count();
+                $urcValue = $getFilteredDate->where('total_durasi_wo','=','')->where('root_cause',$urcName)->count();
                 if($urcName!=""){
                     $urcArray[] = array( 
                         'label' =>$urcName,
@@ -271,7 +269,7 @@ class HomeController extends Controller
             $uniqueCategory = $getFilteredDate->pluck('category')->unique();
             foreach ($uniqueCategory as $key => $value) {
                 if($value != null){
-                    $durasi = $getFilteredDate->where('category',$value)->avg('total_durasi')  + $getFilteredDate->where('category',$value)->avg('durasi_sbu');
+                    $durasi = $getFilteredDate->where('category',$value)->avg('total_durasi_wo');
                     $category[] = array(
                         'label' => $value,
                         'y' => $getFilteredDate->where('category', $value)->count(),

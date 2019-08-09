@@ -32,19 +32,23 @@
 
 @section('content')
 <div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="text-center">
-                <h3>Upload Raw Data Pop File</h3>
-                <form action="{{route('pop.store')}}" method="POST" enctype="multipart/form-data">
-                    {{csrf_field()}}
-                    <input type="file" class="btn btn-primary btn-md" name="popFile">
-                    <button type="submit" class="btn btn-primary"><i class="fa fa-upload"></i><span> Upload</span></button>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
+<h3>Upload Raw Data Pop File</h3>
+<table>
+    <tr>
+        <td>
+            <form action="{{route('pop.store')}}" method="POST" enctype="multipart/form-data">
+                {{csrf_field()}}
+                <input type="file" class="btn btn-primary btn-md" name="popFile">
+                <button type="submit" class="btn btn-primary"><i class="fa fa-upload"></i><span> Upload</span></button>
+            </form>
+        </td>
+        <td>
+            <a href="deletePop" class="btn btn-danger"><i class="fa fa-trash"></i><span> Hapus Data</span></a>
+        </td>
+    </tr>
+</table>
+<br>
 @yield('popTable')
+</div>
 
 @endsection
