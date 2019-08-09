@@ -58,7 +58,7 @@ class HomeController extends Controller
         AvgExcel::truncate();
         // Filter berdasarkan region
         $regionName = $request->region;
-        $filteredRegion = Excel::orderBy('wo_date','asc')->where('region' , $regionName)->get();
+        $filteredRegion = Excel::orderBy('wo_complete','asc')->where('region' , $regionName)->get();
         $pAwal = $request->pawal;
         $pAkhir = $request->pakhir;
         $addOneDay = (new DateTime($pAkhir))->add(new DateInterval('P1D'))->format('Y-m-d');
@@ -68,7 +68,7 @@ class HomeController extends Controller
         $unique = $region->unique();
         
         // Menghitung rataan nilai per serpo yang difilter berdasarkan region
-        $getFilteredDate = $filteredRegion->where('wo_date','>=',$pAwal)->where('wo_date','<=',$addOneDay);
+        $getFilteredDate = $filteredRegion->where('wo_complete','>=',$pAwal)->where('wo_complete','<=',$addOneDay);
         $serpo = $getFilteredDate->pluck('serpo');
         $uniqueSerpo = $serpo->unique();
         $cardArray = array();

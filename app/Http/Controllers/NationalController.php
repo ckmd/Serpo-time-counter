@@ -54,7 +54,7 @@ class NationalController extends Controller
         $pAwal = $request->pawal;
         $pAkhir = $request->pakhir;
         $addOneDay = (new DateTime($pAkhir))->add(new DateInterval('P1D'))->format('Y-m-d');
-        $datas = Excel::orderBy('wo_date','asc')->get()->where('wo_date','>=',$pAwal)->where('wo_date','<=',$addOneDay);
+        $datas = Excel::orderBy('wo_complete','asc')->get()->where('wo_complete','>=',$pAwal)->where('wo_complete','<=',$addOneDay);
         $datasRsps1 = $datas->where('rsps',1);
         // Filter apabila hasil filter data yang berjumlah nol
         if($datas->count()==null){
@@ -194,7 +194,7 @@ class NationalController extends Controller
             if($data->wo_complete!=null){
                 $month = date_format(new DateTime($data->wo_complete),"Y-m");
                 $rsps = $data->rsps;
-                // echo $data->wo_date.' : '.$rsps.'<br>';
+                // echo $data->wo_complete.' : '.$rsps.'<br>';
                 $trendArray[] = array('month' => $month, 'rsps'=>$rsps*100);
             }
         }
