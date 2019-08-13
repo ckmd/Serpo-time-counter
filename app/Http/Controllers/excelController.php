@@ -100,9 +100,9 @@ class excelController extends Controller
                 $AR_Date = new DateTime($getSheet[$i][8]);
                 $WO_Date = DateTime::createFromFormat('d M Y H:i:s',$getSheet[$i][9]);
                 
-                // Filter By kode_wo Starts Here
+                // Filter By kode_wo dan wo_cancelled Starts Here
                 $filteredDate = Excel::where('kode_wo',$getSheet[$i][2])->value('kode_wo');
-                if($filteredDate!=$getSheet[$i][2]){
+                if($filteredDate!=$getSheet[$i][2] && $getSheet[$i][16]!=''){
                     $SBU = date_diff($WO_Date, $AR_Date);
                     $SBU = filterMinute($SBU);
                     $rsps += 25;
