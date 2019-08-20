@@ -244,17 +244,15 @@ class NationalController extends Controller
         array_multisort (array_column($urcArray, 'y'), SORT_DESC, $urcArray);
         // Menghitung Root Cause tanpa durasi ends here
         // Menghitung Kendala Secara Nasional Starts Here
-        $kendala = $datas->where('kendala','<>','')->pluck('kendala');
+        $kendala = $datas->where('kendala','<>','')->where('kendala','<>','Tidak Ada Kendala')->pluck('kendala');
         $uniqueKendala = $kendala->unique();
         foreach ($uniqueKendala as $ukKey => $ukName) {
             $ukValue = $datas->where('kendala',$ukName)->count();
-            if($ukName!=""){
-                $ukArray[] = array( 
-                    'label' =>$ukName,
-                    'presentase'=>round($ukValue/$kendala->count()*100,1),
-                    'y'=>$ukValue,
-                );
-            }
+            $ukArray[] = array( 
+                'label' =>$ukName,
+                'presentase'=>round($ukValue/$kendala->count()*100,1),
+                'y'=>$ukValue,
+            );
         }
         array_multisort (array_column($ukArray, 'y'), SORT_DESC, $ukArray);
         // Menghitung Kendala Secara Nasional Ends Here

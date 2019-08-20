@@ -69,6 +69,7 @@ var catChart = new CanvasJS.Chart("catChart", {
     catChart.render();
 
 // Chart FOC
+    @if($arrayUrc["FOC"][0]["label"]!="tidak ada gangguan")
     var focChart = new CanvasJS.Chart("focChart", {
         theme: "light2", // "light1", "dark1", "dark2"
         animationEnabled: true, 		
@@ -88,9 +89,11 @@ var catChart = new CanvasJS.Chart("catChart", {
         }]
     });
     focChart.render();
+    @endif
 
 // Chart FOT
-var fotChart = new CanvasJS.Chart("fotChart", {
+    @if($arrayUrc["FOT/Perangkat"][0]["label"]!="tidak ada gangguan")
+    var fotChart = new CanvasJS.Chart("fotChart", {
         theme: "light2", // "light1", "dark1", "dark2"
         animationEnabled: true, 		
         title:{
@@ -110,8 +113,10 @@ var fotChart = new CanvasJS.Chart("fotChart", {
         }]
     });
     fotChart.render();
+    @endif
 
 // Chart Bukan Gangguan
+    @if($arrayUrc["Bukan Gangguan"][0]["label"]!="tidak ada gangguan" && $arrayUrc["Software"][0]["label"]!="tidak ada gangguan")
     var bgChart = new CanvasJS.Chart("bgChart", {
         theme: "light2", // "light1", "dark1", "dark2"
         animationEnabled: true, 		
@@ -133,7 +138,31 @@ var fotChart = new CanvasJS.Chart("fotChart", {
     });
     bgChart.render();
 
+// Software Chart
+    var swChart = new CanvasJS.Chart("swChart", {
+        theme: "light2", // "light1", "dark1", "dark2"
+        animationEnabled: true, 		
+        title:{
+            text: "Root Cause Category Software"
+        },
+        axisX:{
+            labelFontSize: 12,
+            interval: 1,
+            labelAngle: 0
+        },
+        data: [{
+			indexLabelPlacement: "outside",
+            indexLabelFontSize: 12,
+            type: "column",
+            yValueFormatString: "#",
+            dataPoints: <?php echo json_encode($arrayUrc["Software"], JSON_NUMERIC_CHECK); ?>
+        }]
+    });
+    swChart.render();
+    @endif
+
 // PS Chart
+    @if($arrayUrc["PS"][0]["label"]!="tidak ada gangguan")
     var psChart = new CanvasJS.Chart("psChart", {
         theme: "light2", // "light1", "dark1", "dark2"
         animationEnabled: true, 		
@@ -154,28 +183,7 @@ var fotChart = new CanvasJS.Chart("fotChart", {
         }]
     });
     psChart.render();
-
-// Software Chart
-var swChart = new CanvasJS.Chart("swChart", {
-        theme: "light2", // "light1", "dark1", "dark2"
-        animationEnabled: true, 		
-        title:{
-            text: "Root Cause Category Software"
-        },
-        axisX:{
-            labelFontSize: 12,
-            interval: 1,
-            labelAngle: 0
-        },
-        data: [{
-			indexLabelPlacement: "outside",
-            indexLabelFontSize: 12,
-            type: "column",
-            yValueFormatString: "#",
-            dataPoints: <?php echo json_encode($arrayUrc["Software"], JSON_NUMERIC_CHECK); ?>
-        }]
-    });
-    swChart.render();
+    @endif
 
 // TerminasiChart
 var terminasiChart = new CanvasJS.Chart("terminasiChart", {
@@ -316,57 +324,6 @@ var terminasiChart = new CanvasJS.Chart("terminasiChart", {
         $awal = '*';
     }
     ?>
-<!-- 
-    <div class="table table-responsive table-hover" >
-        <table style="float: left" width="45%">
-            <thead class="thead-dark">
-                <tr>
-                    <th>Kategori Gangguan (RSPS = 100)</th>
-                    <th>Total</th>
-                    <th>Rataan Durasi (Menit)</th>
-                </tr>
-            </thead>
-            @foreach($urcdArray as $urcda)
-            <tr class='clickable-row' data-gangguanhref="gangguan-data/{{$urcda['label']}}/{{$regionName}}/{{$awal}}/{{$akhir}}">
-                <td>{{$urcda['label']}}</td>
-                <td>{{$urcda['total']}}</td>
-                <td>{{$urcda['durasi']}}</td>
-            </tr>
-            @endforeach
-        </table>
-        <table style="float: right" width="45%">
-            <thead class="thead-dark">
-                <tr>
-                <th>Kategori Kendala</th>
-                <th>Total</th>
-                </tr>
-            </thead>
-            @foreach($ukArray as $uka)
-            <tr class='kendala-row' data-kendalahref="kendala-data/{{$uka['label']}}/{{$regionName}}/{{$awal}}/{{$akhir}}">
-                <td>{{$uka['label']}}</td>
-                <td>{{$uka['y']}}</td>
-            </tr>
-            @endforeach
-        </table>
-    </div>
-    @if(count($urcArray)!=0)
-    <div class="table table-responsive table-hover" >
-        <table style="float: left" width="45%">
-            <thead class="thead-dark">
-                <tr>
-                    <th>Kategori Gangguan (RSPS < 100)</th>
-                    <th>Total</th>
-                </tr>
-            </thead>
-            @foreach($urcArray as $urca)
-            <tr>
-                <td>{{$urca['label']}}</td>
-                <td>{{$urca['y']}}</td>
-            </tr>
-            @endforeach
-        </table>
-    </div>
-    @endif  -->
     <!-- Chart untuk persebaran category -->
     <div class="table table-responsive table-hover" >
         <table style="float: left" width="47%">
@@ -426,9 +383,16 @@ var terminasiChart = new CanvasJS.Chart("terminasiChart", {
     </table>
     </div>
     <!-- Chart untuk menampilkan Root cause Gangguan dan Kendala -->
+    @if($arrayUrc["FOC"][0]["label"]!="tidak ada gangguan")
     <div id="focChart" style="height: 300px;width: 100%;"></div><br>
+    @endif
+    @if($arrayUrc["FOT/Perangkat"][0]["label"]!="tidak ada gangguan")
     <div id="fotChart" style="height: 300px;width: 100%;"></div><br>
+    @endif
+    @if($arrayUrc["PS"][0]["label"]!="tidak ada gangguan")
     <div id="psChart" style="height: 300px;width: 100%;"></div><br>
+    @endif
+    @if($arrayUrc["Bukan Gangguan"][0]["label"]!="tidak ada gangguan" && $arrayUrc["Software"][0]["label"]!="tidak ada gangguan")
     <div class="table table-responsive table-hover" >
         <table style="float: left" width="47%">
             <tr><td>
@@ -440,7 +404,9 @@ var terminasiChart = new CanvasJS.Chart("terminasiChart", {
                 <div id="bgChart" style="height: 300px;width: 100%;"></div>
             </td></tr>
         </table>
-    </div><br>
+    </div>
+    @endif
+    <br>
     <div id="kendalaChart" style="height: 400px;width: 100%;"></div>
     @endsection
 @endif

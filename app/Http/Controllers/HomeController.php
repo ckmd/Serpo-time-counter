@@ -222,17 +222,15 @@ class HomeController extends Controller
             array_multisort (array_column($chartArray, 'label'), SORT_ASC, $chartArray);
 
             // Menghitung Kendala
-            $kendala = $getFilteredDate->where('kendala','<>','')->pluck('kendala');
+            $kendala = $getFilteredDate->where('kendala','<>','')->where('kendala','<>','Tidak Ada Kendala')->pluck('kendala');
             $uniqueKendala = $kendala->unique();
             foreach ($uniqueKendala as $ukKey => $ukName) {
                 $ukValue = $getFilteredDate->where('kendala',$ukName)->count();
-                if($ukName!=""){
-                    $ukArray[] = array( 
-                        'label' =>$ukName,
-                        'y'=>$ukValue,
-                        'indexLabel'=>$ukValue." [".round($ukValue/$kendala->count()*100,1)."%]",
-                    );
-                }
+                $ukArray[] = array( 
+                    'label' =>$ukName,
+                    'y'=>$ukValue,
+                    'indexLabel'=>$ukValue." [".round($ukValue/$kendala->count()*100,1)."%]",
+                );
             }
             array_multisort (array_column($ukArray, 'y'), SORT_DESC, $ukArray);        
             // Menghitung Root Cause dengan durasi
@@ -331,6 +329,7 @@ class HomeController extends Controller
                 $arrayUrc[$value][] = array();
             }
         }
+        // return $ukArray;
         return view('region.home', compact ('unique','regionName','regionLongName','dbAvgExcel','pAwal','pAkhir', 'cardArray','chartArray','urcdArray','urcArray','ukArray','arrayUrc','category','countPop','currentDate'));
     }
 }
