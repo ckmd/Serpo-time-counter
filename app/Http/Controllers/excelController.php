@@ -175,7 +175,7 @@ class excelController extends Controller
                         $arrayMerge = array_merge($arrayStartTravel, $arrayStartWork, $arrayComplete);
                         foreach ($arrayStopClock as $key => $value) {
                             // Filter untuk anomalli data (timestamp stopclock diluar timestamp complete)
-                            if(new DateTime($value) > $complete){
+                            if(new DateTime($value) >= $complete){
                                 continue;
                             }else{
                                 $tempAm = array();
