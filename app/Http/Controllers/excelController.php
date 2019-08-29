@@ -97,8 +97,9 @@ class excelController extends Controller
                 // <!-- Menghitung Durasi SBU -->
                 // <!-- Selisih Antara AR_Date dengan WO Date -->
                 $SBU = null;
-                $AR_Date = new DateTime($getSheet[$i][8]);
-                $WO_Date = DateTime::createFromFormat('d M Y H:i:s',$getSheet[$i][9]);
+                $AR_Date = new DateTime($getSheet[$i][8]); // Default Format
+                $WO_Date = new DateTime($getSheet[$i][9]);
+                // $WO_Date = DateTime::createFromFormat('d M Y H:i:s',$getSheet[$i][9]); // Custom Format
                 
                 // Filter By kode_wo dan wo_cancelled Starts Here
                 $filteredDate = Excel::where('kode_wo',$getSheet[$i][2])->value('kode_wo');
