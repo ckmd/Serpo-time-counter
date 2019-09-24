@@ -206,6 +206,7 @@ class excelController extends Controller
                 $root_cause = null;
                 $kendala = null;
                 $terminasi_pop = null;
+                $total_durasi_sc = null;
                 $total_durasi_serpo = $prepTime + $travelTime + $workTime;
                 // Category setiap root cause
                 if($getSheet[$i][24]!=null){
@@ -225,6 +226,10 @@ class excelController extends Controller
                 if($getSheet[$i][27]!=null){
                     $terminasi_pop = $getSheet[$i][27];
                 }
+                // filter untuk total sc apabila kosong
+                if($getSheet[$i][29]!=null){
+                    $total_durasi_sc = $getSheet[$i][29];
+                }
                 // code untuk menyimpan ke db (tabel excel)
                 $data = new Excel();
                     $data->ar_id = $getSheet[$i][0];
@@ -242,6 +247,7 @@ class excelController extends Controller
                     $data->rsps = $rsps/100;
                     $data->total_durasi_serpo = $total_durasi_serpo;
                     $data->total_durasi_wo = $total_durasi_serpo + $SBU;
+                    $data->total_durasi_sc = $total_durasi_sc;
                     $data->category = $category;
                     $data->root_cause = $root_cause;
                     $data->kendala = $kendala;

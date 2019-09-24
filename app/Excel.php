@@ -22,6 +22,7 @@ class Excel extends Model
         'rsps',
         'total_durasi_serpo',
         'total_durasi_wo',
+        'total_durasi_sc',
         'category',
         'root_cause',
         'kendala',

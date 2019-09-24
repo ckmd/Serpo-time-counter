@@ -30,6 +30,7 @@ class CreateExcelsTable extends Migration
             $table->decimal('rsps',10,4);
             $table->decimal('total_durasi_serpo',10,2)->nullable()->default(NULL);
             $table->decimal('total_durasi_wo',10,2)->nullable()->default(NULL);
+            $table->longtext('total_durasi_sc')->nullable()->default(NULL);
             $table->longtext('category')->nullable()->default(NULL);
             $table->longtext('root_cause')->nullable()->default(NULL);
             $table->longtext('kendala')->nullable()->default(NULL);

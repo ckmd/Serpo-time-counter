@@ -30,9 +30,12 @@
                         <th>Working_Time</th>
                         <th>Total_Durasi_WO</th>
                         <th>RSPS</th>
+                        <th>WO_Complete</th>
+                        <th>Total_Durasi_SC</th>
                         <th>Category</th>
                         <th>Root_Cause</th>
                         <th>Kendala</th>
+                        <th>Terminasi POP</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -69,6 +72,16 @@
                         <td>n.a</td>
                         @endif
                         <td>{{$cat->rsps*100}}%</td>
+                        @if($cat->wo_complete!=0)
+                        <td nowrap="nowrap">{{$cat->wo_complete}}</td>
+                        @else
+                        <td>n.a</td>
+                        @endif
+                        @if($cat->total_durasi_sc!=0)
+                        <td>{{$cat->total_durasi_sc}}</td>
+                        @else
+                        <td>n.a</td>
+                        @endif
                         @if($cat->category!=null)
                         <td nowrap="nowrap">{{$cat->category}}</td>
                         @else
@@ -81,6 +94,11 @@
                         @endif
                         @if($cat->kendala!=null)
                         <td nowrap="nowrap">{{$cat->kendala}}</td>
+                        @else
+                        <td>n.a</td>
+                        @endif
+                        @if($cat->terminasi_pop!=null)
+                        <td nowrap="nowrap">{{$cat->terminasi_pop}}</td>
                         @else
                         <td>n.a</td>
                         @endif
