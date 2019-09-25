@@ -14,36 +14,48 @@ header('Pragma: public');
 $header = array(
     'AR_id'=>'0',
     'Prob_id'=>'0',
-    'Kode_wo'=>'0',
+    'Kode_WO'=>'0',
+    'WO_Date'=>'string',
     'Region'=>'string',
     'Basecamp'=>'string',
     'Serpo'=>'string',
     'Durasi_SBU'=>'0.00',
-    'Preparation'=>'0.00',
-    'Travelling'=>'0.00',
-    'Working'=>'0.00',
+    'Preparation_Time'=>'0.00',
+    'Travel_Time'=>'0.00',
+    'Working_Time'=>'0.00',
+    'Total Durasi WO'=>'0.00',
     'RSPS'=>'0%',
-    'gangguan'=>'string',
-    'kendala'=>'string',
+    'WO Complete'=>'string',
+    'Total Durasi SC'=>'string',
+    'Category'=>'string',
+    'Root Cause'=>'string',
+    'Kendala'=>'string',
+    'Terminasi POP'=>'string',
 );
 
 $rows = array();
-		foreach($datas as $d) {
-            $rows[] = array(
-            "$d->ar_id",
-            "$d->prob_id",
-            "$d->kode_wo",
-            "$d->region",
-            "$d->basecamp",
-            "$d->serpo",
-            "$d->durasi_sbu",
-            "$d->prep_time",
-            "$d->travel_time",
-            "$d->work_time",
-            "$d->rsps",
-            "$d->root_cause",
-            "$d->kendala"
-            );
+                  foreach($datas as $d) {
+                  $rows[] = array(
+                  "$d->ar_id",
+                  "$d->prob_id",
+                  "$d->kode_wo",
+                  "$d->wo_date",
+                  "$d->region",
+                  "$d->basecamp",
+                  "$d->serpo",
+                  "$d->durasi_sbu",
+                  "$d->prep_time",
+                  "$d->travel_time",
+                  "$d->work_time",
+                  "$d->total_durasi_wo",
+                  "$d->rsps",
+                  "$d->wo_complete",
+                  "$d->total_durasi_sc",
+                  "$d->category",
+                  "$d->root_cause",
+                  "$d->kendala",
+                  "$d->terminasi_pop"
+                  );
 		}
             $writer = new XLSXWriter();
 $writer->setAuthor('icon+'); 
