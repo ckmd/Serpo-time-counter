@@ -282,7 +282,7 @@ class HomeController extends Controller
             $uniquePop = $getFilteredDate->pluck('terminasi_pop')->unique();
             $totalPop = $getFilteredDate->where('terminasi_pop','<>','')->count();
             foreach ($uniquePop as $key => $value) {
-                if($value!=null){
+                if($value!=null && $value != "DARK FIBER/NO TERIMNATION"){
                     $valuePop = $getFilteredDate->where('terminasi_pop',$value)->count();
                     $countPop[] = array(
                         'label' => $value,
