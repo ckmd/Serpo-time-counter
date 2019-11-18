@@ -17,9 +17,9 @@ class CreatePopsTable extends Migration
             $table->increments('id');
             $table->string('pop_id');
             $table->string('pop_name');
-            $table->string('sbu');
-            $table->string('type');
-            $table->string('location');
+            $table->string('sbu')->nullable()->default(NULL);
+            $table->string('type')->nullable()->default(NULL);
+            $table->string('location')->nullable()->default(NULL);
             $table->timestamps();
         });
     }
