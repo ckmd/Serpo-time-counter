@@ -44,7 +44,7 @@ class PopController extends Controller
     {
         ini_set('memory_limit', '-1');
         // Delete Database Sebelum Upload Baru
-        Pop::truncate();
+        // Pop::truncate();
         
         // maksimum time limit 900 seconds, bisa disesuaikan
         ini_set('max_execution_time', 900);
