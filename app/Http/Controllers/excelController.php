@@ -33,6 +33,7 @@ class excelController extends Controller
      */
     public function create()
     {
+	ini_set('memory_limit', '-1');
         $datas = Excel::all();
         return view('serpo.download', compact('datas'));
     }
